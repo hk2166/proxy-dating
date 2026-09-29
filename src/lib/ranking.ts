@@ -6,6 +6,32 @@ import type { DateRecord, Person, RankEntry, Scorecard } from "./types";
 //   fit       = 0.65 * myView + 0.35 * theirView  (+5 if both agents want a second date after a full date)
 // P's own needs dominate, but a match only works if it's mutual.
 
+// Different models score on different curves (one hands out 60s, another 80s),
+// so each scorecard is mapped onto the overall distribution before blending.
+function calibrator(dates: DateRecord[]) {
+  const by = new Map<string, number[]>();
+  const all: number[] = [];
+  for (const d of dates)
+    for (const s of [d.scoreA, d.scoreB]) {
+      if (!s) continue;
+      const m = s.model || d.model || "?";
+      by.set(m, [...(by.get(m) || []), s.overall]);
+      all.push(s.overall);
+    }
+  const stats = (xs: number[]) => {
+    const mean = xs.reduce((a, b) => a + b, 0) / xs.length;
+    const sd = Math.sqrt(xs.reduce((a, b) => a + (b - mean) ** 2, 0) / xs.length) || 1;
+    return { mean, sd };
+  };
+  const g = all.length ? stats(all) : { mean: 0, sd: 1 };
+  const per = new Map([...by].filter(([, xs]) => xs.length >= 30).map(([m, xs]) => [m, stats(xs)]));
+  if (per.size < 2) return (s: Scorecard) => s.overall;
+  return (s: Scorecard, d?: DateRecord) => {
+    const m = per.get(s.model || d?.model || "?");
+    return m ? Math.max(0, Math.min(100, g.mean + ((s.overall - m.mean) / m.sd) * g.sd)) : s.overall;
+  };
+}
+
 function sideOf(d: DateRecord, me: string): { mine?: Scorecard; theirs?: Scorecard; other: string } {
   return d.a === me ? { mine: d.scoreA, theirs: d.scoreB, other: d.b } : { mine: d.scoreB, theirs: d.scoreA, other: d.a };
 }
@@ -26,13 +52,15 @@ export function rankFor(personId: string, people: Person[], dates: DateRecord[],
     slot[d.kind] = d;
     byOther.set(other, slot);
   }
+  const cal = calibrator(dates);
+  const score = (sc: Scorecard | undefined, d?: DateRecord) => (sc ? cal(sc, d) : undefined);
   const out: RankEntry[] = [];
   for (const [other, { speed, full }] of byOther) {
     const s = speed && sideOf(speed, personId);
     const f = full && sideOf(full, personId);
     if (!s?.mine && !f?.mine) continue;
-    const myView = blend(s?.mine?.overall, f?.mine?.overall);
-    const theirView = blend(s?.theirs?.overall, f?.theirs?.overall);
+    const myView = blend(score(s?.mine, speed), score(f?.mine, full));
+    const theirView = blend(score(s?.theirs, speed), score(f?.theirs, full));
     const latestMine = f?.mine || s?.mine;
     // Only a full date's second-date call counts: after a 6-line speed date the agents
     // say "yes" almost every time, so that flag carries no signal.

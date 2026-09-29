@@ -145,10 +145,12 @@ TRANSCRIPT
 ${transcript(rec.messages, a, b)}
 
 Score ${first(other.name)} as a match for ${first(me.name)}.`;
-  const s = await structured({ system, user, schema: ScoreSchema, model: MODELS.date, effort: "medium", maxTokens: 6000 });
+  const meta: { model?: string } = {};
+  const s = await structured({ system, user, schema: ScoreSchema, model: MODELS.date, effort: "medium", maxTokens: 6000, meta });
   const c10 = (n: number) => Math.max(0, Math.min(10, Math.round(n)));
   return {
     ...s,
+    model: meta.model,
     chemistry: c10(s.chemistry),
     valuesFit: c10(s.valuesFit),
     lifestyleFit: c10(s.lifestyleFit),
@@ -192,6 +194,7 @@ export async function speedDate(x: Person, y: Person, emit: Emit = () => {}): Pr
   const [sa, sb] = await Promise.all([scorecard(a, b, rec, a, b), scorecard(b, a, rec, a, b)]);
   rec.scoreA = sa;
   rec.scoreB = sb;
+  rec.model = sa.model || sb.model || rec.model;
   emit({ type: "date:score", dateId: rec.id, side: "a", score: sa });
   emit({ type: "date:score", dateId: rec.id, side: "b", score: sb });
   emit({ type: "date:end", date: rec });
@@ -316,6 +319,7 @@ export async function fullDate(x: Person, y: Person, speed: DateRecord | undefin
   const [sa, sb] = await Promise.all([scorecard(a, b, rec, a, b), scorecard(b, a, rec, a, b)]);
   rec.scoreA = sa;
   rec.scoreB = sb;
+  rec.model = sa.model || sb.model || rec.model;
   emit({ type: "date:score", dateId: rec.id, side: "a", score: sa });
   emit({ type: "date:score", dateId: rec.id, side: "b", score: sb });
   emit({ type: "date:end", date: rec });

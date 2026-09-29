@@ -176,6 +176,7 @@ export interface Scorecard {
   concern: string;
   verdict: string;
   reportToPrincipal?: string;
+  model?: string; // which model wrote this scorecard
 }
 
 export interface DateRecord {

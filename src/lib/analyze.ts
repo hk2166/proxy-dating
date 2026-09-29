@@ -153,6 +153,7 @@ export async function readLinkedIn(li: LinkedInProfile): Promise<ReadingNote[]> 
     system: READER_SYSTEM,
     user: `SOURCE: LinkedIn (public profile)\n\n${renderLinkedIn(li)}`,
     schema: NotesSchema,
+    big: true,
     effort: "medium",
   });
   return out.notes.map((n) => ({ ...n, source: "linkedin" as const }));
@@ -171,7 +172,8 @@ export async function readInstagram(ig: InstagramProfile): Promise<ReadingNote[]
     content.push(...images);
   }
   content.push({ type: "text", text: `SOURCE: Instagram (public profile)\n\n${renderInstagram(ig)}` });
-  const out = await structured({ system: READER_SYSTEM, user: content, schema: NotesSchema, effort: "medium" });
+  const out = await structured({ system: READER_SYSTEM, user: content, schema: NotesSchema,
+    big: true, effort: "medium" });
   return out.notes.map((n) => ({ ...n, source: "instagram" as const }));
 }
 
@@ -188,7 +190,7 @@ ${renderLinkedIn(sources.linkedin)}
 
 SOURCE 2 — INSTAGRAM
 ${renderInstagram(sources.instagram)}`;
-  return structured({ system, user, schema: AnalysisSchema, model: MODELS.analysis, effort: "high" });
+  return structured({ system, user, schema: AnalysisSchema, model: MODELS.analysis, effort: "high", big: true });
 }
 
 export function toCard(p: Person): PublicCard {

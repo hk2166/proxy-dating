@@ -22,7 +22,15 @@ import type { DateRecord, Person, Sources } from "../src/lib/types";
 const FULL_DATES_PER_PERSON = Number(process.env.FULL_DATES_PER_PERSON || 2);
 const ANALYZE_CONCURRENCY = Number(process.env.ANALYZE_CONCURRENCY || 6);
 
-type Entry = { name: string; linkedin: string; instagram: string };
+type Entry = { name: string; linkedin: string; instagram: string; gender?: string };
+
+// voices for the "listen to the date" audio, picked from how people present publicly
+const VOICES: Record<string, string[]> = { woman: ["nova", "shimmer", "coral", "sage"], man: ["onyx", "echo", "ash", "verse"], other: ["alloy", "ballad"] };
+function pickVoice(gender = "other") {
+  const pool = VOICES[gender] || VOICES.other;
+  const used = [...people.values()].filter((p) => p.voice && pool.includes(p.voice)).length;
+  return pool[used % pool.length];
+}
 const list: Entry[] = JSON.parse(fs.readFileSync(path.join(process.cwd(), "data", "people.json"), "utf8"));
 
 const state = seedFiles.read();
@@ -98,6 +106,7 @@ async function analyzeAll() {
     const t = Date.now();
     try {
       const p = await analyzePerson(e.linkedin, e.instagram, () => {}, { origin: "seed", avatar: saveAvatar, sources });
+      p.voice = pickVoice(e.gender);
       people.set(p.id, p);
       dirty = true;
       console.log(`  ✓ ${p.name} (${((Date.now() - t) / 1000).toFixed(0)}s) — ${p.analysis?.headline}`);

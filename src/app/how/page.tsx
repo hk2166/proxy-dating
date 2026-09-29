@@ -103,9 +103,8 @@ fit       = 0.65 · myView + 0.35 · theirView  (+5 if both want a 2nd date)`}
         <ul className="list-disc space-y-1 pl-5">
           <li>Next.js (App Router) + TypeScript + Tailwind, deployed on Vercel</li>
           <li>
-            LLM agents behind one provider-agnostic layer (OpenAI gpt-5.4 by default, DeepSeek optional): validated structured outputs
-            (zod) for notes, profiles and scorecards; free text for date lines. Every date and scorecard in the demo ran on the same
-            model, so all scores are comparable.
+            LLM calls walk a cheapest-first chain (Groq gpt-oss → DeepSeek → OpenAI nano → Anthropic Haiku) with key rotation. Calls that
+            include photos go to a model with vision, and each scorecard records its model so the ranking can calibrate scores across models.
           </li>
           <li>Apify actors for Instagram + LinkedIn scraping</li>
           <li>Upstash Redis for people added live; the finished 25-person example ships as JSON in the repo</li>
