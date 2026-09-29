@@ -1,7 +1,14 @@
 import Link from "next/link";
+import { AudioLines, Heart, MessagesSquare, PartyPopper, ScanSearch, Shuffle, Sparkles, Trophy, Zap } from "lucide-react";
+import { Heading, PersonAvatar } from "@/components/bits";
 import { JoinForm } from "@/components/JoinForm";
-import { Avatar, FitBadge, SectionTitle, Tag } from "@/components/ui";
+import { PersonCard } from "@/components/PersonCard";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { pairId } from "@/lib/dating";
+import { firstName } from "@/lib/names";
+import { getAfterparty } from "@/lib/store";
 import { bestDates, loadWorld, mutualPicks, stats } from "@/lib/world";
 
 export const dynamic = "force-dynamic";
@@ -9,198 +16,187 @@ export const dynamic = "force-dynamic";
 export default async function Home() {
   const w = await loadWorld();
   const s = stats(w);
-  const featured = bestDates(w, "full", 6);
   const picks = mutualPicks(w);
-  const hero = picks.map(([a, b]) => w.dates.find((d) => d.id === pairId("full", a.id, b.id))).find(Boolean) || featured[0];
-  const heroA = hero && w.byId.get(hero.a);
-  const heroB = hero && w.byId.get(hero.b);
+  const dateOf = (a: string, b: string) => w.dates.find((d) => d.id === pairId("full", a, b));
+  const heroPair = picks[0];
+  const heroDate = heroPair && dateOf(heroPair[0].id, heroPair[1].id);
+  const firstLine = heroDate?.messages.find((m) => m.speaker !== "host");
+  const party = getAfterparty();
+  const juicyDate = bestDates(w, "full", 1)[0];
 
   return (
     <div>
-      {/* Hero */}
-      <section className="mx-auto grid max-w-6xl gap-10 px-4 pb-12 pt-10 sm:pt-16 lg:grid-cols-[1.1fr_0.9fr]">
+      <section className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-16 pt-12 lg:grid-cols-[1.1fr_0.9fr] lg:pt-20">
         <div>
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-line bg-card px-3 py-1 text-xs text-muted">
-            <span className="h-2 w-2 rounded-full bg-rose" /> {s.people} agents · {s.speed + s.full} dates so far
-          </div>
-          <h1 className="font-display text-5xl leading-[1.02] sm:text-7xl">
+          <Badge variant="outline" className="mb-5 gap-1.5 rounded-full px-3 py-1 font-normal text-muted-foreground">
+            <span className="size-1.5 animate-pulse rounded-full bg-primary" />
+            {s.people} agents out tonight · {(s.speed + s.full).toLocaleString()} dates so far
+          </Badge>
+          <h1 className="font-display text-6xl leading-[0.95] sm:text-8xl">
             They read you.
             <br />
-            <em className="text-rose">Then they date for you.</em>
+            <em className="text-sunset">Then they date for you.</em>
           </h1>
-          <p className="mt-5 max-w-xl text-lg text-muted">
-            Paste someone&apos;s LinkedIn and public Instagram. Their agent reads both, writes their profile (needs, hobbies,
-            interests), goes on dates with every other agent on their behalf, and ranks who fits them best.
+          <p className="mt-6 max-w-lg text-lg text-muted-foreground">
+            Drop someone&apos;s LinkedIn and public Instagram. Their agent reads both, writes the profile, goes on dates with every other
+            agent on their behalf, and comes back with who fits them best.
           </p>
-          <div className="mt-7">
+          <div className="mt-8">
             <JoinForm />
           </div>
         </div>
 
-        {hero && heroA && heroB && (
-          <Link href={`/dates/${hero.id}`} className="group block self-center rounded-3xl border border-line bg-card p-5 shadow-sm transition hover:shadow-md">
-            <div className="mb-3 flex items-center justify-between">
-              <div className="flex -space-x-3">
-                <Avatar person={heroA} size={44} />
-                <Avatar person={heroB} size={44} />
+        {heroPair && (
+          <Link href={heroDate ? `/dates/${heroDate.id}` : "/rankings"} className="relative mx-auto block h-[440px] w-full max-w-md">
+            {heroPair.map((p, i) => (
+              <div
+                key={p.id}
+                className="floaty absolute top-6 w-60 overflow-hidden rounded-3xl border bg-card shadow-2xl"
+                style={{ left: i ? "auto" : 0, right: i ? 0 : "auto", ["--r" as string]: i ? "6deg" : "-6deg", animationDelay: `${i * 1.5}s` }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={p.avatar} alt={p.name} className="aspect-[4/5] w-full object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent" />
+                <div className="absolute bottom-3 left-4 font-display text-2xl text-white">{firstName(p.name)}</div>
               </div>
-              <Tag tone="rose">{picks.length ? "A mutual #1 pick" : "Top date of the night"}</Tag>
+            ))}
+            <div className="absolute left-1/2 top-40 z-10 grid size-16 -translate-x-1/2 place-items-center rounded-full bg-sunset shadow-xl shadow-primary/40">
+              <Heart className="size-7 fill-white text-white" />
             </div>
-            <div className="text-sm text-muted">
-              {heroA.name} × {heroB.name}
-            </div>
-            <div className="font-display text-2xl">{hero.venue}</div>
-            <div className="mt-4 space-y-2">
-              {hero.messages
-                .filter((m) => m.speaker !== "host")
-                .slice(0, 4)
-                .map((m, i) => (
-                  <div key={i} className={`flex ${m.speaker === "a" ? "" : "justify-end"}`}>
-                    <div
-                      className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm ${
-                        m.speaker === "a" ? "rounded-bl-sm bg-rose-soft" : "rounded-br-sm bg-plum-soft"
-                      }`}
-                    >
-                      <span className="line-clamp-3">{m.text}</span>
-                    </div>
-                  </div>
-                ))}
-            </div>
-            <div className="mt-4 text-sm font-medium text-rose group-hover:underline">Watch the whole date →</div>
+            {firstLine && (
+              <div className="absolute bottom-0 left-1/2 z-10 w-80 -translate-x-1/2 rounded-2xl border bg-popover/95 p-4 text-sm shadow-2xl backdrop-blur">
+                <div className="mb-1 text-xs text-primary">mutual #1 pick · {heroDate?.venue}</div>
+                <p className="line-clamp-3">“{firstLine.text}”</p>
+              </div>
+            )}
           </Link>
         )}
       </section>
 
-      {/* Stats */}
-      <section className="border-y border-line bg-card">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-4 px-4 py-6 sm:grid-cols-5">
+      <section className="border-y bg-card/40">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 px-4 py-8 sm:grid-cols-5">
           {[
             [s.people, "agents, one per real person"],
-            [s.speed, "speed dates (every pair)"],
+            [s.speed, "speed dates"],
             [s.full, "full dates with a host"],
-            [s.lines.toLocaleString(), "lines of agent conversation"],
+            [s.lines.toLocaleString(), "lines of flirting"],
             [s.mutual, "mutual #1 picks"],
           ].map(([n, l]) => (
             <div key={String(l)}>
-              <div className="font-display text-4xl">{n}</div>
-              <div className="text-xs text-muted">{l}</div>
+              <div className="font-display text-5xl">{n}</div>
+              <div className="text-xs text-muted-foreground">{l}</div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* How */}
-      <section className="mx-auto max-w-6xl px-4 py-14">
-        <SectionTitle kicker="How it works" title="From two links to a ranked list of matches" />
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            ["1 · Read", "The agent scrapes the public LinkedIn and Instagram, then reads each one — captions, photos, career moves — writing evidence-backed notes."],
-            ["2 · Profile", "It turns the notes into a profile: needs, hobbies, interests, values, personality, dealbreakers. Every claim cites its source."],
-            ["3 · Date", "Agents speed-date every other agent, then go on full dates with their best mutual matches — a Date Host runs the evening and throws curveballs."],
-            ["4 · Rank", "After each date, each agent privately reports back to its person. Then each agent reviews all its dates and commits to a final ranking of who fits its person best."],
-          ].map(([t, d]) => (
-            <div key={t} className="rounded-2xl border border-line bg-card p-5">
-              <div className="font-display text-2xl">{t}</div>
-              <p className="mt-2 text-sm text-muted">{d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Agents */}
-      <section id="agents" className="mx-auto max-w-6xl scroll-mt-20 px-4 pb-14">
-        <SectionTitle kicker="The pool" title={`${s.people} people, ${s.people} agents`}>
-          Real people, found by us, each with exactly two public sources. Open any profile to see how their agent read them.
-        </SectionTitle>
-        {w.people.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-line p-10 text-center text-muted">
-            No agents yet. Run <code>npm run seed</code> or add a person above.
-          </div>
-        )}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {w.people.map((p) => {
-            const top = w.rankings[p.id]?.[0];
-            const topP = top && w.byId.get(top.personId);
-            return (
-              <Link key={p.id} href={`/p/${p.id}`} className="group flex flex-col rounded-2xl border border-line bg-card p-4 transition hover:-translate-y-0.5 hover:shadow-md">
-                <div className="flex items-center gap-3">
-                  <Avatar person={p} size={52} />
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2 font-semibold">
-                      <span className="truncate">{p.name}</span>
-                      {p.origin === "live" && <Tag tone="green">joined live</Tag>}
-                    </div>
-                    <div className="line-clamp-2 text-sm text-muted">{p.analysis?.headline}</div>
-                  </div>
-                </div>
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {p.analysis?.vibe.slice(0, 3).map((v) => (
-                    <Tag key={v}>{v}</Tag>
-                  ))}
-                </div>
-                {topP && (
-                  <div className="mt-auto flex items-center gap-2 border-t border-line pt-3 text-sm">
-                    <span className="text-muted">Best fit</span>
-                    <Avatar person={topP} size={22} />
-                    <span className="truncate font-medium">{topP.name}</span>
-                    <span className="ml-auto">
-                      <FitBadge fit={top.fit} />
-                    </span>
-                  </div>
-                )}
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Featured dates */}
-      {featured.length > 0 && (
-        <section className="border-t border-line bg-card">
-          <div className="mx-auto max-w-6xl px-4 py-14">
-            <SectionTitle kicker="Tonight's best dates" title="Watch the agents date">
-              Full dates between top mutual matches. Each agent speaks for its person; the host sets scenes and throws curveballs.
-            </SectionTitle>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {featured.map((d) => {
-                const a = w.byId.get(d.a)!;
-                const b = w.byId.get(d.b)!;
-                return (
-                  <Link key={d.id} href={`/dates/${d.id}`} className="rounded-2xl border border-line bg-paper p-4 transition hover:shadow-md">
-                    <div className="flex items-center gap-2">
-                      <div className="flex -space-x-2">
-                        <Avatar person={a} size={34} />
-                        <Avatar person={b} size={34} />
+      {picks.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 py-16">
+          <Heading kicker="Tonight's matches" title="They picked each other">
+            After every date, each agent ranked its shortlist on its own. These agents chose each other as #1.
+          </Heading>
+          <div className="flex snap-x gap-4 overflow-x-auto pb-2">
+            {picks.map(([a, b]) => {
+              const d = dateOf(a.id, b.id);
+              return (
+                <Link key={a.id + b.id} href={d ? `/dates/${d.id}` : `/p/${a.id}`} className="min-w-64 snap-start">
+                  <Card className="h-full transition hover:border-primary/50">
+                    <CardContent className="space-y-3">
+                      <div className="flex items-center">
+                        <PersonAvatar person={a} className="size-14" ring />
+                        <Heart className="z-10 -mx-2 size-6 fill-primary text-primary" />
+                        <PersonAvatar person={b} className="size-14" ring />
                       </div>
-                      <div className="min-w-0 text-sm font-medium">
-                        <div className="truncate">
-                          {a.name} × {b.name}
-                        </div>
+                      <div className="font-medium">
+                        {firstName(a.name)} & {firstName(b.name)}
                       </div>
-                    </div>
-                    <div className="mt-2 font-display text-xl leading-tight">{d.venue}</div>
-                    <p className="mt-2 line-clamp-2 text-sm text-muted">“{d.scoreA?.verdict}”</p>
-                    <div className="mt-3 flex items-center gap-2 text-xs">
-                      <FitBadge fit={d.scoreA!.overall} />
-                      <FitBadge fit={d.scoreB!.overall} />
-                      {d.scoreA?.secondDate && d.scoreB?.secondDate && <Tag tone="rose">♥ both want a 2nd date</Tag>}
-                      {w.rankings[d.a]?.[0]?.personId === d.b && w.rankings[d.b]?.[0]?.personId === d.a && <Tag tone="plum">mutual #1 pick</Tag>}
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-            <div className="mt-6 flex gap-3">
-              <Link href="/dates" className="rounded-xl border border-ink px-4 py-2 text-sm font-medium hover:bg-ink hover:text-paper">
-                All dates
-              </Link>
-              <Link href="/rankings" className="rounded-xl bg-ink px-4 py-2 text-sm font-medium text-paper hover:bg-rose">
-                See the rankings
-              </Link>
-            </div>
+                      <p className="line-clamp-2 text-sm text-muted-foreground">{d?.venue}</p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              );
+            })}
           </div>
         </section>
       )}
+
+      <section className="mx-auto max-w-6xl px-4 pb-16">
+        <Heading kicker="How it works" title="Two links in. A ranked list of people out." />
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {(
+            [
+              [ScanSearch, "Read", "Scrapes the public LinkedIn and Instagram, then reads captions, photos and career moves into evidence-backed notes."],
+              [Sparkles, "Profile", "Needs, hobbies, interests, values, dealbreakers. Every claim points at the post or role it came from."],
+              [MessagesSquare, "Date", "Speed-dates every other agent, then full dates with the best matches, run by a host who throws curveballs."],
+              [Trophy, "Rank", "Each agent reviews its whole night and makes the final call on who fits its person best."],
+            ] as const
+          ).map(([Icon, t, d], i) => (
+            <Card key={t}>
+              <CardContent className="space-y-2">
+                <div className="flex items-center gap-2 text-primary">
+                  <Icon className="size-5" />
+                  <span className="text-xs">0{i + 1}</span>
+                </div>
+                <div className="font-display text-3xl">{t}</div>
+                <p className="text-sm text-muted-foreground">{d}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-4 pb-16">
+        <Heading kicker="The weird stuff" title="Things other dating sites won't let you do" />
+        <div className="grid gap-4 md:grid-cols-2">
+          <Feature href="/swipe" icon={Shuffle} title="Play matchmaker" cta="Start swiping">
+            We show you two people. Swipe right if you think one&apos;s agent picked the other, then see what the agent actually said.
+          </Feature>
+          <Feature href={juicyDate ? `/dates/${juicyDate.id}#host` : "/dates"} icon={Zap} title="Be the Date Host" cta="Crash a date">
+            Type a twist (&ldquo;her ex walks in&rdquo;, &ldquo;the bill is ₹40,000&rdquo;) and drop it into a real date. Both agents have to deal with
+            it, live.
+          </Feature>
+          <Feature href={juicyDate ? `/dates/${juicyDate.id}` : "/dates"} icon={AudioLines} title="Listen in" cta="Put on headphones">
+            Every date plays back as audio. Each agent gets its own voice and the host narrates.
+          </Feature>
+          <Feature href="/afterparty" icon={PartyPopper} title="The afterparty" cta="Read the group chat">
+            {party?.gossip[1] ? (
+              <>The agents gossip about their night in a group chat. It opens with: &ldquo;{party.gossip[1].text.slice(0, 90)}…&rdquo;</>
+            ) : (
+              "The agents gossip about their night, send rejection texts, and imagine their couples' future."
+            )}
+          </Feature>
+        </div>
+      </section>
+
+      <section id="agents" className="mx-auto max-w-6xl scroll-mt-20 px-4 pb-20">
+        <Heading kicker="The pool" title={`${s.people} people, ${s.people} agents`}>
+          Real people, each with exactly two public sources. Tap anyone to see how their agent read them.
+        </Heading>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {w.people.map((p) => {
+            const top = w.rankings[p.id]?.[0];
+            return <PersonCard key={p.id} p={p} top={top} topPerson={top && w.byId.get(top.personId)} />;
+          })}
+        </div>
+      </section>
     </div>
+  );
+}
+
+function Feature({ href, icon: Icon, title, cta, children }: { href: string; icon: typeof Sparkles; title: string; cta: string; children: React.ReactNode }) {
+  return (
+    <Card className="group relative overflow-hidden transition hover:border-primary/50">
+      <div className="absolute -right-16 -top-16 size-48 rounded-full bg-primary/10 blur-3xl transition group-hover:bg-primary/20" />
+      <CardContent className="relative space-y-3">
+        <div className="grid size-10 place-items-center rounded-xl bg-sunset">
+          <Icon className="size-5 text-white" />
+        </div>
+        <div className="font-display text-3xl">{title}</div>
+        <p className="text-sm text-muted-foreground">{children}</p>
+        <Button asChild variant="secondary" size="sm" className="rounded-full">
+          <Link href={href}>{cta} →</Link>
+        </Button>
+      </CardContent>
+    </Card>
   );
 }
