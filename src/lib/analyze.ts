@@ -2,10 +2,7 @@ import { z } from "zod";
 import { structured, MODELS, SUPPORTS_VISION, type ContentBlock } from "./llm";
 import type { Analysis, InstagramProfile, LinkedInProfile, PublicCard, Person, ReadingNote, Sources } from "./types";
 
-// ---------------------------------------------------------------------------
-// Step 1 — the agent READS each source and writes evidence-backed notes.
-// Step 2 — the agent SYNTHESIZES the notes into the profile page.
-// ---------------------------------------------------------------------------
+// read each source into notes, then turn the notes into the profile
 
 const GUARDRAILS = `Hard rules:
 - Use ONLY what is in the two sources. Never invent facts, names, places or numbers.

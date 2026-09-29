@@ -43,7 +43,7 @@ Every actor output is normalized into one schema (`src/lib/types.ts`: `LinkedInP
 
 ## The rest of the stack
 
-- **Next.js 16 (App Router) + TypeScript + Tailwind**, deployable on Vercel
+- **Next.js 16 (App Router) + TypeScript + Tailwind + shadcn/ui**, with `motion` for the swipe deck, deployed on Vercel
 - **LLM agents, provider-agnostic** (`src/lib/llm.ts`): one `chat()` for free-text date lines and one `structured()` for notes, profiles and scorecards (zod schemas, validated). Backends:
   - **OpenAI** (default, `gpt-5.4`): strict JSON-schema outputs, vision (the agent looks at Instagram photos)
   - **DeepSeek**: JSON mode, text only
@@ -89,6 +89,13 @@ Measured in the committed run: agents said "yes" to a second date after 99% of s
 
 26 real people, found and verified by us (13 women, 13 men). Each has a personal LinkedIn and a public Instagram, and both links were checked live. See [`data/people.json`](data/people.json). All are public figures, used for illustration. This is a simulation, not a statement about anyone's real relationships, and any profile can be removed from its page.
 
+## The weird stuff
+
+- **Play matchmaker** (`/swipe`): a swipe deck of real pairs. Guess whether one agent put the other in its top 3, then see the agent's actual reasoning. Your score gets a title ("certified cupid 💘" … "chaos matchmaker 🔥").
+- **Be the Date Host** (on any date page): type a twist ("her ex walks in", "the bill is ₹40,000"). The host narrates it into the date, both agents react in character (separate calls, private profiles), and each gives its person a gut-check score change. Twists are saved, so later visitors see what others threw.
+- **Listen in**: dates play back as audio through OpenAI `gpt-4o-mini-tts`. Every agent has its own voice and the host narrates like a late-night documentary.
+- **The afterparty** (`/afterparty`): after the night, the agents gossip in a group chat. Each message comes from that agent, knowing only its own night. They also write a kind rejection text to their worst match, and draft future Instagram captions for the mutual #1 couples.
+
 ## Site features
 
 - **`/`**: pool of agents, stats, best dates, and the "add a person" form
@@ -96,6 +103,7 @@ Measured in the committed run: agents said "yes" to a second date after 99% of s
 - **`/p/[id]`**: profile page: the analysis, how the agent read them (every note and the raw scraped data), all their dates, and their full ranking
 - **`/dates`** and **`/dates/[id]`**: every date, with an animated replay of the transcript, how the agents planned it, and both private scorecards and debriefs
 - **`/rankings`**: mutual #1 picks, top 3 for everyone, and the full fit matrix
+- **`/swipe`**, **`/afterparty`**: see above
 - **`/how`**: this explanation, on the site
 
 ## Run it
@@ -110,6 +118,7 @@ npx tsx --env-file=.env scripts/seed.ts analyze   # scrape + read + profile
 npx tsx --env-file=.env scripts/seed.ts speed     # round 1, every pair
 npx tsx --env-file=.env scripts/seed.ts full      # round 2, top mutual matches
 npx tsx --env-file=.env scripts/seed.ts decide    # round 3, each agent's final ranking
+npx tsx --env-file=.env scripts/afterparty.ts     # the afterparty
 ```
 
 ## Layout
@@ -120,6 +129,8 @@ src/lib/analyze.ts    reading notes + profile synthesis
 src/lib/dating.ts     speed dates, full dates, Date Host, scorecards
 src/lib/ranking.ts    fit formula
 src/lib/decide.ts     round 3: the agent's final ranking
+src/lib/curveball.ts  visitor-thrown twists
+src/lib/afterparty.ts group chat, rejection texts, future captions
 src/lib/pipeline.ts   end-to-end for one person (used by the live site)
 src/lib/store.ts      seed JSON + live storage (Redis / files)
 src/app/api/...       SSE endpoints: /api/people (analyze), /api/people/[id]/dates (date)

@@ -1,25 +1,26 @@
 import Link from "next/link";
-import { SectionTitle } from "@/components/ui";
+import { Heading } from "@/components/bits";
+import { Button } from "@/components/ui/button";
 
 export const metadata = { title: "How it works — Proxy" };
 
 const Step = ({ n, title, children }: { n: string; title: string; children: React.ReactNode }) => (
-  <div className="grid gap-4 border-t border-line py-8 md:grid-cols-[180px_1fr]">
+  <div className="grid gap-4 border-t py-10 md:grid-cols-[180px_1fr]">
     <div>
-      <div className="font-display text-5xl text-rose">{n}</div>
-      <div className="font-display text-2xl">{title}</div>
+      <div className="font-display text-6xl text-sunset">{n}</div>
+      <div className="font-display text-3xl">{title}</div>
     </div>
-    <div className="space-y-3 text-[15px] leading-relaxed text-ink/85">{children}</div>
+    <div className="space-y-3 text-[15px] leading-relaxed text-muted-foreground [&_b]:text-foreground">{children}</div>
   </div>
 );
 
 export default function HowPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
-      <SectionTitle kicker="How it works" title="Two links in. An agent that dates for you out.">
+      <Heading kicker="How it works" title="Two links in. An agent that dates for you out.">
         Every person is represented by an agent. Each agent is only allowed two sources — the person&apos;s public LinkedIn and public
         Instagram — and dates every other agent on that person&apos;s behalf.
-      </SectionTitle>
+      </Heading>
 
       <Step n="01" title="Scrape">
         <p>
@@ -84,7 +85,7 @@ export default function HowPage() {
 
       <Step n="05" title="Rank">
         <p>For every person P and every candidate Q:</p>
-        <pre className="overflow-x-auto rounded-xl bg-ink p-4 text-sm text-paper">
+        <pre className="overflow-x-auto rounded-xl border bg-card p-4 font-mono text-sm">
 {`myView    = P's agent's score of Q   (full date 65% + speed date 35%)
 theirView = Q's agent's score of P   (same blend)
 fit       = 0.65 · myView + 0.35 · theirView  (+5 if both want a 2nd date)`}
@@ -112,10 +113,32 @@ fit       = 0.65 · myView + 0.35 · theirView  (+5 if both want a 2nd date)`}
         </ul>
       </Step>
 
-      <div className="border-t border-line pt-8">
-        <Link href="/join" className="rounded-xl bg-rose px-5 py-3 font-semibold text-white hover:bg-ink">
-          Try it with two links →
-        </Link>
+      <Step n="07" title="The weird stuff">
+        <ul className="list-disc space-y-1 pl-5">
+          <li>
+            <b>Play matchmaker</b> (<Link href="/swipe" className="text-primary">/swipe</Link>): a swipe deck of real pairs. Guess whether one
+            agent put the other in its top 3, then see the agent&apos;s actual reasoning.
+          </li>
+          <li>
+            <b>Be the Date Host</b>: on any date, type a twist. The host narrates it into the date, both agents react in character (each is a
+            separate call with its own private profile), then each gives its person a gut-check score change.
+          </li>
+          <li>
+            <b>Listen in</b>: dates play back as audio (OpenAI <code>gpt-4o-mini-tts</code>). Every agent has its own voice and the host
+            narrates.
+          </li>
+          <li>
+            <b>The afterparty</b> (<Link href="/afterparty" className="text-primary">/afterparty</Link>): after the night, the agents gossip in a
+            group chat (each message comes from that agent, knowing only its own night), write a kind rejection text to their worst match, and
+            draft future Instagram captions for the mutual #1 couples.
+          </li>
+        </ul>
+      </Step>
+
+      <div className="border-t pt-10">
+        <Button asChild size="lg" className="rounded-full bg-sunset text-white">
+          <Link href="/join">Try it with two links →</Link>
+        </Button>
       </div>
     </div>
   );

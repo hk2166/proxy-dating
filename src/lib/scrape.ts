@@ -1,14 +1,7 @@
 import type { InstagramProfile, LinkedInProfile, Sources } from "./types";
 import { parseInstagram, parseLinkedIn } from "./urls";
 
-// Scraping runs on Apify actors (headless-browser scrapers on residential
-// proxies). Instagram and LinkedIn both block plain server-side requests, so
-// this is the only reliable way to read public profiles.
-//
-//   Instagram  apify/instagram-profile-scraper      bio, counts, latest ~12 posts (captions, alt text, locations, images)
-//   LinkedIn   harvestapi/linkedin-profile-scraper  headline, about, experience, education, skills, causes… (no cookies)
-//              harvestapi/linkedin-profile-posts    recent posts
-//              apimaestro/linkedin-profile-detail   fallback if the primary LinkedIn actor is unavailable
+// Instagram and LinkedIn block server requests, so we go through Apify actors.
 
 const API = "https://api.apify.com/v2";
 
@@ -29,8 +22,7 @@ function auth() {
   return { authorization: `Bearer ${token}` };
 }
 
-/** Run an actor synchronously and return its dataset items. Retries when the
- *  account is at its concurrent-run limit (free Apify plans allow 5). */
+// free Apify plans allow 5 concurrent runs, so wait and retry when busy
 async function runActor<T = Obj>(actor: string, input: unknown, timeoutSec = 150): Promise<T[]> {
   const t = Math.min(timeoutSec, 290); // run-sync endpoints cap at 300 s
   for (let attempt = 0; ; attempt++) {
@@ -51,7 +43,7 @@ async function runActor<T = Obj>(actor: string, input: unknown, timeoutSec = 150
   }
 }
 
-/** Start an actor run (or reuse an existing run id), wait for it with no 300 s cap, return dataset items. Used for batches. */
+// batches can take longer than the 300s sync limit, so start a run and poll it
 async function runActorBatch<T = Obj>(actor: string, input: unknown, opts: { reuseRunId?: string; maxWaitSec?: number } = {}): Promise<T[]> {
   let runId = opts.reuseRunId;
   if (!runId) {
@@ -87,7 +79,7 @@ async function runActorBatch<T = Obj>(actor: string, input: unknown, opts: { reu
   return (await items.json()) as T[];
 }
 
-// ---- helpers for defensive field mapping (actor outputs vary slightly) ----
+// actor outputs vary a bit, so read fields defensively
 const str = (v: unknown): string => (typeof v === "string" ? v : v == null ? "" : typeof v === "number" ? String(v) : "");
 const num = (v: unknown): number | undefined => (typeof v === "number" ? v : typeof v === "string" && v.trim() && !isNaN(+v) ? +v : undefined);
 const arr = (v: unknown): Obj[] => (Array.isArray(v) ? (v as Obj[]) : []);
@@ -108,7 +100,6 @@ function dateRange(o: Obj): string {
   return str(pick(o, "duration", "period"));
 }
 
-// ---------------- Instagram ----------------
 export function normalizeInstagram(item: Obj | undefined, handle: string): InstagramProfile {
   if (!item || item.error || item.errorDescription) {
     throw new Error(`Instagram profile @${handle} not found (${str(item?.errorDescription || item?.error) || "no data"})`);
@@ -156,7 +147,6 @@ export async function scrapeInstagram(input: string): Promise<InstagramProfile> 
   return normalizeInstagram(item, parsed.handle);
 }
 
-// ---------------- LinkedIn ----------------
 type Post = { text: string; date?: string };
 
 export function normalizeLinkedIn(item: Obj, posts: Post[], url: string): LinkedInProfile {
@@ -212,7 +202,7 @@ function linkedInItem(raw: Obj | undefined): Obj | null {
   return pick(item, "firstName", "fullName", "headline") ? item : null;
 }
 
-/** apimaestro returns snake_case; map it onto the harvestapi-style keys normalizeLinkedIn reads. */
+// apimaestro is snake_case; map it to the harvestapi shape
 function fromFallback(raw: Obj | undefined): Obj | null {
   const data = ((raw?.data as Obj) || raw) as Obj | undefined;
   const basic = ((data?.basic_info as Obj) || data) as Obj | undefined;
@@ -283,13 +273,12 @@ export async function scrapeLinkedIn(input: string): Promise<LinkedInProfile> {
   return normalizeLinkedIn(item, posts, parsed.url);
 }
 
-/** One person, three actor runs in parallel (used by the live site). */
 export async function scrapeBoth(linkedinUrl: string, instagramUrl: string): Promise<Sources> {
   const [linkedin, instagram] = await Promise.all([scrapeLinkedIn(linkedinUrl), scrapeInstagram(instagramUrl)]);
   return { linkedin, instagram, scrapedAt: new Date().toISOString() };
 }
 
-/** Many people, one run per actor (used to build the seed example). Keyed by Instagram handle. */
+// seed script: one run per actor for everyone, keyed by instagram handle
 export async function scrapeBatch(entries: { linkedin: string; instagram: string }[]): Promise<Map<string, Sources | Error>> {
   const people = entries.map((e) => ({ li: parseLinkedIn(e.linkedin)!, ig: parseInstagram(e.instagram)! }));
   const slugKey = (s: string) => decodeURIComponent(s).toLowerCase().replace(/\/$/, "");

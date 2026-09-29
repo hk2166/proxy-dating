@@ -19,14 +19,13 @@ export const MODELS = {
   date: process.env.DATE_MODEL || DEFAULT_MODEL,
 };
 
-/** Whether the active provider can look at images (Instagram photos). */
 export const SUPPORTS_VISION = PROVIDER === "openai";
 
 type Effort = "low" | "medium" | "high";
 export type ContentBlock = { type: "text"; text: string } | { type: "image"; mediaType: string; data: string };
 export type Content = string | ContentBlock[];
 
-// ---- concurrency limiter (shared by every call in this process) ----
+// cap parallel calls so hundreds of dates don't trip rate limits
 const MAX_CONCURRENCY = Number(process.env.LLM_CONCURRENCY || 16);
 let active = 0;
 const queue: (() => void)[] = [];
@@ -50,7 +49,6 @@ const isReasoning = (model: string) => /^(gpt-5|gpt-6|o\d)/.test(model) && !/cha
 
 type Part = { type: "text"; text: string } | { type: "image_url"; image_url: { url: string } };
 
-/** Our content blocks → chat-completions content (images become data URLs; dropped without vision). */
 function toParts(user: Content): string | Part[] {
   if (typeof user === "string") return user;
   const parts: Part[] = [];
@@ -108,7 +106,6 @@ async function call(payload: Record<string, unknown>): Promise<string> {
   }
 }
 
-/** Free-text call (used for each conversational turn on a date). */
 export async function chat(opts: { system: string; user: Content; model?: string; effort?: Effort; maxTokens?: number }): Promise<string> {
   return withSlot(() =>
     call({
@@ -121,7 +118,6 @@ export async function chat(opts: { system: string; user: Content; model?: string
   );
 }
 
-/** Structured call: output is validated against a zod schema. */
 export async function structured<S extends z.ZodType>(opts: {
   system: string;
   user: Content;

@@ -4,13 +4,8 @@ import { rankFor } from "./ranking";
 import type { DateRecord, Decision, Person, Scorecard } from "./types";
 import { firstName } from "./names";
 
-// ---------------------------------------------------------------------------
-// Round 3 — the agent decides.
-// After every date, each agent reviews its top candidates side by side — its
-// own private scorecards AND what the other agent concluded about its person —
-// and commits to a final ranked list with a reason for each, plus a note to its
-// person naming its pick. The formula shortlists; the agent makes the call.
-// ---------------------------------------------------------------------------
+// After all the dates, the agent looks at its top 8 side by side and makes the final call.
+// The formula only shortlists.
 
 const SHORTLIST = 8;
 

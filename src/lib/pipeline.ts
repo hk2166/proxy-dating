@@ -28,7 +28,6 @@ export async function toDataUrl(url?: string): Promise<string | undefined> {
   }
 }
 
-/** Scrape both sources, let the agent read them, then write the profile. */
 export async function analyzePerson(
   linkedinUrl: string,
   instagramUrl: string,
@@ -105,7 +104,6 @@ export async function createLivePerson(linkedinUrl: string, instagramUrl: string
 
 const MAX_POOL = Number(process.env.MAX_SPEED_DATES || 30);
 
-/** Round 1 for one person: speed-date everyone else in the pool. */
 export async function runSpeedRound(personId: string, emit: Emit) {
   const people = (await listPeople()).filter((p) => p.status === "ready" && p.analysis);
   const me = people.find((p) => p.id === personId);
@@ -124,7 +122,6 @@ export async function runSpeedRound(personId: string, emit: Emit) {
   return results.filter((r): r is PromiseFulfilledResult<DateRecord> => r.status === "fulfilled").map((r) => r.value);
 }
 
-/** Round 2 for one person: full dates with their top mutual matches. */
 export async function runFullRound(personId: string, k: number, emit: Emit) {
   const people = await listPeople();
   const byId = new Map(people.map((p) => [p.id, p]));
@@ -144,7 +141,6 @@ export async function runFullRound(personId: string, k: number, emit: Emit) {
   return done;
 }
 
-/** Round 3 for one person: its agent reviews every date and commits to a final ranking. */
 export async function decideFor(personId: string) {
   const [people, dates] = await Promise.all([listPeople(), listDates()]);
   const me = people.find((p) => p.id === personId);

@@ -1,8 +1,5 @@
-/**
- * Server-Sent Events response. The Response is returned immediately and `work`
- * runs in the background, writing events as they happen, so the platform
- * streams them to the browser instead of buffering until the work is done.
- */
+// Return the response right away and write events from the background,
+// otherwise Vercel buffers the whole thing.
 export function sse(work: (send: (data: unknown) => void) => Promise<void>) {
   const { readable, writable } = new TransformStream<Uint8Array, Uint8Array>();
   const writer = writable.getWriter();
