@@ -3,12 +3,19 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { Check, Loader2, Star } from "lucide-react";
+import { SourceTag } from "@/components/bits";
 import { Bubble, MiniAvatar, ScoreCard, Typing, type Mini } from "@/components/DateView";
 import { JoinForm } from "@/components/JoinForm";
 import { ReadingLog } from "@/components/Profile";
-import { SourceBadge, Tag } from "@/components/ui";
-import type { DateMessage, Person, RankEntry, ReadingNote, Scorecard, Sources } from "@/lib/types";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { firstName } from "@/lib/names";
+import { cn } from "@/lib/utils";
+import type { DateMessage, Person, RankEntry, ReadingNote, Scorecard, Sources } from "@/lib/types";
 
 type Phase = "idle" | "analyzing" | "profile" | "speed" | "full" | "done" | "error";
 type StepKey = "scrape" | "read-linkedin" | "read-instagram" | "synthesize";
@@ -22,22 +29,25 @@ type LiveDate = {
   scoreA?: Scorecard;
   scoreB?: Scorecard;
   done?: boolean;
-  error?: string;
 };
 
-const STEP_LABEL: Record<StepKey, string> = {
-  scrape: "Scraping the public LinkedIn + Instagram",
-  "read-linkedin": "Agent reads LinkedIn",
-  "read-instagram": "Agent reads Instagram",
-  synthesize: "Agent writes the profile: needs, hobbies, interests…",
+const STEPS: Record<StepKey, string> = {
+  scrape: "Scraping LinkedIn + Instagram",
+  "read-linkedin": "Reading LinkedIn",
+  "read-instagram": "Reading Instagram",
+  synthesize: "Writing the profile",
 };
+const PHASES = [
+  ["analyzing", "Read"],
+  ["profile", "Profile"],
+  ["speed", "Speed dates"],
+  ["full", "Full dates"],
+  ["done", "Ranking"],
+] as const;
 
 async function stream(url: string, body: unknown, onEvent: (e: Record<string, unknown>) => void) {
   const res = await fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
-  if (!res.ok || !res.body) {
-    const j = await res.json().catch(() => ({}));
-    throw new Error((j as { error?: string }).error || `Request failed (${res.status})`);
-  }
+  if (!res.ok || !res.body) throw new Error(((await res.json().catch(() => ({}))) as { error?: string }).error || `Request failed (${res.status})`);
   const reader = res.body.getReader();
   const dec = new TextDecoder();
   let buf = "";
@@ -69,7 +79,7 @@ export function JoinFlow() {
   const [existing, setExisting] = useState(false);
   const [pool, setPool] = useState<Record<string, Mini>>({});
   const [dates, setDates] = useState<Record<string, LiveDate>>({});
-  const [focus, setFocus] = useState<string>("");
+  const [focus, setFocus] = useState("");
   const [ranking, setRanking] = useState<RankEntry[]>([]);
   const [note, setNote] = useState("");
   const started = useRef(false);
@@ -84,19 +94,14 @@ export function JoinFlow() {
     if (type === "error") throw new Error(e.error as string);
     setDates((prev) => {
       const next = { ...prev };
+      const id = e.dateId as string;
       if (type === "date:start") {
         const d = e.date as LiveDate;
         next[d.id] = { ...d, messages: [] };
-      } else if (type === "date:message") {
-        const id = e.dateId as string;
-        if (next[id]) next[id] = { ...next[id], messages: [...next[id].messages, e.message as DateMessage] };
-      } else if (type === "date:venue") {
-        const id = e.dateId as string;
-        if (next[id]) next[id] = { ...next[id], venue: e.venue as string };
-      } else if (type === "date:score") {
-        const id = e.dateId as string;
-        if (next[id]) next[id] = { ...next[id], [e.side === "a" ? "scoreA" : "scoreB"]: e.score as Scorecard };
-      } else if (type === "date:end") {
+      } else if (type === "date:message" && next[id]) next[id] = { ...next[id], messages: [...next[id].messages, e.message as DateMessage] };
+      else if (type === "date:venue" && next[id]) next[id] = { ...next[id], venue: e.venue as string };
+      else if (type === "date:score" && next[id]) next[id] = { ...next[id], [e.side === "a" ? "scoreA" : "scoreB"]: e.score as Scorecard };
+      else if (type === "date:end") {
         const d = e.date as LiveDate;
         if (next[d.id]) next[d.id] = { ...next[d.id], done: true };
       }
@@ -140,7 +145,7 @@ export function JoinFlow() {
       if (!p) throw new Error("Analysis did not finish");
       const done = p as Person;
       setPerson(done);
-      if (done.reading && !notes.length) setNotes(done.reading);
+      if (done.reading) setNotes(done.reading);
       if (done.sources) setSources(done.sources);
       setExisting(wasExisting);
       setPhase("profile");
@@ -180,254 +185,229 @@ export function JoinFlow() {
 
   const me = person ? pool[person.id] || { id: person.id, name: person.name, avatar: person.avatar } : null;
   const all = Object.values(dates);
-  const speed = all.filter((d) => d.kind === "speed");
+  const speed = all.filter((d) => d.kind === "speed").sort((x, y) => x.id.localeCompare(y.id));
   const full = all.filter((d) => d.kind === "full");
   const mini = (id: string): Mini => pool[id] || { id, name: id };
+  const first = person ? firstName(person.name) : "";
 
   if (phase === "idle")
     return (
-      <div className="mx-auto max-w-3xl px-4 py-12">
-        <h1 className="font-display text-5xl">Add a real person</h1>
-        <p className="mb-6 mt-2 text-muted">
-          Paste their LinkedIn and their public Instagram. We scrape both, their agent reads them and writes the profile, then it
-          speed-dates every agent in the pool and goes on full dates with the best mutual matches — live, in front of you.
+      <div className="mx-auto max-w-3xl px-4 py-16">
+        <h1 className="font-display text-6xl leading-none">Add a real person</h1>
+        <p className="mb-8 mt-4 text-muted-foreground">
+          Paste their LinkedIn and public Instagram. We scrape both, their agent reads them and writes the profile, then it speed-dates every agent
+          in the pool and goes on full dates with the best matches, live, while you watch.
         </p>
         <JoinForm />
       </div>
     );
 
+  const cur = PHASES.findIndex(([k]) => k === (phase === "error" ? "analyzing" : phase));
+
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
-      {/* Stage header */}
-      <div className="mb-6 flex flex-wrap items-center gap-2 text-sm">
-        {(
-          [
-            ["analyzing", "1 · Read"],
-            ["profile", "2 · Profile"],
-            ["speed", "3 · Speed dates"],
-            ["full", "4 · Full dates"],
-            ["done", "5 · Ranking"],
-          ] as const
-        ).map(([k, label], i, arr) => {
-          const order = ["analyzing", "profile", "speed", "full", "done"];
-          const cur = order.indexOf(phase === "error" ? "analyzing" : phase);
-          const idx = order.indexOf(k);
-          return (
-            <span key={k} className="flex items-center gap-2">
-              <span className={`rounded-full px-3 py-1 ${idx < cur ? "bg-ink text-paper" : idx === cur ? "bg-rose text-white" : "border border-line text-muted"}`}>{label}</span>
-              {i < arr.length - 1 && <span className="text-line">—</span>}
-            </span>
-          );
-        })}
+    <div className="mx-auto max-w-6xl px-4 py-10">
+      <div className="mb-8 flex flex-wrap items-center gap-2 text-sm">
+        {PHASES.map(([k, label], i) => (
+          <Badge
+            key={k}
+            variant={i === cur ? "default" : "outline"}
+            className={cn("rounded-full px-3 py-1", i < cur && "bg-secondary text-foreground", i === cur && "bg-sunset text-white")}
+          >
+            {i < cur && <Check />} {i + 1}. {label}
+          </Badge>
+        ))}
       </div>
 
       {phase === "error" && (
-        <div className="mb-6 rounded-2xl border border-rose/40 bg-rose-soft p-4 text-sm">
-          <div className="font-semibold text-rose">Something went wrong</div>
-          <div className="mt-1">{error}</div>
-          <Link href="/join" className="mt-2 inline-block underline">
-            Try other links
-          </Link>
-        </div>
+        <Alert variant="destructive" className="mb-6">
+          <AlertTitle>Something broke</AlertTitle>
+          <AlertDescription>
+            {error}{" "}
+            <Link href="/join" className="underline">
+              Try other links
+            </Link>
+          </AlertDescription>
+        </Alert>
       )}
 
-      {/* 1. Reading */}
       {(phase === "analyzing" || (!existing && notes.length > 0)) && (
-        <section className="mb-10">
-          <h2 className="mb-3 font-display text-3xl">The agent is reading {person?.name || sources?.linkedin.fullName || "them"}</h2>
-          <div className="mb-4 grid gap-2 sm:grid-cols-2">
-            {(Object.keys(STEP_LABEL) as StepKey[]).map((k) => {
+        <section className="mb-12 space-y-4">
+          <h2 className="font-display text-4xl">The agent is reading {person?.name || sources?.linkedin.fullName || "them"}</h2>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {(Object.keys(STEPS) as StepKey[]).map((k) => {
               const s = steps[k];
               return (
-                <div key={k} className={`flex items-center gap-3 rounded-xl border p-3 text-sm ${s?.status === "done" ? "border-green/30 bg-green/5" : s ? "border-rose/30 bg-rose-soft/40" : "border-line bg-card text-muted"}`}>
-                  <span className="w-5 text-center">{s?.status === "done" ? "✓" : s ? <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-rose border-t-transparent" /> : "○"}</span>
+                <div
+                  key={k}
+                  className={cn(
+                    "flex items-center gap-3 rounded-2xl border p-3 text-sm",
+                    s?.status === "done" ? "border-mint/30 bg-mint/5" : s ? "border-primary/30 bg-primary/5" : "text-muted-foreground",
+                  )}
+                >
+                  {s?.status === "done" ? <Check className="size-4 text-mint" /> : s ? <Loader2 className="size-4 animate-spin text-primary" /> : <span className="size-4 rounded-full border" />}
                   <div className="min-w-0">
-                    <div className="font-medium">{STEP_LABEL[k]}</div>
-                    {s?.detail && <div className="truncate text-xs text-muted">{s.detail}</div>}
+                    <div className="font-medium">{STEPS[k]}</div>
+                    {s?.detail && <div className="truncate text-xs text-muted-foreground">{s.detail}</div>}
                   </div>
                 </div>
               );
             })}
           </div>
           {sources && (
-            <div className="mb-4 grid gap-3 text-sm sm:grid-cols-2">
-              <div className="animate-pop rounded-xl border border-line bg-card p-3">
-                <div className="flex items-center gap-2 font-semibold">
-                  <SourceBadge source="linkedin" /> {sources.linkedin.fullName}
-                </div>
-                <div className="text-muted">{sources.linkedin.headline}</div>
-                <div className="mt-1 text-xs text-muted">
-                  {sources.linkedin.experience.slice(0, 3).map((e) => `${e.title} @ ${e.company}`).join(" · ")}
-                </div>
-              </div>
-              <div className="animate-pop rounded-xl border border-line bg-card p-3">
-                <div className="flex items-center gap-2 font-semibold">
-                  <SourceBadge source="instagram" /> @{sources.instagram.username}
-                </div>
-                <div className="line-clamp-2 text-muted">{sources.instagram.biography}</div>
-                <div className="mt-1 text-xs text-muted">{sources.instagram.posts.length} recent posts read, including photos</div>
-              </div>
+            <div className="grid gap-3 text-sm sm:grid-cols-2">
+              <Card className="animate-pop">
+                <CardContent className="space-y-1">
+                  <div className="flex items-center gap-2 font-medium">
+                    <SourceTag source="linkedin" /> {sources.linkedin.fullName}
+                  </div>
+                  <div className="text-muted-foreground">{sources.linkedin.headline}</div>
+                </CardContent>
+              </Card>
+              <Card className="animate-pop">
+                <CardContent className="space-y-1">
+                  <div className="flex items-center gap-2 font-medium">
+                    <SourceTag source="instagram" /> @{sources.instagram.username}
+                  </div>
+                  <div className="line-clamp-2 text-muted-foreground">{sources.instagram.biography}</div>
+                </CardContent>
+              </Card>
             </div>
           )}
           {notes.length > 0 && <ReadingLog notes={notes} animate />}
         </section>
       )}
 
-      {/* 2. Profile */}
       {person?.analysis && (
-        <section className="mb-10 animate-pop rounded-3xl border border-line bg-card p-6">
-          <div className="flex flex-wrap items-center gap-4">
-            {me && <MiniAvatar p={me} size={72} />}
-            <div className="min-w-0 flex-1">
-              <div className="text-xs font-semibold uppercase tracking-[0.18em] text-rose">Profile written by the agent</div>
-              <h2 className="font-display text-4xl">{person.name}</h2>
+        <Card className="animate-pop mb-12 overflow-hidden border-primary/30 py-0">
+          <CardContent className="grid gap-6 p-0 md:grid-cols-[220px_1fr]">
+            {me?.avatar && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={me.avatar} alt={person.name} className="h-full max-h-80 w-full object-cover" />
+            )}
+            <div className="space-y-4 p-6">
+              <div className="text-xs uppercase tracking-widest text-primary">Profile written by the agent</div>
+              <h2 className="font-display text-5xl leading-none">{person.name}</h2>
               <p>{person.analysis.headline}</p>
-            </div>
-            <Link href={`/p/${person.id}`} className="rounded-xl border border-ink px-4 py-2 text-sm font-medium hover:bg-ink hover:text-paper">
-              Full profile page →
-            </Link>
-          </div>
-          <div className="mt-5 grid gap-5 md:grid-cols-3">
-            <div>
-              <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Needs</div>
-              <ul className="space-y-1.5 text-sm">
-                {person.analysis.needs.map((n) => (
-                  <li key={n.need}>
-                    <span className="text-rose">♥</span> {n.need}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Hobbies</div>
-              <div className="flex flex-wrap gap-1.5">
-                {person.analysis.hobbies.map((h) => (
-                  <Tag key={h.name} tone="rose">
-                    {h.name}
-                  </Tag>
-                ))}
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div>
+                  <div className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">Needs</div>
+                  <ul className="space-y-1 text-sm">
+                    {person.analysis.needs.map((n) => (
+                      <li key={n.need}>♥ {n.need}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="space-y-2">
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground">Hobbies</div>
+                  <div className="flex flex-wrap gap-1">
+                    {person.analysis.hobbies.map((h) => (
+                      <Badge key={h.name} className="bg-primary/15 font-normal text-primary">
+                        {h.name}
+                      </Badge>
+                    ))}
+                  </div>
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground">Interests</div>
+                  <div className="flex flex-wrap gap-1">
+                    {person.analysis.interests.map((h) => (
+                      <Badge key={h.name} className="bg-violet/15 font-normal text-violet">
+                        {h.name}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <div className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">Ideal partner</div>
+                  <p className="text-sm text-muted-foreground">{person.analysis.idealPartner}</p>
+                </div>
               </div>
-              <div className="mb-2 mt-4 text-xs font-semibold uppercase tracking-wider text-muted">Interests</div>
-              <div className="flex flex-wrap gap-1.5">
-                {person.analysis.interests.map((h) => (
-                  <Tag key={h.name} tone="plum">
-                    {h.name}
-                  </Tag>
-                ))}
+              <div className="flex flex-wrap items-center gap-3 border-t pt-4">
+                <Button asChild variant="secondary" className="rounded-full">
+                  <Link href={`/p/${person.id}`}>Full profile page →</Link>
+                </Button>
+                {phase === "profile" &&
+                  (existing && person.origin === "seed" ? (
+                    <>
+                      <span className="text-sm text-muted-foreground">{first} is in the finished demo. Their agent already dated everyone.</span>
+                      <Button asChild className="rounded-full bg-sunset text-white">
+                        <Link href={`/p/${person.id}#ranking`}>See their ranking</Link>
+                      </Button>
+                    </>
+                  ) : existing ? (
+                    <Button onClick={() => goDating(person.id)} className="rounded-full bg-sunset text-white">
+                      Send the agent out again
+                    </Button>
+                  ) : (
+                    <span className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Loader2 className="size-4 animate-spin" /> Sending {first}&apos;s agent to speed dating…
+                    </span>
+                  ))}
               </div>
             </div>
-            <div>
-              <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Values</div>
-              <div className="flex flex-wrap gap-1.5">
-                {person.analysis.values.map((h) => (
-                  <Tag key={h.name} tone="green">
-                    {h.name}
-                  </Tag>
-                ))}
-              </div>
-              <div className="mb-2 mt-4 text-xs font-semibold uppercase tracking-wider text-muted">Ideal partner</div>
-              <p className="text-sm">{person.analysis.idealPartner}</p>
-            </div>
-          </div>
-          {phase === "profile" && (
-            <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-line pt-4">
-              {existing && person.origin === "seed" ? (
-                <>
-                  <span className="text-sm text-muted">
-                    {firstName(person.name)} is part of the finished demo: their agent has already dated everyone.
-                  </span>
-                  <Link href={`/p/${person.id}#ranking`} className="rounded-xl bg-rose px-4 py-2 text-sm font-semibold text-white hover:bg-ink">
-                    See their ranking →
-                  </Link>
-                  <Link href={`/dates?kind=full&p=${person.id}`} className="text-sm underline">
-                    Watch their dates
-                  </Link>
-                </>
-              ) : existing ? (
-                <>
-                  <span className="text-sm text-muted">This person already has an agent.</span>
-                  <button onClick={() => goDating(person.id)} className="rounded-xl bg-rose px-4 py-2 text-sm font-semibold text-white hover:bg-ink">
-                    Send the agent dating live →
-                  </button>
-                  <Link href={`/p/${person.id}#ranking`} className="text-sm underline">
-                    or see the existing ranking
-                  </Link>
-                </>
-              ) : (
-                <span className="text-sm text-muted">Sending {firstName(person.name)}&apos;s agent to speed dating…</span>
-              )}
-            </div>
-          )}
-        </section>
+          </CardContent>
+        </Card>
       )}
 
-      {/* 3. Speed dates */}
       {speed.length > 0 && me && (
-        <section className="mb-10">
+        <section className="mb-12">
           <div className="mb-3 flex flex-wrap items-end gap-3">
-            <h2 className="font-display text-3xl">Round 1 · {firstName(person?.name || "")}&apos;s agent speed-dates everyone</h2>
-            <span className="text-sm text-muted">
-              {speed.filter((d) => d.done).length}/{speed.length} finished
+            <h2 className="font-display text-4xl">Round 1 · {first}&apos;s agent speed-dates everyone</h2>
+            <span className="text-sm text-muted-foreground">
+              {speed.filter((d) => d.done).length}/{speed.length}
             </span>
           </div>
+          <Progress value={(speed.filter((d) => d.done).length / speed.length) * 100} className="mb-4 h-1" />
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {speed
-              .slice()
-              .sort((x, y) => x.id.localeCompare(y.id))
-              .map((d) => {
-                const other = mini(d.a === person!.id ? d.b : d.a);
-                const mine = d.a === person!.id ? d.scoreA : d.scoreB;
-                const theirs = d.a === person!.id ? d.scoreB : d.scoreA;
-                const nextSpeaker = d.messages.length % 2 === 0 ? d.messages[0]?.speaker ?? "a" : d.messages[0]?.speaker === "a" ? "b" : "a";
-                return (
-                  <div key={d.id} className="flex h-72 flex-col rounded-2xl border border-line bg-card p-3">
+            {speed.map((d) => {
+              const other = mini(d.a === person!.id ? d.b : d.a);
+              const mine = d.a === person!.id ? d.scoreA : d.scoreB;
+              const theirs = d.a === person!.id ? d.scoreB : d.scoreA;
+              const opener = d.messages[0]?.speaker === "b" ? "b" : "a";
+              const nextSpeaker: "a" | "b" = d.messages.length % 2 === 0 ? opener : opener === "a" ? "b" : "a";
+              return (
+                <Card key={d.id} className="h-72 gap-2 py-3">
+                  <CardContent className="flex h-full flex-col px-3">
                     <div className="mb-2 flex items-center gap-2 text-sm">
-                      <MiniAvatar p={other} size={26} />
-                      <span className="truncate font-semibold">{other.name}</span>
+                      <MiniAvatar p={other} className="size-6" />
+                      <span className="truncate font-medium">{other.name}</span>
                       {d.done && mine && theirs ? (
-                        <span className="ml-auto flex items-center gap-1 text-xs">
-                          <span className="rounded-full bg-rose-soft px-2 py-0.5 font-semibold text-rose">{mine.overall}</span>
-                          <span className="rounded-full bg-plum-soft px-2 py-0.5 font-semibold text-plum">{theirs.overall}</span>
-                          {mine.secondDate && theirs.secondDate && <span className="text-rose">♥</span>}
+                        <span className="ml-auto flex gap-1 text-xs">
+                          <span className="rounded-full bg-primary/20 px-2 py-0.5 font-semibold text-primary">{mine.overall}</span>
+                          <span className="rounded-full bg-violet/20 px-2 py-0.5 font-semibold text-violet">{theirs.overall}</span>
                         </span>
                       ) : (
-                        <span className="ml-auto text-xs text-muted">{d.messages.length < 6 ? "talking…" : "scoring…"}</span>
+                        <span className="ml-auto text-xs text-muted-foreground">{d.messages.length < 6 ? "talking…" : "scoring…"}</span>
                       )}
                     </div>
-                    <div className="flex-1 space-y-1.5 overflow-y-auto pr-1 scrollbar-thin">
+                    <div className="flex-1 space-y-1.5 overflow-y-auto pr-1">
                       {d.messages.map((m, i) => (
                         <Bubble key={i} m={m} a={mini(d.a)} b={mini(d.b)} compact />
                       ))}
                       {!d.done && d.messages.length < 6 && (
-                        <div className="scale-75 origin-left">
-                          <Typing who={mini(nextSpeaker === "a" ? d.a : d.b)} side={nextSpeaker as "a" | "b"} />
+                        <div className="origin-left scale-75">
+                          <Typing who={mini(nextSpeaker === "a" ? d.a : d.b)} side={nextSpeaker} />
                         </div>
                       )}
                     </div>
-                    {d.done && mine && <div className="mt-2 line-clamp-2 border-t border-line pt-2 text-xs italic text-ink/75">“{mine.verdict}”</div>}
-                  </div>
-                );
-              })}
+                    {d.done && mine && <div className="mt-2 line-clamp-2 border-t pt-2 text-xs italic text-muted-foreground">“{mine.verdict}”</div>}
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </section>
       )}
 
-      {/* 4. Full dates */}
       {full.length > 0 && me && (
-        <section className="mb-10">
-          <h2 className="mb-3 font-display text-3xl">Round 2 · Full dates with the top mutual matches</h2>
-          <div className="mb-3 flex flex-wrap gap-2">
+        <section className="mb-12">
+          <h2 className="mb-3 font-display text-4xl">Round 2 · Full dates with the best matches</h2>
+          <div className="mb-4 flex flex-wrap gap-2">
             {full.map((d) => {
               const other = mini(d.a === person!.id ? d.b : d.a);
               return (
-                <button
-                  key={d.id}
-                  onClick={() => setFocus(d.id)}
-                  className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${focus === d.id ? "border-ink bg-ink text-paper" : "border-line bg-card"}`}
-                >
-                  <MiniAvatar p={other} size={22} /> {other.name}
-                  {!d.done && <span className="h-2 w-2 animate-pulse rounded-full bg-rose" />}
-                </button>
+                <Button key={d.id} variant={focus === d.id ? "default" : "secondary"} size="sm" className="rounded-full" onClick={() => setFocus(d.id)}>
+                  <MiniAvatar p={other} className="size-5" /> {other.name}
+                  {!d.done && <span className="size-2 animate-pulse rounded-full bg-primary" />}
+                </Button>
               );
             })}
           </div>
@@ -439,48 +419,47 @@ export function JoinFlow() {
         </section>
       )}
 
-      {/* 5. Ranking */}
       {phase === "done" && person && (
-        <section className="mb-10 animate-pop rounded-3xl border border-rose/30 bg-card p-6">
-          <h2 className="font-display text-4xl">Who fits {firstName(person.name)} best</h2>
-          {note && (
-            <div className="mt-3 rounded-xl bg-rose-soft/70 p-4">
-              <div className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-rose">The agent&apos;s final call</div>
-              <p className="italic">“{note}”</p>
+        <Card className="animate-pop border-primary/30">
+          <CardContent className="space-y-4">
+            <h2 className="font-display text-5xl">Who fits {first} best</h2>
+            {note && (
+              <div className="rounded-2xl bg-primary/10 p-4">
+                <div className="mb-1 flex items-center gap-1.5 text-xs uppercase tracking-widest text-primary">
+                  <Star className="size-3.5 fill-primary" /> The agent&apos;s final call
+                </div>
+                <p className="italic">“{note}”</p>
+              </div>
+            )}
+            <ol className="divide-y">
+              {ranking.slice(0, 10).map((r, i) => {
+                const q = mini(r.personId);
+                return (
+                  <li key={r.personId} className="flex items-center gap-3 py-2.5">
+                    <span className={cn("w-7 text-center font-display text-3xl", i < 3 ? "text-primary" : "text-muted-foreground")}>{i + 1}</span>
+                    <MiniAvatar p={q} className="size-9" />
+                    <div className="min-w-0 flex-1">
+                      <Link href={`/p/${q.id}`} className="font-medium hover:text-primary">
+                        {q.name}
+                      </Link>
+                      <div className="truncate text-xs text-muted-foreground">“{r.reason}”</div>
+                    </div>
+                    {r.agentRank === 1 && <Star className="size-4 fill-primary text-primary" />}
+                    <span className="rounded-full bg-primary/20 px-2.5 py-0.5 text-sm font-semibold tabular-nums text-primary">{r.fit}</span>
+                  </li>
+                );
+              })}
+            </ol>
+            <div className="flex gap-2">
+              <Button asChild className="rounded-full bg-sunset text-white">
+                <Link href={`/p/${person.id}`}>Open {first}&apos;s profile →</Link>
+              </Button>
+              <Button asChild variant="secondary" className="rounded-full">
+                <Link href="/rankings">All rankings</Link>
+              </Button>
             </div>
-          )}
-          <p className="mt-3 text-sm text-muted">
-            The agent reviewed every date and ranked its shortlist itself (★). Fit score = 65% {firstName(person.name)}&apos;s agent + 35% the
-            other agent, +5 if both want a second date after a full date.
-          </p>
-          <ol className="mt-4 divide-y divide-line">
-            {ranking.slice(0, 10).map((r, i) => {
-              const q = mini(r.personId);
-              return (
-                <li key={r.personId} className="flex items-center gap-3 py-2.5">
-                  <span className={`w-7 text-center font-display text-2xl ${i < 3 ? "text-rose" : "text-muted"}`}>{i + 1}</span>
-                  <MiniAvatar p={q} size={36} />
-                  <div className="min-w-0 flex-1">
-                    <Link href={`/p/${q.id}`} className="font-semibold hover:text-rose">
-                      {q.name}
-                    </Link>
-                    <div className="truncate text-xs text-muted">“{r.reason}”</div>
-                  </div>
-                  {r.agentRank === 1 && <span className="text-rose" title="The agent's own pick">★</span>}
-                  <span className="rounded-full bg-rose-soft px-2.5 py-0.5 font-semibold tabular-nums text-rose">{r.fit}</span>
-                </li>
-              );
-            })}
-          </ol>
-          <div className="mt-4 flex gap-3">
-            <Link href={`/p/${person.id}`} className="rounded-xl bg-ink px-4 py-2 text-sm font-medium text-paper hover:bg-rose">
-              Open {firstName(person.name)}&apos;s profile page →
-            </Link>
-            <Link href="/rankings" className="rounded-xl border border-ink px-4 py-2 text-sm font-medium hover:bg-ink hover:text-paper">
-              All rankings
-            </Link>
-          </div>
-        </section>
+          </CardContent>
+        </Card>
       )}
     </div>
   );
@@ -494,26 +473,28 @@ function LiveFullDate({ d, a, b }: { d: LiveDate; a: Mini; b: Mini }) {
   const last = d.messages[d.messages.length - 1];
   const nextSpeaker: "a" | "b" = last?.speaker === "a" ? "b" : "a";
   return (
-    <div className="rounded-3xl border border-line bg-card p-4 sm:p-6">
-      <div className="mb-3 text-center">
-        <div className="text-xs uppercase tracking-widest text-muted">
-          {a.name} × {b.name}
+    <Card>
+      <CardContent className="space-y-4">
+        <div className="text-center">
+          <div className="text-xs uppercase tracking-widest text-muted-foreground">
+            {a.name} × {b.name}
+          </div>
+          <div className="font-display text-4xl">{d.venue || "Planning the date…"}</div>
         </div>
-        <div className="font-display text-3xl">{d.venue || "Planning the date…"}</div>
-      </div>
-      <div className="max-h-[60vh] space-y-3 overflow-y-auto pr-1 scrollbar-thin">
-        {d.messages.map((m, i) => (
-          <Bubble key={i} m={m} a={a} b={b} />
-        ))}
-        {!d.done && d.venue && d.messages.length < 15 && <Typing who={nextSpeaker === "a" ? a : b} side={nextSpeaker} />}
-        <div ref={end} />
-      </div>
-      {d.scoreA && d.scoreB && (
-        <div className="mt-5 grid gap-3 md:grid-cols-2">
-          <ScoreCard s={d.scoreA} me={a} other={b} big />
-          <ScoreCard s={d.scoreB} me={b} other={a} big />
+        <div className="max-h-[60vh] space-y-3 overflow-y-auto pr-1">
+          {d.messages.map((m, i) => (
+            <Bubble key={i} m={m} a={a} b={b} />
+          ))}
+          {!d.done && d.venue && d.messages.length < 15 && <Typing who={nextSpeaker === "a" ? a : b} side={nextSpeaker} />}
+          <div ref={end} />
         </div>
-      )}
-    </div>
+        {d.scoreA && d.scoreB && (
+          <div className="grid gap-3 md:grid-cols-2">
+            <ScoreCard s={d.scoreA} me={a} other={b} />
+            <ScoreCard s={d.scoreB} me={b} other={a} />
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }

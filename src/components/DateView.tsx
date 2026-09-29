@@ -2,32 +2,37 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import type { DateMessage, DateRecord, Scorecard } from "@/lib/types";
+import { FastForward, Headphones, Pause, RotateCcw, Sparkles } from "lucide-react";
+import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { firstName } from "@/lib/names";
+import { cn } from "@/lib/utils";
+import type { DateMessage, DateRecord, Scorecard } from "@/lib/types";
 
-export type Mini = { id: string; name: string; avatar?: string };
+export type Mini = { id: string; name: string; avatar?: string; voice?: string };
 
-export function MiniAvatar({ p, size = 32 }: { p: Mini; size?: number }) {
-  if (p.avatar)
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img src={p.avatar} alt={p.name} className="shrink-0 rounded-full object-cover ring-2 ring-white" style={{ width: size, height: size }} />;
+export function MiniAvatar({ p, className }: { p: Mini; className?: string }) {
   return (
-    <div className="flex shrink-0 items-center justify-center rounded-full bg-plum-soft text-xs font-semibold text-plum" style={{ width: size, height: size }}>
-      {p.name
-        .split(" ")
-        .map((w) => w[0])
-        .slice(0, 2)
-        .join("")}
-    </div>
+    <span className={cn("relative inline-flex size-8 shrink-0 overflow-hidden rounded-full bg-accent", className)}>
+      {p.avatar ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={p.avatar} alt={p.name} className="size-full object-cover" />
+      ) : (
+        <span className="m-auto text-[10px]">{p.name.slice(0, 2)}</span>
+      )}
+    </span>
   );
 }
 
-export function Bubble({ m, a, b, compact = false }: { m: DateMessage; a: Mini; b: Mini; compact?: boolean }) {
+export function Bubble({ m, a, b, compact, speaking }: { m: DateMessage; a: Mini; b: Mini; compact?: boolean; speaking?: boolean }) {
   if (m.speaker === "host")
     return (
-      <div className="animate-pop my-3 flex justify-center">
-        <div className={`max-w-[92%] rounded-xl border border-gold/30 bg-gold/10 px-4 py-2 text-center italic text-ink/85 ${compact ? "text-xs" : "text-sm"}`}>
-          <span className="mr-1 text-[10px] font-bold not-italic uppercase tracking-widest text-gold">Host</span>
+      <div className="animate-pop my-4 flex justify-center">
+        <div className={cn("max-w-[92%] rounded-2xl border border-gold/25 bg-gold/10 px-4 py-2.5 text-center italic text-foreground/90", compact ? "text-xs" : "text-sm", speaking && "ring-2 ring-gold/60")}>
+          <span className="mr-1.5 text-[10px] font-semibold not-italic uppercase tracking-widest text-gold">host</span>
           {m.text}
         </div>
       </div>
@@ -35,14 +40,17 @@ export function Bubble({ m, a, b, compact = false }: { m: DateMessage; a: Mini; 
   const isA = m.speaker === "a";
   const p = isA ? a : b;
   return (
-    <div className={`animate-pop flex items-end gap-2 ${isA ? "" : "flex-row-reverse"}`}>
-      {!compact && <MiniAvatar p={p} size={30} />}
-      <div className={`max-w-[80%] ${isA ? "" : "text-right"}`}>
-        {!compact && <div className="mb-0.5 px-1 text-[11px] text-muted">{firstName(p.name)}&apos;s agent</div>}
+    <div className={cn("animate-pop flex items-end gap-2", !isA && "flex-row-reverse")}>
+      {!compact && <MiniAvatar p={p} />}
+      <div className={cn("max-w-[80%]", !isA && "text-right")}>
+        {!compact && <div className="mb-1 px-1 text-[11px] text-muted-foreground">{firstName(p.name)}&apos;s agent</div>}
         <div
-          className={`inline-block rounded-2xl px-3.5 py-2 text-left ${compact ? "text-xs" : "text-[15px]"} ${
-            isA ? "rounded-bl-sm bg-rose-soft" : "rounded-br-sm bg-plum-soft"
-          }`}
+          className={cn(
+            "inline-block rounded-2xl px-3.5 py-2 text-left transition",
+            compact ? "text-xs" : "text-[15px] leading-relaxed",
+            isA ? "rounded-bl-md border border-primary/20 bg-primary/15" : "rounded-br-md border border-violet/25 bg-violet/15",
+            speaking && "ring-2 ring-primary/70",
+          )}
         >
           {m.text}
         </div>
@@ -53,9 +61,9 @@ export function Bubble({ m, a, b, compact = false }: { m: DateMessage; a: Mini; 
 
 export function Typing({ who, side }: { who: Mini; side: "a" | "b" }) {
   return (
-    <div className={`flex items-end gap-2 ${side === "a" ? "" : "flex-row-reverse"}`}>
-      <MiniAvatar p={who} size={30} />
-      <div className={`typing rounded-2xl px-3 py-2 text-lg leading-none ${side === "a" ? "bg-rose-soft" : "bg-plum-soft"}`}>
+    <div className={cn("flex items-end gap-2", side === "b" && "flex-row-reverse")}>
+      <MiniAvatar p={who} />
+      <div className={cn("typing rounded-2xl px-3 py-2 text-lg leading-none", side === "a" ? "bg-primary/15" : "bg-violet/15")}>
         <span>•</span>
         <span>•</span>
         <span>•</span>
@@ -64,7 +72,7 @@ export function Typing({ who, side }: { who: Mini; side: "a" | "b" }) {
   );
 }
 
-export function ScoreCard({ s, me, other, big = false }: { s: Scorecard; me: Mini; other: Mini; big?: boolean }) {
+export function ScoreCard({ s, me, other }: { s: Scorecard; me: Mini; other: Mini }) {
   const dims: [string, number][] = [
     ["Chemistry", s.chemistry],
     ["Values", s.valuesFit],
@@ -73,97 +81,179 @@ export function ScoreCard({ s, me, other, big = false }: { s: Scorecard; me: Min
     ["Meets needs", s.needsMet],
   ];
   return (
-    <div className="animate-pop rounded-2xl border border-line bg-card p-4">
-      <div className="flex items-center gap-2">
-        <MiniAvatar p={me} size={28} />
-        <div className="text-sm">
-          <div className="font-semibold">{firstName(me.name)}&apos;s agent reports back</div>
-          <div className="text-xs text-muted">private scorecard on {other.name}</div>
-        </div>
-        <div className="ml-auto text-right">
-          <div className="font-display text-3xl leading-none">{s.overall}</div>
-          <div className={`text-[11px] font-semibold ${s.secondDate ? "text-rose" : "text-muted"}`}>{s.secondDate ? "♥ wants 2nd date" : "no 2nd date"}</div>
-        </div>
-      </div>
-      {s.reportToPrincipal && big && <p className="mt-3 rounded-xl bg-paper p-3 text-sm italic">“{s.reportToPrincipal}”</p>}
-      <div className="mt-3 grid grid-cols-5 gap-1.5">
-        {dims.map(([k, v]) => (
-          <div key={k} className="text-center">
-            <div className="h-12 overflow-hidden rounded bg-line/60">
-              <div className="w-full rounded bg-rose/80" style={{ height: `${v * 10}%`, marginTop: `${100 - v * 10}%` }} />
-            </div>
-            <div className="mt-1 text-[10px] leading-tight text-muted">{k}</div>
+    <Card className="animate-pop">
+      <CardContent className="space-y-4">
+        <div className="flex items-center gap-3">
+          <MiniAvatar p={me} className="size-9" />
+          <div className="text-sm">
+            <div className="font-medium">{firstName(me.name)}&apos;s agent, privately</div>
+            <div className="text-xs text-muted-foreground">on {other.name}</div>
           </div>
-        ))}
-      </div>
-      <div className="mt-3 space-y-1 text-xs">
-        <div>
-          <span className="font-semibold text-green">Best moment:</span> {s.highlight}
+          <div className="ml-auto text-right">
+            <div className="font-display text-4xl leading-none">{s.overall}</div>
+            <div className={cn("text-[11px]", s.secondDate ? "text-primary" : "text-muted-foreground")}>{s.secondDate ? "♥ wants a 2nd date" : "no 2nd date"}</div>
+          </div>
         </div>
-        <div>
-          <span className="font-semibold text-gold">Concern:</span> {s.concern}
+        {s.reportToPrincipal && <p className="rounded-xl bg-muted/60 p-3 text-sm italic leading-relaxed">“{s.reportToPrincipal}”</p>}
+        <div className="space-y-2">
+          {dims.map(([k, v]) => (
+            <div key={k} className="grid grid-cols-[110px_1fr_20px] items-center gap-2 text-xs">
+              <span className="text-muted-foreground">{k}</span>
+              <Progress value={v * 10} className="h-1.5" />
+              <span className="text-right tabular-nums">{v}</span>
+            </div>
+          ))}
         </div>
-        <div className="font-medium">“{s.verdict}”</div>
-      </div>
-    </div>
+        <div className="space-y-1.5 text-xs">
+          <p>
+            <span className="text-mint">Best moment</span> · {s.highlight}
+          </p>
+          <p>
+            <span className="text-gold">Concern</span> · {s.concern}
+          </p>
+          <p className="font-medium">“{s.verdict}”</p>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
-export function DateReplay({ date, a, b, autoplay = true }: { date: DateRecord; a: Mini; b: Mini; autoplay?: boolean }) {
+// ---- audio: one voice per agent, a narrator for the host ----
+
+async function speak(m: DateMessage, a: Mini, b: Mini, signal: AbortSignal) {
+  const voice = m.speaker === "host" ? "fable" : (m.speaker === "a" ? a : b).voice || (m.speaker === "a" ? "alloy" : "verse");
+  const res = await fetch("/api/tts", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ text: m.text, voice, role: m.speaker === "host" ? "host" : "agent" }),
+    signal,
+  });
+  if (!res.ok) throw new Error((await res.text()) || "audio failed");
+  return URL.createObjectURL(await res.blob());
+}
+
+export function DateReplay({ date, a, b }: { date: DateRecord; a: Mini; b: Mini }) {
   const total = date.messages.length;
-  const [shown, setShown] = useState(autoplay ? 0 : total);
+  const [shown, setShown] = useState(0);
   const [speed, setSpeed] = useState(1);
+  const [listening, setListening] = useState(false);
+  const [talking, setTalking] = useState(-1);
   const bottom = useRef<HTMLDivElement>(null);
-  const playing = shown < total;
+  const audio = useRef<HTMLAudioElement | null>(null);
+  const clips = useRef(new Map<number, Promise<string>>());
+  const abort = useRef<AbortController | null>(null);
+  const done = shown >= total;
 
+  // text-only playback
   useEffect(() => {
-    if (!playing) return;
+    if (listening || done) return;
     const next = date.messages[shown];
-    const delay = (next.speaker === "host" ? 1400 : Math.min(2600, 700 + next.text.length * 18)) / speed;
-    const t = setTimeout(() => setShown((n) => n + 1), delay);
+    const wait = (next.speaker === "host" ? 1400 : Math.min(2600, 700 + next.text.length * 18)) / speed;
+    const t = setTimeout(() => setShown((n) => n + 1), wait);
     return () => clearTimeout(t);
-  }, [shown, playing, speed, date.messages]);
+  }, [shown, done, speed, listening, date.messages]);
+
+  // audio playback: fetch line i (and prefetch i+1), play, advance on end
+  useEffect(() => {
+    if (!listening || shown >= total) return;
+    const ctrl = abort.current!;
+    const clip = (i: number) => {
+      if (!clips.current.has(i) && i < total) clips.current.set(i, speak(date.messages[i], a, b, ctrl.signal));
+      return clips.current.get(i)!;
+    };
+    let alive = true;
+    clip(shown)
+      .then((url) => {
+        if (!alive) return;
+        clip(shown + 1)?.catch(() => {});
+        const el = new Audio(url);
+        el.playbackRate = speed;
+        audio.current = el;
+        setTalking(shown);
+        el.onended = () => {
+          if (!alive) return;
+          setShown((n) => n + 1);
+          if (shown + 1 >= total) {
+            setListening(false);
+            setTalking(-1);
+          }
+        };
+        return el.play();
+      })
+      .catch((e) => {
+        if (!alive || ctrl.signal.aborted) return;
+        toast.error(`Audio stopped: ${String(e.message || e).slice(0, 80)}`);
+        setListening(false);
+      });
+    return () => {
+      alive = false;
+      audio.current?.pause();
+    };
+  }, [listening, shown, total, speed, a, b, date.messages]);
 
   useEffect(() => {
-    if (autoplay && shown > 0) bottom.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }, [shown, autoplay]);
+    if (shown > 0) bottom.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [shown]);
+
+  function listen() {
+    if (listening) {
+      abort.current?.abort();
+      audio.current?.pause();
+      setListening(false);
+      setTalking(-1);
+      return;
+    }
+    abort.current = new AbortController();
+    clips.current = new Map();
+    if (done) setShown(0);
+    setListening(true);
+  }
 
   const next = date.messages[shown];
   return (
     <div>
-      <div className="mb-3 flex flex-wrap items-center gap-2 text-sm">
-        <button onClick={() => setShown(0)} className="rounded-lg border border-line bg-card px-3 py-1 hover:border-ink">
-          ↺ Replay
-        </button>
-        <button onClick={() => setShown(total)} className="rounded-lg border border-line bg-card px-3 py-1 hover:border-ink">
+      <div className="mb-3 flex flex-wrap items-center gap-2">
+        <Button size="sm" onClick={listen} className={cn("rounded-full", listening ? "bg-secondary text-foreground" : "bg-sunset text-white")}>
+          {listening ? <Pause /> : <Headphones />} {listening ? "Stop listening" : "Listen to the date"}
+        </Button>
+        <Button size="sm" variant="secondary" className="rounded-full" onClick={() => setShown(0)}>
+          <RotateCcw /> Replay
+        </Button>
+        <Button size="sm" variant="secondary" className="rounded-full" onClick={() => setShown(total)} disabled={listening}>
           Skip to end
-        </button>
-        <button onClick={() => setSpeed((s) => (s === 1 ? 2 : s === 2 ? 4 : 1))} className="rounded-lg border border-line bg-card px-3 py-1 hover:border-ink">
-          {speed}× speed
-        </button>
-        <span className="ml-auto text-xs text-muted">
-          {Math.min(shown, total)}/{total} lines
-        </span>
+        </Button>
+        <Button size="sm" variant="ghost" className="rounded-full" onClick={() => setSpeed((s) => (s === 1 ? 1.5 : s === 1.5 ? 2 : 1))}>
+          <FastForward /> {speed}×
+        </Button>
+        <Badge variant="outline" className="ml-auto font-normal text-muted-foreground">
+          {Math.min(shown, total)}/{total}
+        </Badge>
       </div>
-      <div className="space-y-3 rounded-3xl border border-line bg-card p-4 sm:p-6">
-        {date.messages.slice(0, shown).map((m, i) => (
-          <Bubble key={i} m={m} a={a} b={b} />
-        ))}
-        {playing && next && next.speaker !== "host" && <Typing who={next.speaker === "a" ? a : b} side={next.speaker} />}
-        <div ref={bottom} />
-      </div>
-      {!playing && date.scoreA && date.scoreB && (
-        <div className="mt-6">
-          <h2 className="mb-3 font-display text-3xl">After the date: each agent reports privately to its person</h2>
+
+      <Card>
+        <CardContent className="space-y-3 sm:p-6">
+          {date.messages.slice(0, shown).map((m, i) => (
+            <Bubble key={i} m={m} a={a} b={b} speaking={i === talking} />
+          ))}
+          {!done && next && next.speaker !== "host" && <Typing who={next.speaker === "a" ? a : b} side={next.speaker} />}
+          <div ref={bottom} />
+        </CardContent>
+      </Card>
+
+      {done && date.scoreA && date.scoreB && (
+        <div className="mt-8">
+          <h2 className="mb-4 flex items-center gap-2 font-display text-3xl">
+            <Sparkles className="size-5 text-primary" /> After the date, each agent reports back
+          </h2>
           <div className="grid gap-4 md:grid-cols-2">
-            <ScoreCard s={date.scoreA} me={a} other={b} big />
-            <ScoreCard s={date.scoreB} me={b} other={a} big />
+            <ScoreCard s={date.scoreA} me={a} other={b} />
+            <ScoreCard s={date.scoreB} me={b} other={a} />
           </div>
-          <div className="mt-4 flex gap-3 text-sm">
-            <Link href={`/p/${a.id}#ranking`} className="text-rose hover:underline">
+          <div className="mt-4 flex gap-4 text-sm">
+            <Link href={`/p/${a.id}#ranking`} className="text-primary hover:underline">
               {firstName(a.name)}&apos;s ranking →
             </Link>
-            <Link href={`/p/${b.id}#ranking`} className="text-rose hover:underline">
+            <Link href={`/p/${b.id}#ranking`} className="text-primary hover:underline">
               {firstName(b.name)}&apos;s ranking →
             </Link>
           </div>

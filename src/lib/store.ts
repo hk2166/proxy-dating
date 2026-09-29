@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { Redis } from "@upstash/redis";
-import type { DateRecord, Person } from "./types";
+import type { Afterparty, Curveball, DateRecord, Person } from "./types";
 
 // Two layers:
 //  - seed: the finished 25-person example, committed to the repo (data/seed/*.json)
@@ -35,7 +35,6 @@ function seed() {
   return seedCache;
 }
 
-// ---------------- live backends ----------------
 interface LiveBackend {
   people(): Promise<Person[]>;
   putPerson(p: Person): Promise<void>;
@@ -46,6 +45,8 @@ interface LiveBackend {
   hidden(): Promise<string[]>;
   hide(id: string): Promise<void>;
   bump(key: string, ttlSec: number): Promise<number>;
+  curveballs(dateId: string): Promise<Curveball[]>;
+  addCurveball(dateId: string, c: Curveball): Promise<void>;
 }
 
 class RedisBackend implements LiveBackend {
@@ -94,6 +95,13 @@ class RedisBackend implements LiveBackend {
     const n = await this.r.incr(key);
     if (n === 1) await this.r.expire(key, ttlSec);
     return n;
+  }
+  async curveballs(dateId: string) {
+    return (await this.r.lrange<Curveball>("cb:" + dateId, 0, 19)) || [];
+  }
+  async addCurveball(dateId: string, c: Curveball) {
+    await this.r.lpush("cb:" + dateId, c);
+    await this.r.ltrim("cb:" + dateId, 0, 19);
   }
 }
 
@@ -152,6 +160,14 @@ class FileBackend implements LiveBackend {
     this.counters.set(key, n);
     return n;
   }
+  async curveballs(dateId: string) {
+    return this.load<Curveball[]>("curveballs.json")[dateId] || [];
+  }
+  async addCurveball(dateId: string, c: Curveball) {
+    const all = this.load<Curveball[]>("curveballs.json");
+    all[dateId] = [c, ...(all[dateId] || [])].slice(0, 20);
+    this.save("curveballs.json", all);
+  }
 }
 
 let backend: LiveBackend | null = null;
@@ -167,7 +183,6 @@ function live(): LiveBackend {
   return backend;
 }
 
-// ---------------- public API ----------------
 export async function listPeople(): Promise<Person[]> {
   const [livePeople, hidden] = await Promise.all([live().people(), live().hidden()]);
   const h = new Set(hidden);
@@ -203,7 +218,6 @@ export async function saveDate(d: DateRecord) {
   await live().putDate(d);
 }
 
-/** Opt-out: removes a person and every date they were on. */
 export async function removePerson(id: string) {
   const person = await getPerson(id);
   if (!person) return;
@@ -215,11 +229,21 @@ export async function removePerson(id: string) {
   }
 }
 
-/** Cost guard for the public site: how many new people may be added per day. */
-export async function allowLiveRun(): Promise<boolean> {
-  const limit = Number(process.env.LIVE_DAILY_LIMIT || 40);
-  const n = await live().bump(`live-runs:${new Date().toISOString().slice(0, 10)}`, 60 * 60 * 26);
-  return n <= limit;
+// daily caps so a public demo can't run up the API bill
+const CAPS = { "live-runs": Number(process.env.LIVE_DAILY_LIMIT || 40), curveballs: 150, tts: 4000 };
+
+export async function underCap(kind: keyof typeof CAPS): Promise<boolean> {
+  const n = await live().bump(`${kind}:${new Date().toISOString().slice(0, 10)}`, 60 * 60 * 26);
+  return n <= CAPS[kind];
+}
+
+export const allowLiveRun = () => underCap("live-runs");
+
+export const listCurveballs = (dateId: string) => live().curveballs(dateId);
+export const saveCurveball = (dateId: string, c: Curveball) => live().addCurveball(dateId, c);
+
+export function getAfterparty(): Afterparty | null {
+  return readJson<Afterparty | null>(path.join(SEED_DIR, "afterparty.json"), null);
 }
 
 // Used by the offline seed script to write the committed example.

@@ -145,6 +145,7 @@ export interface Person {
   linkedinUrl: string;
   instagramUrl: string;
   avatar?: string; // /avatars/x.jpg or data: URL
+  voice?: string; // tts voice for date audio
   origin: "seed" | "live";
   createdAt: string;
   sources?: Sources;
@@ -212,4 +213,21 @@ export interface PublicCard {
   vibe: string[];
   interests: string[];
   base: string;
+}
+
+// ---- extras ----
+
+export interface Curveball {
+  id: string;
+  twist: string;
+  scene: string;
+  messages: DateMessage[];
+  react: { a: { delta: number; line: string }; b: { delta: number; line: string } };
+  at: string;
+}
+
+export interface Afterparty {
+  gossip: { from: string; text: string }[]; // from = person id or "host"
+  rejections: { from: string; to: string; text: string }[];
+  futures: { a: string; b: string; captions: { when: string; text: string }[] }[];
 }
