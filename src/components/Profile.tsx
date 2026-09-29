@@ -1,14 +1,19 @@
-import type { Analysis, Evidence, Person, ReadingNote } from "@/lib/types";
-import { Bar, SourceBadge, Tag } from "./ui";
+import { Check, CircleAlert, HeartHandshake, MessageCircleQuestion, X } from "lucide-react";
+import { SourceTag } from "@/components/bits";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { firstName } from "@/lib/names";
+import { cn } from "@/lib/utils";
+import type { Analysis, Evidence, Person, ReadingNote } from "@/lib/types";
 
 function Quotes({ evidence }: { evidence: Evidence[] }) {
   if (!evidence?.length) return null;
   return (
     <ul className="mt-2 space-y-1">
       {evidence.slice(0, 2).map((e, i) => (
-        <li key={i} className="flex items-start gap-1.5 text-xs text-muted">
-          <SourceBadge source={e.source} />
+        <li key={i} className="flex items-start gap-1.5 text-xs text-muted-foreground">
+          <SourceTag source={e.source} />
           <span className="italic">“{e.quote}”</span>
         </li>
       ))}
@@ -16,139 +21,24 @@ function Quotes({ evidence }: { evidence: Evidence[] }) {
   );
 }
 
-function Block({ title, children, id }: { title: string; children: React.ReactNode; id?: string }) {
+function Section({ title, children, className }: { title: string; children: React.ReactNode; className?: string }) {
   return (
-    <section id={id} className="scroll-mt-20 rounded-2xl border border-line bg-card p-5">
-      <h3 className="mb-3 font-display text-2xl">{title}</h3>
-      {children}
-    </section>
+    <Card className={className}>
+      <CardHeader>
+        <CardTitle className="font-display text-3xl font-normal">{title}</CardTitle>
+      </CardHeader>
+      <CardContent>{children}</CardContent>
+    </Card>
   );
 }
 
-export function AnalysisView({ person, a }: { person: Person; a: Analysis }) {
-  const first = firstName(person.name);
+function Traits({ items }: { items: Analysis["hobbies"] }) {
   return (
-    <div className="space-y-4">
-      <Block title={`What ${first} needs in a partner`} id="needs">
-        <div className="grid gap-3 sm:grid-cols-2">
-          {a.needs.map((n) => (
-            <div key={n.need} className="rounded-xl bg-rose-soft/60 p-3">
-              <div className="font-semibold">{n.need}</div>
-              <p className="mt-1 text-sm text-ink/80">{n.why}</p>
-              <Quotes evidence={n.evidence} />
-            </div>
-          ))}
-        </div>
-      </Block>
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Block title="Hobbies" id="hobbies">
-          <TraitList items={a.hobbies} />
-        </Block>
-        <Block title="Interests" id="interests">
-          <TraitList items={a.interests} />
-        </Block>
-      </div>
-
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Block title="Values">
-          <TraitList items={a.values} />
-        </Block>
-        <Block title="Personality">
-          <div className="space-y-3">
-            {a.personality.map((t) => (
-              <div key={t.trait}>
-                <div className="mb-1 flex justify-between text-sm">
-                  <span className="font-medium">{t.trait}</span>
-                  <span className="tabular-nums text-muted">{Math.round(t.score)}</span>
-                </div>
-                <Bar value={t.score} tone="plum" />
-                <div className="mt-1 text-xs text-muted">{t.note}</div>
-              </div>
-            ))}
-          </div>
-        </Block>
-      </div>
-
-      <Block title="Lifestyle">
-        <dl className="grid gap-3 sm:grid-cols-3">
-          {(
-            [
-              ["Base", a.lifestyle.base],
-              ["Pace", a.lifestyle.pace],
-              ["Social", a.lifestyle.social],
-              ["Travel", a.lifestyle.travel],
-              ["Health & fitness", a.lifestyle.health],
-              ["Work / life", a.lifestyle.workLife],
-            ] as const
-          ).map(([k, v]) => (
-            <div key={k}>
-              <dt className="text-xs font-semibold uppercase tracking-wider text-muted">{k}</dt>
-              <dd className="text-sm">{v}</dd>
-            </div>
-          ))}
-          <div className="sm:col-span-3 grid gap-3 sm:grid-cols-2">
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-wider text-muted">How they communicate</dt>
-              <dd className="text-sm">{a.communicationStyle}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-wider text-muted">How they show care</dt>
-              <dd className="text-sm">{a.howTheyShowCare}</dd>
-            </div>
-          </div>
-        </dl>
-      </Block>
-
-      <div className="grid gap-4 md:grid-cols-3">
-        <Block title="Green flags">
-          <List items={a.greenFlags} mark="✓" color="text-green" />
-        </Block>
-        <Block title="Friction points">
-          <List items={a.frictionPoints} mark="~" color="text-gold" />
-        </Block>
-        <Block title="Dealbreakers">
-          <List items={a.dealbreakers} mark="✕" color="text-rose" />
-        </Block>
-      </div>
-
-      <Block title="Who fits them">
-        <p className="text-sm">{a.idealPartner}</p>
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          <div>
-            <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Dates they&apos;d love</div>
-            <List items={a.idealDates} mark="♥" color="text-rose" />
-          </div>
-          <div>
-            <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">Ask them about</div>
-            <List items={a.conversationHooks} mark="?" color="text-plum" />
-          </div>
-        </div>
-      </Block>
-
-      <Block title="How the agent will talk on their behalf">
-        <p className="text-sm">{a.agentVoice}</p>
-        <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted">
-          <Tag tone={a.identityCheck.sameLikely ? "green" : "rose"}>
-            {a.identityCheck.sameLikely ? "✓ Both links look like the same person" : "⚠ Links may be different people"}
-          </Tag>
-          <Tag tone="plum">Analysis confidence {Math.round(a.confidence.overall)}/100</Tag>
-        </div>
-        <p className="mt-2 text-xs text-muted">
-          {a.identityCheck.note} {a.confidence.note}
-        </p>
-      </Block>
-    </div>
-  );
-}
-
-function TraitList({ items }: { items: Analysis["hobbies"] }) {
-  return (
-    <ul className="space-y-3">
+    <ul className="space-y-4">
       {items.map((t) => (
         <li key={t.name}>
           <div className="font-medium">{t.name}</div>
-          <div className="text-sm text-ink/80">{t.detail}</div>
+          <div className="text-sm text-muted-foreground">{t.detail}</div>
           <Quotes evidence={t.evidence} />
         </li>
       ))}
@@ -156,12 +46,12 @@ function TraitList({ items }: { items: Analysis["hobbies"] }) {
   );
 }
 
-function List({ items, mark, color }: { items: string[]; mark: string; color: string }) {
+function List({ items, icon: Icon, tone }: { items: string[]; icon: typeof Check; tone: string }) {
   return (
-    <ul className="space-y-2 text-sm">
+    <ul className="space-y-2.5 text-sm">
       {items.map((x) => (
         <li key={x} className="flex gap-2">
-          <span className={`font-bold ${color}`}>{mark}</span>
+          <Icon className={cn("mt-0.5 size-4 shrink-0", tone)} />
           <span>{x}</span>
         </li>
       ))}
@@ -169,45 +59,151 @@ function List({ items, mark, color }: { items: string[]; mark: string; color: st
   );
 }
 
-const CAT_TONE: Record<ReadingNote["category"], "rose" | "plum" | "green" | "neutral"> = {
-  hobby: "rose",
-  interest: "plum",
-  value: "green",
-  need: "rose",
-  lifestyle: "neutral",
-  personality: "plum",
-  career: "neutral",
-  relationship: "rose",
+export function AnalysisView({ person, a }: { person: Person; a: Analysis }) {
+  const first = firstName(person.name);
+  return (
+    <div className="space-y-4">
+      <Section title={`What ${first} needs`}>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {a.needs.map((n) => (
+            <div key={n.need} className="rounded-2xl border border-primary/20 bg-primary/5 p-4">
+              <div className="font-medium">{n.need}</div>
+              <p className="mt-1 text-sm text-muted-foreground">{n.why}</p>
+              <Quotes evidence={n.evidence} />
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <Section title="Hobbies">
+          <Traits items={a.hobbies} />
+        </Section>
+        <Section title="Interests">
+          <Traits items={a.interests} />
+        </Section>
+        <Section title="Values">
+          <Traits items={a.values} />
+        </Section>
+        <Section title="Personality">
+          <div className="space-y-4">
+            {a.personality.map((t) => (
+              <div key={t.trait}>
+                <div className="mb-1.5 flex justify-between text-sm">
+                  <span className="font-medium">{t.trait}</span>
+                  <span className="tabular-nums text-muted-foreground">{Math.round(t.score)}</span>
+                </div>
+                <Progress value={t.score} className="h-1.5" />
+                <div className="mt-1 text-xs text-muted-foreground">{t.note}</div>
+              </div>
+            ))}
+          </div>
+        </Section>
+      </div>
+
+      <Section title="How they live">
+        <dl className="grid gap-4 sm:grid-cols-3">
+          {(
+            [
+              ["Base", a.lifestyle.base],
+              ["Pace", a.lifestyle.pace],
+              ["Social", a.lifestyle.social],
+              ["Travel", a.lifestyle.travel],
+              ["Health", a.lifestyle.health],
+              ["Work / life", a.lifestyle.workLife],
+              ["Talks like", a.communicationStyle],
+              ["Shows care by", a.howTheyShowCare],
+            ] as const
+          ).map(([k, v]) => (
+            <div key={k} className={k.startsWith("Talks") || k.startsWith("Shows") ? "sm:col-span-3 lg:col-span-1" : ""}>
+              <dt className="text-xs uppercase tracking-wider text-muted-foreground">{k}</dt>
+              <dd className="mt-0.5 text-sm">{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </Section>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        <Section title="Green flags">
+          <List items={a.greenFlags} icon={Check} tone="text-mint" />
+        </Section>
+        <Section title="Friction">
+          <List items={a.frictionPoints} icon={CircleAlert} tone="text-gold" />
+        </Section>
+        <Section title="Dealbreakers">
+          <List items={a.dealbreakers} icon={X} tone="text-destructive" />
+        </Section>
+      </div>
+
+      <Section title="Who fits them">
+        <p className="text-sm">{a.idealPartner}</p>
+        <div className="mt-5 grid gap-5 sm:grid-cols-2">
+          <div>
+            <div className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">Dates they&apos;d love</div>
+            <List items={a.idealDates} icon={HeartHandshake} tone="text-primary" />
+          </div>
+          <div>
+            <div className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">Ask them about</div>
+            <List items={a.conversationHooks} icon={MessageCircleQuestion} tone="text-violet" />
+          </div>
+        </div>
+        <div className="mt-5 rounded-xl bg-muted/50 p-4 text-sm">
+          <div className="mb-1 text-xs uppercase tracking-wider text-muted-foreground">How the agent talks on their behalf</div>
+          {a.agentVoice}
+        </div>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <Badge variant={a.identityCheck.sameLikely ? "secondary" : "destructive"}>
+            {a.identityCheck.sameLikely ? "✓ both links look like the same person" : "⚠ links may be different people"}
+          </Badge>
+          <Badge variant="outline">confidence {Math.round(a.confidence.overall)}/100</Badge>
+        </div>
+      </Section>
+    </div>
+  );
+}
+
+const TONE: Record<ReadingNote["category"], string> = {
+  hobby: "bg-primary/15 text-primary",
+  interest: "bg-violet/15 text-violet",
+  value: "bg-mint/15 text-mint",
+  need: "bg-primary/15 text-primary",
+  lifestyle: "bg-muted text-muted-foreground",
+  personality: "bg-violet/15 text-violet",
+  career: "bg-muted text-muted-foreground",
+  relationship: "bg-gold/15 text-gold",
 };
 
-export function ReadingLog({ notes, animate = false }: { notes: ReadingNote[]; animate?: boolean }) {
-  const groups: ["linkedin" | "instagram", string][] = [
-    ["linkedin", "Reading LinkedIn"],
-    ["instagram", "Reading Instagram"],
-  ];
+export function ReadingLog({ notes, animate }: { notes: ReadingNote[]; animate?: boolean }) {
   return (
     <div className="grid gap-4 lg:grid-cols-2">
-      {groups.map(([src, label]) => {
+      {(["linkedin", "instagram"] as const).map((src) => {
         const ns = notes.filter((n) => n.source === src);
         return (
-          <div key={src} className="rounded-2xl border border-line bg-card p-4">
-            <div className="mb-3 flex items-center gap-2 font-semibold">
-              <SourceBadge source={src} /> {label}
-              <span className="ml-auto text-xs font-normal text-muted">{ns.length} notes</span>
-            </div>
-            <ol className="space-y-2.5">
-              {ns.map((n, i) => (
-                <li key={i} className={`rounded-xl border border-line/70 bg-paper p-3 ${animate ? "animate-pop" : ""}`} style={animate ? { animationDelay: `${i * 90}ms` } : undefined}>
-                  <div className="text-xs italic text-muted">“{n.signal}”</div>
-                  <div className="mt-1 flex items-start gap-2 text-sm">
-                    <span className="text-rose">→</span>
-                    <span className="flex-1">{n.inference}</span>
-                    <Tag tone={CAT_TONE[n.category]}>{n.category}</Tag>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
+          <Card key={src}>
+            <CardHeader className="flex flex-row items-center gap-2">
+              <SourceTag source={src} />
+              <CardTitle className="text-base">Reading {src === "linkedin" ? "LinkedIn" : "Instagram"}</CardTitle>
+              <span className="ml-auto text-xs text-muted-foreground">{ns.length} notes</span>
+            </CardHeader>
+            <CardContent>
+              <ol className="space-y-2.5">
+                {ns.map((n, i) => (
+                  <li
+                    key={i}
+                    className={cn("rounded-xl border bg-muted/30 p-3", animate && "animate-pop")}
+                    style={animate ? { animationDelay: `${i * 90}ms` } : undefined}
+                  >
+                    <div className="text-xs italic text-muted-foreground">“{n.signal}”</div>
+                    <div className="mt-1.5 flex items-start gap-2 text-sm">
+                      <span className="text-primary">→</span>
+                      <span className="flex-1">{n.inference}</span>
+                      <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-medium", TONE[n.category])}>{n.category}</span>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </CardContent>
+          </Card>
         );
       })}
     </div>
@@ -219,39 +215,40 @@ export function SourcesView({ person }: { person: Person }) {
   if (!s) return null;
   return (
     <div className="grid gap-4 lg:grid-cols-2">
-      <div className="rounded-2xl border border-line bg-card p-4 text-sm">
-        <div className="mb-2 flex items-center gap-2 font-semibold">
-          <SourceBadge source="linkedin" /> What the scraper got from LinkedIn
-        </div>
-        <div className="font-medium">{s.linkedin.headline}</div>
-        {s.linkedin.location && <div className="text-xs text-muted">{s.linkedin.location}</div>}
-        {s.linkedin.about && <p className="mt-2 line-clamp-6 whitespace-pre-line text-muted">{s.linkedin.about}</p>}
-        <ul className="mt-3 space-y-1">
-          {s.linkedin.experience.slice(0, 6).map((e, i) => (
-            <li key={i} className="text-xs">
-              <span className="font-medium">{e.title}</span> · {e.company} <span className="text-muted">{e.dates}</span>
-            </li>
-          ))}
-        </ul>
-        {s.linkedin.posts.length > 0 && <div className="mt-2 text-xs text-muted">+ {s.linkedin.posts.length} recent posts</div>}
-      </div>
-      <div className="rounded-2xl border border-line bg-card p-4 text-sm">
-        <div className="mb-2 flex items-center gap-2 font-semibold">
-          <SourceBadge source="instagram" /> What the scraper got from Instagram
-        </div>
-        <div className="font-medium">
-          @{s.instagram.username} · {s.instagram.followers?.toLocaleString() ?? "?"} followers
-        </div>
-        {s.instagram.biography && <p className="mt-1 whitespace-pre-line text-muted">{s.instagram.biography}</p>}
-        <ul className="mt-3 space-y-1.5">
-          {s.instagram.posts.slice(0, 6).map((p, i) => (
-            <li key={i} className="line-clamp-2 text-xs">
-              {p.location && <span className="font-medium">📍 {p.location} · </span>}
-              {p.caption || p.alt || "(no caption)"}
-            </li>
-          ))}
-        </ul>
-      </div>
+      <Card>
+        <CardContent className="space-y-2 text-sm">
+          <div className="flex items-center gap-2 font-medium">
+            <SourceTag source="linkedin" /> What the scraper got
+          </div>
+          <div>{s.linkedin.headline}</div>
+          {s.linkedin.location && <div className="text-xs text-muted-foreground">{s.linkedin.location}</div>}
+          {s.linkedin.about && <p className="line-clamp-5 whitespace-pre-line text-muted-foreground">{s.linkedin.about}</p>}
+          <ul className="space-y-1 pt-1">
+            {s.linkedin.experience.slice(0, 6).map((e, i) => (
+              <li key={i} className="text-xs">
+                <span className="font-medium">{e.title}</span> · {e.company} <span className="text-muted-foreground">{e.dates}</span>
+              </li>
+            ))}
+          </ul>
+          {s.linkedin.posts.length > 0 && <div className="text-xs text-muted-foreground">+ {s.linkedin.posts.length} recent posts</div>}
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent className="space-y-2 text-sm">
+          <div className="flex items-center gap-2 font-medium">
+            <SourceTag source="instagram" /> @{s.instagram.username} · {s.instagram.followers?.toLocaleString() ?? "?"} followers
+          </div>
+          {s.instagram.biography && <p className="whitespace-pre-line text-muted-foreground">{s.instagram.biography}</p>}
+          <ul className="space-y-1.5 pt-1">
+            {s.instagram.posts.slice(0, 6).map((p, i) => (
+              <li key={i} className="line-clamp-2 text-xs">
+                {p.location && <span className="font-medium">📍 {p.location} · </span>}
+                {p.caption || p.alt || "(no caption)"}
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Inter, Instrument_Serif } from "next/font/google";
+import { Geist, Instrument_Serif } from "next/font/google";
+import { SiteHeader } from "@/components/SiteHeader";
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import "./globals.css";
 
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 const serif = Instrument_Serif({ variable: "--font-serif-display", subsets: ["latin"], weight: "400", style: ["normal", "italic"] });
 
 export const metadata: Metadata = {
@@ -14,29 +17,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${serif.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
-        <header className="sticky top-0 z-30 border-b border-line bg-paper/85 backdrop-blur">
-          <nav className="mx-auto flex max-w-6xl items-center gap-5 px-4 py-3 text-sm">
-            <Link href="/" className="font-display text-2xl leading-none">
-              Proxy<span className="text-rose">.</span>
-            </Link>
-            <div className="ml-auto flex items-center gap-4 overflow-x-auto whitespace-nowrap text-muted">
-              <Link href="/#agents" className="hover:text-ink">Agents</Link>
-              <Link href="/dates" className="hover:text-ink">Dates</Link>
-              <Link href="/rankings" className="hover:text-ink">Rankings</Link>
-              <Link href="/how" className="hover:text-ink">How it works</Link>
-              <Link href="/join" className="rounded-full bg-ink px-3.5 py-1.5 font-medium text-paper hover:bg-rose">
-                Add a person
-              </Link>
-            </div>
-          </nav>
-        </header>
-        <main className="flex-1">{children}</main>
-        <footer className="border-t border-line py-6 text-center text-xs text-muted">
-          Proxy is a simulation: agents date on behalf of public profiles, using only each person&apos;s public LinkedIn and
-          Instagram. Nothing here is a statement about anyone&apos;s real relationships. Any profile can be removed from its page.
-        </footer>
+    <html lang="en" className={cn("dark h-full antialiased", geist.variable, serif.variable)}>
+      <body className="flex min-h-full flex-col">
+        <TooltipProvider delayDuration={150}>
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+          <footer className="border-t py-8 text-center text-xs text-muted-foreground">
+            <p className="mx-auto max-w-2xl px-4">
+              Proxy is a simulation. Agents date on behalf of public profiles using only each person&apos;s public LinkedIn and Instagram.
+              Nothing here says anything about anyone&apos;s real relationships, and any profile can be removed from its page.
+            </p>
+          </footer>
+          <Toaster richColors position="bottom-center" />
+        </TooltipProvider>
       </body>
     </html>
   );
