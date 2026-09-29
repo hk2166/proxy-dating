@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { DateMessage, DateRecord, Scorecard } from "@/lib/types";
+import { firstName } from "@/lib/names";
 
 export type Mini = { id: string; name: string; avatar?: string };
 
@@ -37,7 +38,7 @@ export function Bubble({ m, a, b, compact = false }: { m: DateMessage; a: Mini; 
     <div className={`animate-pop flex items-end gap-2 ${isA ? "" : "flex-row-reverse"}`}>
       {!compact && <MiniAvatar p={p} size={30} />}
       <div className={`max-w-[80%] ${isA ? "" : "text-right"}`}>
-        {!compact && <div className="mb-0.5 px-1 text-[11px] text-muted">{p.name.split(" ")[0]}&apos;s agent</div>}
+        {!compact && <div className="mb-0.5 px-1 text-[11px] text-muted">{firstName(p.name)}&apos;s agent</div>}
         <div
           className={`inline-block rounded-2xl px-3.5 py-2 text-left ${compact ? "text-xs" : "text-[15px]"} ${
             isA ? "rounded-bl-sm bg-rose-soft" : "rounded-br-sm bg-plum-soft"
@@ -76,7 +77,7 @@ export function ScoreCard({ s, me, other, big = false }: { s: Scorecard; me: Min
       <div className="flex items-center gap-2">
         <MiniAvatar p={me} size={28} />
         <div className="text-sm">
-          <div className="font-semibold">{me.name.split(" ")[0]}&apos;s agent reports back</div>
+          <div className="font-semibold">{firstName(me.name)}&apos;s agent reports back</div>
           <div className="text-xs text-muted">private scorecard on {other.name}</div>
         </div>
         <div className="ml-auto text-right">
@@ -160,10 +161,10 @@ export function DateReplay({ date, a, b, autoplay = true }: { date: DateRecord; 
           </div>
           <div className="mt-4 flex gap-3 text-sm">
             <Link href={`/p/${a.id}#ranking`} className="text-rose hover:underline">
-              {a.name.split(" ")[0]}&apos;s ranking →
+              {firstName(a.name)}&apos;s ranking →
             </Link>
             <Link href={`/p/${b.id}#ranking`} className="text-rose hover:underline">
-              {b.name.split(" ")[0]}&apos;s ranking →
+              {firstName(b.name)}&apos;s ranking →
             </Link>
           </div>
         </div>

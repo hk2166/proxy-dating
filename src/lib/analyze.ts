@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type Anthropic from "@anthropic-ai/sdk";
-import { structured, MODELS } from "./llm";
+import { structured, MODELS, SUPPORTS_VISION } from "./llm";
 import type { Analysis, InstagramProfile, LinkedInProfile, PublicCard, Person, ReadingNote, Sources } from "./types";
 
 // ---------------------------------------------------------------------------
@@ -166,9 +166,12 @@ export async function readLinkedIn(li: LinkedInProfile): Promise<ReadingNote[]> 
 }
 
 export async function readInstagram(ig: InstagramProfile): Promise<ReadingNote[]> {
-  const images = (
-    await Promise.all(ig.posts.filter((p) => p.imageUrl).slice(0, 6).map((p) => fetchImage(p.imageUrl!)))
-  ).filter(Boolean) as Anthropic.Beta.BetaImageBlockParam[];
+  // With a vision model the agent also looks at the photos of the latest posts.
+  const images = SUPPORTS_VISION
+    ? ((await Promise.all(ig.posts.filter((p) => p.imageUrl).slice(0, 6).map((p) => fetchImage(p.imageUrl!)))).filter(
+        Boolean,
+      ) as Anthropic.Beta.BetaImageBlockParam[])
+    : [];
   const content: Anthropic.Beta.BetaContentBlockParam[] = [];
   if (images.length) {
     content.push({ type: "text", text: `Photos from their ${images.length} most recent posts (in order):` });

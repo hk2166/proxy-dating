@@ -5,6 +5,7 @@ import { RankingList } from "@/components/RankingList";
 import { RemoveButton } from "@/components/RemoveButton";
 import { Avatar, FitBadge, SourceBadge, Tag } from "@/components/ui";
 import { loadWorld } from "@/lib/world";
+import { firstName } from "@/lib/names";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +15,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
   const person = w.byId.get(id);
   if (!person || !person.analysis) notFound();
   const a = person.analysis;
-  const first = person.name.split(" ")[0];
+  const first = firstName(person.name);
   const ranking = w.rankings[id] || [];
   const myDates = w.dates
     .filter((d) => d.a === id || d.b === id)
@@ -112,8 +113,15 @@ export default async function ProfilePage({ params }: { params: Promise<{ id: st
         <aside id="ranking" className="scroll-mt-28">
           <div className="rounded-2xl border border-line bg-card p-4 lg:sticky lg:top-28">
             <div className="font-display text-2xl">Who fits {first} best</div>
-            <p className="mb-2 text-xs text-muted">
-              Fit = 65% what {first}&apos;s agent concluded + 35% what the other agent concluded, +5 if both want a second date.
+            {person.decision && (
+              <div className="mt-2 rounded-xl bg-rose-soft/70 p-3 text-sm">
+                <div className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-rose">The agent&apos;s final call</div>
+                <p className="italic">“{person.decision.note}”</p>
+              </div>
+            )}
+            <p className="mb-2 mt-2 text-xs text-muted">
+              After all its dates, {first}&apos;s agent ranked its shortlist itself. Fit score = 65% its own view + 35% the other
+              agent&apos;s view, +5 if both want a second date after a full date.
             </p>
             {ranking.length ? (
               <div className="max-h-[70vh] overflow-y-auto pr-1 scrollbar-thin">

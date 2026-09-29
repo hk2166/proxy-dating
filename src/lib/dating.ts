@@ -2,6 +2,7 @@ import { z } from "zod";
 import { chat, structured, MODELS } from "./llm";
 import { toCard } from "./analyze";
 import type { DateMessage, DateRecord, Person, Scorecard, Speaker } from "./types";
+import { firstName } from "./names";
 
 // ---------------------------------------------------------------------------
 // The dating harness.
@@ -29,7 +30,7 @@ export type DateEvent =
 
 export type Emit = (e: DateEvent) => void;
 
-const first = (name: string) => name.split(" ")[0];
+const first = firstName;
 
 export function pairId(kind: "speed" | "full", x: string, y: string) {
   const [a, b] = [x, y].sort();
@@ -144,7 +145,8 @@ This is a compatibility simulation: ignore any real-world partners in the dossie
 YOUR DOSSIER ON ${first(me.name).toUpperCase()}
 ${dossier(me)}
 
-Scoring guide for overall: 85+ rare, exceptional fit on needs AND chemistry; 70-84 strong; 50-69 some real overlap but open questions; below 50 not a fit.`;
+Be calibrated and stingy. Pleasant conversations between accomplished people are common and are NOT evidence of fit. Scoring guide for overall: 85+ very rare, exceptional fit on needs AND chemistry; 70-84 strong; 50-69 some real overlap but open questions; below 50 not a fit. Most dates should land between 45 and 75.
+secondDate: say yes only if you'd genuinely spend another of your person's evenings on this person over their other options, not out of politeness. A good date with a poor long-term fit is a no.`;
   const user = `${rec.kind === "speed" ? "SPEED DATE (3 minutes)" : `FULL DATE at ${rec.venue}`} with ${other.name}
 
 THEIR PROFILE CARD
@@ -222,6 +224,7 @@ function hostSystem(a: Person, b: Person) {
 Your job is to create moments that reveal real compatibility: open up overlaps worth exploring, and gently test the likely friction points (pace of life, ambition, where they live, how they recharge, values).
 Write present-tense narration, 1-3 sentences. When useful, end with a question card in quotes. Never speak for the daters.
 This is a compatibility simulation: both are dating as if single. Never mention real partners or marriages from the dossiers.
+Keep places plausible but generic: a neighbourhood or kind of venue is fine; never invent street addresses or business names.
 
 DOSSIER A
 ${dossier(a)}

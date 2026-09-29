@@ -1,5 +1,6 @@
 import type { Analysis, Evidence, Person, ReadingNote } from "@/lib/types";
 import { Bar, SourceBadge, Tag } from "./ui";
+import { firstName } from "@/lib/names";
 
 function Quotes({ evidence }: { evidence: Evidence[] }) {
   if (!evidence?.length) return null;
@@ -25,7 +26,7 @@ function Block({ title, children, id }: { title: string; children: React.ReactNo
 }
 
 export function AnalysisView({ person, a }: { person: Person; a: Analysis }) {
-  const first = person.name.split(" ")[0];
+  const first = firstName(person.name);
   return (
     <div className="space-y-4">
       <Block title={`What ${first} needs in a partner`} id="needs">

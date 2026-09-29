@@ -5,6 +5,7 @@
  *   npx tsx --env-file=.env scripts/seed.ts analyze    # just scrape + analyze
  *   npx tsx --env-file=.env scripts/seed.ts speed      # round 1 (all pairs)
  *   npx tsx --env-file=.env scripts/seed.ts full       # round 2 (top mutual matches)
+ *   npx tsx --env-file=.env scripts/seed.ts decide     # round 3 (each agent's final ranking)
  *
  * Progress is checkpointed to data/seed/*.json, so re-running skips finished work.
  */
@@ -14,6 +15,7 @@ import { analyzePerson } from "../src/lib/pipeline";
 import { scrapeBatch } from "../src/lib/scrape";
 import { parseInstagram } from "../src/lib/urls";
 import { fullDate, pairId, pickFullDates, speedDate } from "../src/lib/dating";
+import { decide } from "../src/lib/decide";
 import { seedFiles } from "../src/lib/store";
 import type { DateRecord, Person, Sources } from "../src/lib/types";
 
@@ -155,11 +157,30 @@ async function fullAll() {
   save();
 }
 
+async function decideAll() {
+  const ps = ready();
+  const ds = [...dates.values()];
+  console.log(`round 3: ${ps.length} agents make their final call`);
+  await pool(ps, 12, async (p) => {
+    try {
+      const d = await decide(p, ps, ds);
+      if (!d) return;
+      p.decision = d;
+      dirty = true;
+      console.log(`  ${p.name} → ${ps.find((q) => q.id === d.order[0])?.name}`);
+    } catch (err) {
+      console.log(`  ✗ ${p.name}: ${err instanceof Error ? err.message : err}`);
+    }
+  });
+  save();
+}
+
 async function main() {
   const step = process.argv[2] || "all";
   if (step === "all" || step === "analyze") await analyzeAll();
   if (step === "all" || step === "speed") await speedAll();
   if (step === "all" || step === "full") await fullAll();
+  if (step === "all" || step === "decide") await decideAll();
   clearInterval(timer);
   save();
   const ds = [...dates.values()];

@@ -1,6 +1,8 @@
 import { readInstagram, readLinkedIn, synthesize } from "./analyze";
 import { fullDate, pickFullDates, speedDate, type Emit } from "./dating";
+import { decide } from "./decide";
 import { scrapeBoth } from "./scrape";
+import { SUPPORTS_VISION } from "./llm";
 import { getPerson, listDates, listPeople, saveDate, savePerson } from "./store";
 import type { DateRecord, Person, ReadingNote, Sources } from "./types";
 import { parseInstagram, parseLinkedIn } from "./urls";
@@ -70,7 +72,12 @@ export async function analyzePerson(
     }),
     readInstagram(sources.instagram).then((n) => {
       emit({ type: "notes", notes: n });
-      emit({ type: "step", step: "read-instagram", status: "done", detail: `${n.length} notes` });
+      emit({
+        type: "step",
+        step: "read-instagram",
+        status: "done",
+        detail: `${n.length} notes from ${sources.instagram.posts.length} posts${SUPPORTS_VISION ? " and their photos" : " (captions + image descriptions)"}`,
+      });
       return n;
     }),
   ]);
@@ -132,5 +139,21 @@ export async function runFullRound(personId: string, k: number, emit: Emit) {
       return d;
     }),
   );
-  return results.filter((r): r is PromiseFulfilledResult<DateRecord> => r.status === "fulfilled").map((r) => r.value);
+  const done = results.filter((r): r is PromiseFulfilledResult<DateRecord> => r.status === "fulfilled").map((r) => r.value);
+  await decideFor(personId);
+  return done;
+}
+
+/** Round 3 for one person: its agent reviews every date and commits to a final ranking. */
+export async function decideFor(personId: string) {
+  const [people, dates] = await Promise.all([listPeople(), listDates()]);
+  const me = people.find((p) => p.id === personId);
+  if (!me || me.origin !== "live") return null;
+  const decision = await decide(
+    me,
+    people.filter((p) => p.status === "ready"),
+    dates,
+  );
+  if (decision) await savePerson({ ...me, decision });
+  return decision;
 }

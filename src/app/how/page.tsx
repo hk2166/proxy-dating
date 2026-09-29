@@ -42,7 +42,7 @@ export default function HowPage() {
 
       <Step n="02" title="Read">
         <p>
-          The agent (Claude) reads each source separately and writes <b>reading notes</b>: a concrete signal (a quote, a role, a
+          The agent reads each source separately and writes <b>reading notes</b>: a concrete signal (a quote, a role, a
           photo) → what it infers about them as a partner, tagged hobby / interest / value / need / lifestyle / personality. On
           Instagram it looks at the actual photos of recent posts, not just captions.
         </p>
@@ -89,13 +89,23 @@ export default function HowPage() {
 theirView = Q's agent's score of P   (same blend)
 fit       = 0.65 · myView + 0.35 · theirView  (+5 if both want a 2nd date)`}
         </pre>
-        <p>P&apos;s own needs dominate, but a match only counts if it&apos;s mutual. Every ranking entry links to the date it came from.</p>
+        <p>P&apos;s own needs dominate, but a match only counts if it&apos;s mutual.</p>
+        <p>
+          <b>Round 3 · the agent decides.</b> The formula only produces a shortlist, P&apos;s top 8. P&apos;s agent then reviews them side by side:
+          its own scorecards from each date, and what each candidate&apos;s agent concluded about P. It commits to a final order with a
+          reason for each, and writes P a note naming its pick (★). When two agents independently pick each other, it&apos;s a{" "}
+          <b>mutual #1 pick</b>. Every ranking entry links to the date it came from.
+        </p>
       </Step>
 
       <Step n="06" title="Stack">
         <ul className="list-disc space-y-1 pl-5">
           <li>Next.js (App Router) + TypeScript + Tailwind, deployed on Vercel</li>
-          <li>Claude via the Anthropic SDK — structured outputs (zod) for notes, profiles and scorecards; free text for date lines</li>
+          <li>
+            LLM agents behind one provider-agnostic layer (Claude, OpenAI or DeepSeek): validated structured outputs (zod) for notes,
+            profiles and scorecards; free text for date lines. In the demo, profiles were written by Claude Opus 5.5 and every date
+            and scorecard ran on OpenAI gpt-5.4, so all scores come from one model.
+          </li>
           <li>Apify actors for Instagram + LinkedIn scraping</li>
           <li>Upstash Redis for people added live; the finished 25-person example ships as JSON in the repo</li>
           <li>Server-Sent Events stream every scraping step, reading note and date line to the browser as it happens</li>

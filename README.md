@@ -22,6 +22,8 @@ Instagram URL ┘                └─ profile page: needs · hobbies · intere
         Round 2: full dates, agents plan the venue together; a Date Host runs 3 acts
                                         │  private debrief to each person
                                         ▼
+        Round 3: each agent reviews all its dates and commits to a final ranking
+                                        ▼
                          Ranking: who fits each person best
 ```
 
@@ -41,9 +43,13 @@ Every actor output is normalized into one schema (`src/lib/types.ts`: `LinkedInP
 ## The rest of the stack
 
 - **Next.js 16 (App Router) + TypeScript + Tailwind**, deployable on Vercel
-- **Claude (Anthropic SDK)**: `claude-opus-5-5` for reading, profiles, every date line, the Date Host and every scorecard. Structured outputs (zod) for notes, profiles and scorecards; free text for dialogue. Server-side refusal fallback enabled.
+- **LLM agents, provider-agnostic** (`src/lib/llm.ts`): one `chat()` for free-text date lines and one `structured()` for notes, profiles and scorecards (zod schemas, validated). Three backends:
+  - **Anthropic Claude**: structured outputs, vision, server-side refusal fallback
+  - **OpenAI**: strict JSON-schema outputs, vision
+  - **DeepSeek**: JSON mode, text only
+- **In the committed 26-person example**, profiles were written by **Claude Opus 5.5** (which also looked at each person's Instagram photos). All 325 speed dates, the full dates, the Date Host and every scorecard ran on **OpenAI gpt-5.4**, so every score in the rankings comes from one model. The live site runs on gpt-5.4.
 - **Server-Sent Events** stream every scraping step, reading note and date line to the browser as it happens
-- **Storage:** the finished example ships as JSON in `data/seed/`. People added live go to Upstash Redis (or `data/live/` locally).
+- **Storage:** the finished example ships as JSON in `data/seed/`. People added live go to Upstash Redis (or `data/live/` locally). A daily cap (`LIVE_DAILY_LIMIT`) guards cost.
 
 ## How the agent analyzes a person (`src/lib/analyze.ts`)
 
@@ -65,17 +71,19 @@ Every actor output is normalized into one schema (`src/lib/types.ts`: `LinkedInP
   3. Each agent then writes a **private debrief to its person**, addressed to them by name.
 - **Simulation framing.** Most of these public figures have partners. The agents date "as if single" and never bring up real relationships.
 
-## How rankings work (`src/lib/ranking.ts`)
+## How rankings work (`src/lib/ranking.ts`, `src/lib/decide.ts`)
 
-For person P and candidate Q:
+For person P and candidate Q, every date produces scores:
 
 ```
 myView    = P's agent's overall score of Q   (full date 65% + speed date 35% when both exist)
 theirView = Q's agent's overall score of P   (same blend)
-fit       = 0.65 · myView + 0.35 · theirView (+5 if both agents want a second date)
+fit       = 0.65 · myView + 0.35 · theirView (+5 if both agents want a second date after a full date)
 ```
 
-P's own needs dominate, but a match has to be mutual. Every ranking entry links to the date it came from. The site also shows a full fit matrix across everyone.
+**Round 3: the agent decides.** The formula only produces a shortlist, P's top 8. P's agent then reviews that shortlist side by side: its own scorecards from each date (score, verdict, concern), plus what each candidate's agent concluded about P. It commits to a final order with a reason for each candidate, and writes P a short note naming its pick. That order is the ranking the site shows (★ marks the agent's pick). When two agents independently pick each other, that's a **mutual #1 pick**.
+
+Measured in the committed run: agents said "yes" to a second date after 99% of speed dates and all full dates, so that flag carries almost no signal. The ranking therefore rests on the scores and on the agent's own final call, not on the yes/no flag.
 
 ## The people
 
@@ -87,20 +95,21 @@ P's own needs dominate, but a match has to be mutual. Every ranking entry links 
 - **`/join`**: paste two links and watch it live: scraping → reading notes → profile → 26 simultaneous speed dates → full dates with a host → ranking
 - **`/p/[id]`**: profile page: the analysis, how the agent read them (every note and the raw scraped data), all their dates, and their full ranking
 - **`/dates`** and **`/dates/[id]`**: every date, with an animated replay of the transcript, how the agents planned it, and both private scorecards and debriefs
-- **`/rankings`**: mutual matches, top 3 for everyone, and the full fit matrix
+- **`/rankings`**: mutual #1 picks, top 3 for everyone, and the full fit matrix
 - **`/how`**: this explanation, on the site
 
 ## Run it
 
 ```bash
 npm install
-cp .env.example .env        # ANTHROPIC_API_KEY, APIFY_TOKEN (optional: UPSTASH_REDIS_REST_URL/TOKEN)
+cp .env.example .env        # APIFY_TOKEN + one of OPENAI_API_KEY / ANTHROPIC_API_KEY / DEEPSEEK_API_KEY
 npm run dev                 # the committed 26-person example loads immediately
 
 # rebuild the example from scratch (resumable; checkpoints to data/seed/)
 npx tsx --env-file=.env scripts/seed.ts analyze   # scrape + read + profile
 npx tsx --env-file=.env scripts/seed.ts speed     # round 1, every pair
 npx tsx --env-file=.env scripts/seed.ts full      # round 2, top mutual matches
+npx tsx --env-file=.env scripts/seed.ts decide    # round 3, each agent's final ranking
 ```
 
 ## Layout
@@ -110,6 +119,7 @@ src/lib/scrape.ts     Apify actors → normalized LinkedIn/Instagram
 src/lib/analyze.ts    reading notes + profile synthesis
 src/lib/dating.ts     speed dates, full dates, Date Host, scorecards
 src/lib/ranking.ts    fit formula
+src/lib/decide.ts     round 3: the agent's final ranking
 src/lib/pipeline.ts   end-to-end for one person (used by the live site)
 src/lib/store.ts      seed JSON + live storage (Redis / files)
 src/app/api/...       SSE endpoints: /api/people (analyze), /api/people/[id]/dates (date)

@@ -8,6 +8,7 @@ import { JoinForm } from "@/components/JoinForm";
 import { ReadingLog } from "@/components/Profile";
 import { SourceBadge, Tag } from "@/components/ui";
 import type { DateMessage, Person, RankEntry, ReadingNote, Scorecard, Sources } from "@/lib/types";
+import { firstName } from "@/lib/names";
 
 type Phase = "idle" | "analyzing" | "profile" | "speed" | "full" | "done" | "error";
 type StepKey = "scrape" | "read-linkedin" | "read-instagram" | "synthesize";
@@ -27,7 +28,7 @@ type LiveDate = {
 const STEP_LABEL: Record<StepKey, string> = {
   scrape: "Scraping the public LinkedIn + Instagram",
   "read-linkedin": "Agent reads LinkedIn",
-  "read-instagram": "Agent reads Instagram (captions + photos)",
+  "read-instagram": "Agent reads Instagram",
   synthesize: "Agent writes the profile: needs, hobbies, interests…",
 };
 
@@ -70,6 +71,7 @@ export function JoinFlow() {
   const [dates, setDates] = useState<Record<string, LiveDate>>({});
   const [focus, setFocus] = useState<string>("");
   const [ranking, setRanking] = useState<RankEntry[]>([]);
+  const [note, setNote] = useState("");
   const started = useRef(false);
 
   async function loadPool() {
@@ -112,6 +114,7 @@ export function JoinFlow() {
       await stream(`/api/people/${id}/dates`, { round: "full", k: 3 }, onDateEvent);
       const data = await fetch(`/api/people/${id}`).then((r) => r.json());
       setRanking(data.ranking || []);
+      setNote(data.person?.decision?.note || "");
       setPhase("done");
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -328,7 +331,19 @@ export function JoinFlow() {
           </div>
           {phase === "profile" && (
             <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-line pt-4">
-              {existing ? (
+              {existing && person.origin === "seed" ? (
+                <>
+                  <span className="text-sm text-muted">
+                    {firstName(person.name)} is part of the finished demo: their agent has already dated everyone.
+                  </span>
+                  <Link href={`/p/${person.id}#ranking`} className="rounded-xl bg-rose px-4 py-2 text-sm font-semibold text-white hover:bg-ink">
+                    See their ranking →
+                  </Link>
+                  <Link href={`/dates?kind=full&p=${person.id}`} className="text-sm underline">
+                    Watch their dates
+                  </Link>
+                </>
+              ) : existing ? (
                 <>
                   <span className="text-sm text-muted">This person already has an agent.</span>
                   <button onClick={() => goDating(person.id)} className="rounded-xl bg-rose px-4 py-2 text-sm font-semibold text-white hover:bg-ink">
@@ -339,7 +354,7 @@ export function JoinFlow() {
                   </Link>
                 </>
               ) : (
-                <span className="text-sm text-muted">Sending {person.name.split(" ")[0]}&apos;s agent to speed dating…</span>
+                <span className="text-sm text-muted">Sending {firstName(person.name)}&apos;s agent to speed dating…</span>
               )}
             </div>
           )}
@@ -350,7 +365,7 @@ export function JoinFlow() {
       {speed.length > 0 && me && (
         <section className="mb-10">
           <div className="mb-3 flex flex-wrap items-end gap-3">
-            <h2 className="font-display text-3xl">Round 1 · {person?.name.split(" ")[0]}&apos;s agent speed-dates everyone</h2>
+            <h2 className="font-display text-3xl">Round 1 · {firstName(person?.name || "")}&apos;s agent speed-dates everyone</h2>
             <span className="text-sm text-muted">
               {speed.filter((d) => d.done).length}/{speed.length} finished
             </span>
@@ -427,8 +442,17 @@ export function JoinFlow() {
       {/* 5. Ranking */}
       {phase === "done" && person && (
         <section className="mb-10 animate-pop rounded-3xl border border-rose/30 bg-card p-6">
-          <h2 className="font-display text-4xl">Who fits {person.name.split(" ")[0]} best</h2>
-          <p className="text-sm text-muted">From every private scorecard: 65% {person.name.split(" ")[0]}&apos;s agent, 35% the other agent, +5 if both want a second date.</p>
+          <h2 className="font-display text-4xl">Who fits {firstName(person.name)} best</h2>
+          {note && (
+            <div className="mt-3 rounded-xl bg-rose-soft/70 p-4">
+              <div className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-rose">The agent&apos;s final call</div>
+              <p className="italic">“{note}”</p>
+            </div>
+          )}
+          <p className="mt-3 text-sm text-muted">
+            The agent reviewed every date and ranked its shortlist itself (★). Fit score = 65% {firstName(person.name)}&apos;s agent + 35% the
+            other agent, +5 if both want a second date after a full date.
+          </p>
           <ol className="mt-4 divide-y divide-line">
             {ranking.slice(0, 10).map((r, i) => {
               const q = mini(r.personId);
@@ -442,7 +466,7 @@ export function JoinFlow() {
                     </Link>
                     <div className="truncate text-xs text-muted">“{r.reason}”</div>
                   </div>
-                  {r.mutual && <span className="text-rose">♥</span>}
+                  {r.agentRank === 1 && <span className="text-rose" title="The agent's own pick">★</span>}
                   <span className="rounded-full bg-rose-soft px-2.5 py-0.5 font-semibold tabular-nums text-rose">{r.fit}</span>
                 </li>
               );
@@ -450,7 +474,7 @@ export function JoinFlow() {
           </ol>
           <div className="mt-4 flex gap-3">
             <Link href={`/p/${person.id}`} className="rounded-xl bg-ink px-4 py-2 text-sm font-medium text-paper hover:bg-rose">
-              Open {person.name.split(" ")[0]}&apos;s profile page →
+              Open {firstName(person.name)}&apos;s profile page →
             </Link>
             <Link href="/rankings" className="rounded-xl border border-ink px-4 py-2 text-sm font-medium hover:bg-ink hover:text-paper">
               All rankings

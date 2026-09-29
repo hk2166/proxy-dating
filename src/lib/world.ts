@@ -16,12 +16,22 @@ export async function loadWorld(): Promise<World> {
   return { people, byId: new Map(people.map((p) => [p.id, p])), dates, rankings: allRankings(people, dates) };
 }
 
+/** Pairs where each agent's final #1 pick (Round 3) is the other person. */
+export function mutualPicks(w: World): [Person, Person][] {
+  const top = (p: Person) => w.rankings[p.id]?.[0]?.personId;
+  const out: [Person, Person][] = [];
+  for (const p of w.people) {
+    const q = w.byId.get(top(p) || "");
+    if (q && top(q) === p.id && p.id < q.id) out.push([p, q]);
+  }
+  return out;
+}
+
 export function stats(w: World) {
   const speed = w.dates.filter((d) => d.kind === "speed").length;
   const full = w.dates.filter((d) => d.kind === "full").length;
   const lines = w.dates.reduce((n, d) => n + d.messages.length, 0);
-  const mutual = w.dates.filter((d) => d.kind === "full" && d.scoreA?.secondDate && d.scoreB?.secondDate).length;
-  return { people: w.people.length, speed, full, lines, mutual };
+  return { people: w.people.length, speed, full, lines, mutual: mutualPicks(w).length };
 }
 
 export function bestDates(w: World, kind: "full" | "speed", n: number) {

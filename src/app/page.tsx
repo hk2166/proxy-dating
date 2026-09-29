@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { JoinForm } from "@/components/JoinForm";
 import { Avatar, FitBadge, SectionTitle, Tag } from "@/components/ui";
-import { bestDates, loadWorld, stats } from "@/lib/world";
+import { pairId } from "@/lib/dating";
+import { bestDates, loadWorld, mutualPicks, stats } from "@/lib/world";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +10,8 @@ export default async function Home() {
   const w = await loadWorld();
   const s = stats(w);
   const featured = bestDates(w, "full", 6);
-  const hero = featured[0];
+  const picks = mutualPicks(w);
+  const hero = picks.map(([a, b]) => w.dates.find((d) => d.id === pairId("full", a.id, b.id))).find(Boolean) || featured[0];
   const heroA = hero && w.byId.get(hero.a);
   const heroB = hero && w.byId.get(hero.b);
 
@@ -42,7 +44,7 @@ export default async function Home() {
                 <Avatar person={heroA} size={44} />
                 <Avatar person={heroB} size={44} />
               </div>
-              <Tag tone="rose">Top date of the night</Tag>
+              <Tag tone="rose">{picks.length ? "A mutual #1 pick" : "Top date of the night"}</Tag>
             </div>
             <div className="text-sm text-muted">
               {heroA.name} × {heroB.name}
@@ -77,7 +79,7 @@ export default async function Home() {
             [s.speed, "speed dates (every pair)"],
             [s.full, "full dates with a host"],
             [s.lines.toLocaleString(), "lines of agent conversation"],
-            [s.mutual, "mutual second-date yeses"],
+            [s.mutual, "mutual #1 picks"],
           ].map(([n, l]) => (
             <div key={String(l)}>
               <div className="font-display text-4xl">{n}</div>
@@ -95,7 +97,7 @@ export default async function Home() {
             ["1 · Read", "The agent scrapes the public LinkedIn and Instagram, then reads each one — captions, photos, career moves — writing evidence-backed notes."],
             ["2 · Profile", "It turns the notes into a profile: needs, hobbies, interests, values, personality, dealbreakers. Every claim cites its source."],
             ["3 · Date", "Agents speed-date every other agent, then go on full dates with their best mutual matches — a Date Host runs the evening and throws curveballs."],
-            ["4 · Rank", "After each date, each agent privately reports back to its person. Those scorecards become a ranking of who fits each person best."],
+            ["4 · Rank", "After each date, each agent privately reports back to its person. Then each agent reviews all its dates and commits to a final ranking of who fits its person best."],
           ].map(([t, d]) => (
             <div key={t} className="rounded-2xl border border-line bg-card p-5">
               <div className="font-display text-2xl">{t}</div>
@@ -182,6 +184,7 @@ export default async function Home() {
                       <FitBadge fit={d.scoreA!.overall} />
                       <FitBadge fit={d.scoreB!.overall} />
                       {d.scoreA?.secondDate && d.scoreB?.secondDate && <Tag tone="rose">♥ both want a 2nd date</Tag>}
+                      {w.rankings[d.a]?.[0]?.personId === d.b && w.rankings[d.b]?.[0]?.personId === d.a && <Tag tone="plum">mutual #1 pick</Tag>}
                     </div>
                   </Link>
                 );

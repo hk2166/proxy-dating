@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Avatar, FitBadge, SectionTitle, Tag } from "@/components/ui";
-import { bestDates, loadWorld } from "@/lib/world";
+import { pairId } from "@/lib/dating";
+import { loadWorld, mutualPicks } from "@/lib/world";
+import { firstName } from "@/lib/names";
 
 export const dynamic = "force-dynamic";
 
@@ -13,35 +15,39 @@ function cellColor(fit: number) {
 export default async function RankingsPage() {
   const w = await loadWorld();
   const people = w.people;
-  const couples = bestDates(w, "full", 8).filter((d) => d.scoreA?.secondDate && d.scoreB?.secondDate);
+  const dateIds = new Set(w.dates.map((d) => d.id));
+  const couples = mutualPicks(w).map(([a, b]) => ({
+    a,
+    b,
+    href: `/dates/${dateIds.has(pairId("full", a.id, b.id)) ? pairId("full", a.id, b.id) : pairId("speed", a.id, b.id)}`,
+    venue: w.dates.find((d) => d.id === pairId("full", a.id, b.id))?.venue,
+  }));
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <SectionTitle kicker="The rankings" title="Who fits each person best">
-        For every person, their agent&apos;s private scorecards from every date become a ranking. Fit = 65% their own agent&apos;s view +
-        35% the other agent&apos;s view (a match has to be mutual), +5 when both booked a second date.
+        Every date ends with private scorecards. Fit = 65% the person&apos;s own agent&apos;s view + 35% the other agent&apos;s view (a
+        match has to be mutual), +5 when both want a second date after a full date. Then each agent reviews its shortlist and makes
+        the final call on the order (★).
       </SectionTitle>
 
       {couples.length > 0 && (
         <section className="mb-10">
-          <h3 className="mb-3 font-display text-2xl">Mutual matches of the night</h3>
+          <h3 className="font-display text-2xl">Mutual #1 picks</h3>
+          <p className="mb-3 text-sm text-muted">After all their dates, each of these agents independently chose the other person as the best fit.</p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {couples.map((d) => {
-              const a = w.byId.get(d.a)!;
-              const b = w.byId.get(d.b)!;
-              return (
-                <Link key={d.id} href={`/dates/${d.id}`} className="rounded-2xl border border-rose/30 bg-rose-soft/50 p-4 hover:border-rose">
-                  <div className="flex -space-x-2">
-                    <Avatar person={a} size={40} />
-                    <Avatar person={b} size={40} />
-                  </div>
-                  <div className="mt-2 text-sm font-semibold">
-                    {a.name.split(" ")[0]} ♥ {b.name.split(" ")[0]}
-                  </div>
-                  <div className="text-xs text-muted">{d.venue}</div>
-                </Link>
-              );
-            })}
+            {couples.map(({ a, b, href, venue }) => (
+              <Link key={a.id + b.id} href={href} className="rounded-2xl border border-rose/30 bg-rose-soft/50 p-4 hover:border-rose">
+                <div className="flex -space-x-2">
+                  <Avatar person={a} size={40} />
+                  <Avatar person={b} size={40} />
+                </div>
+                <div className="mt-2 text-sm font-semibold">
+                  {firstName(a.name)} ♥ {firstName(b.name)}
+                </div>
+                {venue && <div className="text-xs text-muted">{venue}</div>}
+              </Link>
+            ))}
           </div>
         </section>
       )}
@@ -65,7 +71,7 @@ export default async function RankingsPage() {
                         <span className="font-display text-lg text-rose">{i + 1}</span>
                         <Avatar person={q} size={24} />
                         <span className="min-w-0 flex-1 truncate text-sm">{q.name}</span>
-                        {e.mutual && <span className="text-rose" title="Both agents want a second date">♥</span>}
+                        {i === 0 && e.agentRank === 1 && <span className="text-rose" title="The agent's own final pick">★</span>}
                         <FitBadge fit={e.fit} />
                       </Link>
                     );
@@ -86,7 +92,7 @@ export default async function RankingsPage() {
           <span>fit 30</span>
           <div className="h-2 w-40 rounded" style={{ background: `linear-gradient(to right, ${cellColor(30)}, ${cellColor(90)})` }} />
           <span>90+</span>
-          <Tag tone="rose">♥ = mutual second date</Tag>
+          <Tag tone="rose">♥ = both want a 2nd date after a full date</Tag>
         </div>
         <div className="overflow-x-auto rounded-2xl border border-line bg-card p-3 scrollbar-thin">
           <table className="border-separate" style={{ borderSpacing: 2 }}>

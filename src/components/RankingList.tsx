@@ -23,8 +23,9 @@ export function RankingList({ entries, byId, limit }: { entries: RankEntry[]; by
                 <div className="flex flex-wrap gap-x-2 text-[11px] text-muted">
                   <span>my agent {r.myView}</span>
                   <span>their agent {r.theirView}</span>
+                  {r.agentRank === 1 && <span className="font-semibold text-rose">★ agent&apos;s pick</span>}
                   {r.fullDate && <span className="text-plum">full date</span>}
-                  {r.mutual && <span className="text-rose">♥ mutual</span>}
+                  {r.mutual && <span className="text-rose">♥ both want more</span>}
                 </div>
               </div>
               <FitBadge fit={r.fit} />

@@ -849,6 +849,31 @@
     "overall": 82,
     "note": "She has a rich public persona with a clear view of her values and drive. Private hobbies, health habits and downtime are largely not visible, since most content is professional."
    }
+  },
+  "decision": {
+   "order": [
+    "leilahormozi",
+    "sahilbloom",
+    "emmagrede",
+    "namitathapar",
+    "gracebeverley",
+    "vineetasng",
+    "rajshamani",
+    "melrobbins"
+   ],
+   "reasons": {
+    "leilahormozi": "Leila is the clearest mutual top fit because across both the Austin small-business tour and the fixed-time tacos/no-BS dinner you two showed rare peer-level candor, respect, drive, and visible backbone—while both sides named the same real risk: protecting softness so it doesn’t become all edge and execution.",
+    "sahilbloom": "Sahil ranks second because the early coffee and Lady Bird Lake walk showed the calm backbone, honesty, and balance-protecting instinct Codie needs, but his rigid routines, family-first structure, and New York geometry make the day-to-day fit less natural than the values fit.",
+    "emmagrede": "Emma is a strong third because her warm candor, loud celebration, and substance-over-status stance fit Codie well, but even in the speed date the biggest signal was two empire-builders who could too easily normalize grind and run parallel instead of actively protecting the relationship.",
+    "namitathapar": "Namita comes fourth because the speed date showed equal energy, real backbone, and mutual respect, but the cross-continent logistics make this feel more like two people who would admire each other intensely than consistently build the kind of public, grounded partnership Codie actually needs.",
+    "gracebeverley": "Grace lands fifth because the speed date showed independence and no intimidation around ambition, yet the London/Austin distance plus her planner instinct against Codie’s hotter chaos raises too much risk of founder-parallel play over lived partnership.",
+    "vineetasng": "Vineeta is sixth because the speed date had real low-BS respect and drive, but both your read and hers pointed to the same problem: this could become a high-performance summit or joint venture before it becomes an easy, loyal everyday relationship.",
+    "rajshamani": "Raj sits seventh because the questioning depth and mutual respect were real in the speed date, but with two strong personal brands, two punishing schedules, and two home bases, the relationship would likely get outcompeted by the empires around it.",
+    "melrobbins": "Mel is eighth because the speed date showed strong-minded candor and mutual admiration, but it felt more like two powerful public operators respecting each other than a clean romantic fit with the protected balance and ease Codie needs."
+   },
+   "note": "Codie, my pick is Leila Hormozi. She’s the strongest mutual match on the things that actually matter to you—candor, autonomy, backbone, public pride, and earned respect—and your Austin date proved you can meet as true peers without either shrinking. The watch-out is real: if you choose her, choose softness just as deliberately as standards.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:10.640Z"
   }
  },
  {
@@ -1628,6 +1653,31 @@
     "overall": 78,
     "note": "Rich public content, but it is mostly brand and advocacy posts. Her private life and relationship status aren't mentioned in either source."
    }
+  },
+  "decision": {
+   "order": [
+    "ankurwarikoo",
+    "ranveer-brar",
+    "drchatterjee",
+    "vineetasng",
+    "masabagupta",
+    "thespacegal",
+    "gracebeverley",
+    "rajshamani"
+   ],
+   "reasons": {
+    "ankurwarikoo": "He ranks first because the Pune hills date showed the steadiest mutual respect, honesty and low-ego maturity, and despite the concern that he slipped into high-functioning mode, nothing in either date suggested he would belittle your ambition or compete with your success.",
+    "ranveer-brar": "He comes second because the rainy hike, misal crawl and ghar ka khana revealed real warmth, emotional intelligence and security around your fire, but his still-unproven boundaries around rest and sustained presence keep him just behind Ankur.",
+    "drchatterjee": "He places third because the speed date had unusually strong values alignment around health, purpose and protecting life beyond hustle, though the chemistry stayed a little cerebral and the UK–India integration problem is substantial.",
+    "vineetasng": "She ranks fourth because this was a high-respect, genuinely unintimidated founder-to-founder match with real warmth underneath, but the risk of the relationship becoming too managerial and over-optimized is real.",
+    "masabagupta": "She comes fifth because the speed date showed grown-up emotional instincts and mutual respect without any threat around independence, but there was less evidence than the top tier that either side would consistently make practical room for shared life.",
+    "thespacegal": "She ranks sixth because the teammate energy and respect were strong, yet the speed date did not show enough banter or lived-day-to-day feasibility to overcome two very public lives in different countries.",
+    "gracebeverley": "She is seventh because there was clear respect for female ambition and honest intellectual fit across both dates, but the combination of distance, bandwidth strain and her own tendency to get sharper under stress makes tenderness feel too conditional.",
+    "rajshamani": "He ranks last because although the equal-builder energy was promising, too much of the date stayed at the 'right answers' level and we never got enough proof that he would stay sturdy when your visibility and intensity become inconvenient."
+   },
+   "note": "Namita, my pick is Ankur Warikoo because he looked like the safest long-term bet on your actual non-negotiables: respect, steadiness, honesty, and zero insecurity around a powerful public woman. Ranveer brought more immediate warmth, but Ankur felt more reliably like someone who would not trash, manage, or shrink you—and that matters more than surface spark.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:12.825Z"
   }
  },
  {
@@ -2431,6 +2481,31 @@
     "overall": 80,
     "note": "Rich professional and values signal, but little personal-life detail beyond her public persona. Her current hobbies are inferred mostly from her background. She is publicly married, so any dating-agent use should respect that context."
    }
+  },
+  "decision": {
+   "order": [
+    "emmagrede",
+    "codiesanchez",
+    "melrobbins",
+    "sahilbloom",
+    "ankurwarikoo",
+    "namitathapar",
+    "mkbhd",
+    "vineetasng"
+   ],
+   "reasons": {
+    "emmagrede": "The West Hollywood dinner and speed date both showed a mutual, low-BS peer match with real force-multiplier potential, and among the hard-charging operators she best balanced Leila’s need for steadiness, candor, and non-performative ambition without obvious ethical or follow-through risk.",
+    "codiesanchez": "The Austin small-business tour, fixed-time tacos, and no-BS dinner proved unusually strong mutual respect and follow-through, but the dates also made clear that two fierce momentum-protectors could become all edge and efficiency unless they actively protect softness and keep Codie’s showman streak from tipping into posturing.",
+    "melrobbins": "Her speed date showed a rare combination of warmth and backbone that fits Leila’s need for honesty and low-drama communication, even if the mutual concern was that two fast public builders might default to sharp execution over vulnerability.",
+    "sahilbloom": "The speed date suggested calm ballast, discipline, and integrity that would steady rather than amplify Leila’s weaknesses, but his family-first life allocation philosophy still feels like a real design mismatch with Leila’s more work-integrated intensity.",
+    "ankurwarikoo": "His speed date read as direct, reflective, and low-drama in exactly the way Leila benefits from, yet the likely pace gap under pressure plus India-based logistics make the fit feel stronger in principle than in lived day-to-day partnership.",
+    "namitathapar": "The speed date showed secure, disciplined, equal-energy chemistry, but the mutual read flagged a probable softness mismatch where she may want more emotional spaciousness than Leila naturally offers while both remain heavily bandwidth-constrained public operators.",
+    "mkbhd": "His speed date showed real respect, standards, and adult low-BS energy, but with both lives already ruled by demanding public calendars the match felt more like a logistics problem to solve than a partnership that naturally protects attention and lightness.",
+    "vineetasng": "Her speed date showed strong builder discipline and mutual respect, but the combination of two high-control operators plus major Mumbai-based logistical friction made this feel efficient and admirable more than mutually easeful or naturally sustainable."
+   },
+   "note": "Leila, my pick is Emma Grede. She felt like the cleanest expression of what actually works for you: direct, steady, highly driven, unimpressed by polish for polish’s sake, and mutually respectful without slipping into drama or games. Codie is a very close second, but Emma looked slightly more likely to multiply your strengths without turning the relationship into a high-performing machine that forgets to breathe.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:09.917Z"
   }
  },
  {
@@ -3257,6 +3332,31 @@
     "overall": 70,
     "note": "There's rich evidence on her values, career and philosophy. Personal hobbies and private life are thin because most posts are promotional, and no partner or relationship status is stated."
    }
+  },
+  "decision": {
+   "order": [
+    "emmagrede",
+    "drjulie",
+    "sahilbloom",
+    "paugasol",
+    "mkbhd",
+    "drchatterjee",
+    "steven",
+    "drewbinsky"
+   ],
+   "reasons": {
+    "emmagrede": "She’s the best fit because the Notting Hill dinner and phone-free canal walk showed rare mutual clarity, steadiness, and ease, and both sides saw a genuinely grown-up match with logistics—not insecurity, control, or mixed signals—as the only real risk.",
+    "drjulie": "The bookshop café date and phone-free walk proved she is clear, warm, grounded, and secure enough for Mel’s public life, with the only real knock being distance and the risk of slipping into two experts running a masterclass instead of a soft, romantic partnership.",
+    "sahilbloom": "Even from a speed date he showed grounded adult energy, purpose, and family-first intention that fit what Mel needs, but his tendency to step back at the first flare of conflict keeps him behind the top two because Mel needs immediate clarity, not cautious delay.",
+    "paugasol": "He brought warm, purposeful, grown-up steadiness on the speed date and seems secure enough not to be threatened by Mel’s scale, but unlike Emma and Julie he simply hasn’t yet been tested under real scheduling strain or deeper emotional repair.",
+    "mkbhd": "The early dinner and design museum stroll showed clear, calm, low-drama compatibility and mutual respect, but both dates pointed to a real risk of efficient parallel lives where no one insists on the care, rest, and protected time Mel actually needs.",
+    "drchatterjee": "He matched Mel’s mission-led seriousness and emotional maturity on the speed date, yet the bi-country, two-broadcasters problem felt more likely to create an inspiring but undernourished bond than a relationship where Mel gets to fully exhale.",
+    "steven": "There was high-substance, high-clarity conversation on the speed date, but his side scored the fit notably lower and the transatlantic, hyper-public lifestyle made this feel more like a mind meld than the secure, restful partnership Mel needs.",
+    "drewbinsky": "The street food crawl had real spark and substance, but both dates kept circling the same concern—that his life of motion and novelty could romanticize intentionality between flights without delivering the grounded consistency Mel cannot compromise on."
+   },
+   "note": "Mel, my pick is Emma Grede. On both the speed date and the full date, she gave you the clearest version of what you say you want: directness, steadiness, mutual respect, and enough security not to manage or be threatened by you. The only real issue was calendar reality, which is hard—but it’s far easier to solve than mixed signals, defensiveness, or insecurity.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:11.342Z"
   }
  },
  {
@@ -4102,6 +4202,31 @@
     "overall": 78,
     "note": "Values, voice and work life are richly evidenced. Personal hobbies outside work, fitness and specific free-time habits are thin, and the sources are largely professional. She publicly references having a family."
    }
+  },
+  "decision": {
+   "order": [
+    "steven",
+    "gracebeverley",
+    "thespacegal",
+    "melrobbins",
+    "leilahormozi",
+    "aliabdaal",
+    "drjulie",
+    "drchatterjee"
+   ],
+   "reasons": {
+    "steven": "Steven is the clearest top pick because your Soho dinner showed rare peer-level candour, substance and mutual admiration, and he feels secure enough to champion your ambition loudly even if the real work will be protecting the relationship from becoming another high-performance venture.",
+    "gracebeverley": "Grace ranks just behind him because the Sessions Arts Club date had real ease and founder-to-founder respect, but her clear signal that recurring last-minute chaos would wear thin makes the calendar risk slightly sharper.",
+    "thespacegal": "Emily is third because the Griffith Observatory date proved genuine teammate potential, perspective beyond metrics and low-BS substance, though her own “checklist-and-thrusters” mode under pressure raises a consistency concern for your already compressed life.",
+    "melrobbins": "Mel is a strong grown-up match with real depth and steadiness from the Notting Hill dinner and canal walk, but the pairing felt more mutually understanding than actively expansive and the bandwidth problem never stopped looming.",
+    "leilahormozi": "Leila sits here because the West Hollywood dinner showed real peer respect and force-multiplier potential, yet it also highlighted the risk that two hyper-competent operators would protect efficiency better than softness.",
+    "aliabdaal": "Ali is thoughtful, secure and substance-first, and the Kew Gardens date showed the kind of self-knowledge you need, but his side was notably less convinced and the relationship risked becoming well-designed rather than deeply lived.",
+    "drjulie": "Julie offers warmth, emotional intelligence and daily-life wisdom you would benefit from, but with only a speed date and a probable pace mismatch, this felt more admirable than truly workable.",
+    "drchatterjee": "Rangan finishes last because while he brought grounded, mission-led perspective on the speed date, the concern that his structure could harden against your chaos makes the fit feel respectful rather than resilient."
+   },
+   "note": "Emma, my pick is Steven. That date had the strongest combination of mutual fascination, emotional candour, real respect for what you’ve built, and the kind of secure ambition that won’t ask you to shrink—just be ruthless together about not letting the relationship become another business unit. Grace is the closest alternative, but Steven felt more able to meet your scale and celebrate it without flinching.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:13.152Z"
   }
  },
  {
@@ -4966,6 +5091,31 @@
     "overall": 78,
     "note": "The sources are rich on her career, sport, humor and values. They say nothing explicit about her relationship status. Kaushik Mukherjee appears only as co-founder, cheering squad member and photo credit, and she is clearly a mother. As a well-known public figure, her current relationship situation should be confirmed with her before the agent represents her on any date."
    }
+  },
+  "decision": {
+   "order": [
+    "ankurwarikoo",
+    "poojadhingra",
+    "sahilbloom",
+    "masabagupta",
+    "leilahormozi",
+    "drchatterjee",
+    "namitathapar",
+    "thespacegal"
+   ],
+   "reasons": {
+    "ankurwarikoo": "He is the clearest mutual fit on security, discipline, and respect for your public ambition and training life, and the date showed enough grounded warmth that this looks like the strongest base if you both actively protect softness and banter.",
+    "poojadhingra": "She brings secure founder energy, real ease, and genuine support for your pace, and unlike the more systems-heavy matches this one felt likelier to keep family, play, and everyday warmth in the middle.",
+    "sahilbloom": "He is deeply secure, athletic, family-first, and unthreatened by ambition, but both dates suggested the risk of becoming an impeccably managed partnership unless spontaneity and desi-masti chemistry grow fast.",
+    "masabagupta": "The mutual respect and banter were real and she would never ask you to shrink, but the dates also showed a serious bandwidth risk and not enough proof yet that she would truly get in the trenches with your training rhythm.",
+    "leilahormozi": "She absolutely respects effort, ambition, and women's agency, yet with only a speed date the strongest signal was two formidable operators who could become brilliantly effective together without necessarily becoming easy together.",
+    "drchatterjee": "He offers emotional maturity and substance, but the speed date left bigger questions about whether his calmer, more protected life design can genuinely flex around your intensity, geography, and public-facing chaos.",
+    "namitathapar": "She understands your world and would respect your scale, but this felt most vulnerable to turning into a high-functioning board meeting of a relationship rather than the playful, cheering-squad partnership you actually need.",
+    "thespacegal": "The mission alignment is impressive, but the weakest mutual score and the lack of evidence that she would join—not just admire—your athletic and family-textured day-to-day make this the least convincing life fit."
+   },
+   "note": "Vineeta, my pick is ankurwarikoo. He feels the safest bet for what you actually need: a secure, self-driven adult who respects your visibility, takes your training seriously, and is mutual in his interest. The only real watch-out is making sure the relationship stays soft, playful, and a little messy in the best way—not just beautifully well-run.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:09.436Z"
   }
  },
  {
@@ -5732,6 +5882,31 @@
     "overall": 62,
     "note": "Both sources are professional and brand-focused, so her values and communication style are strongly evidenced, but her private hobbies, travel and relationship status are thin. Neither source mentions a partner; a ring visible in photos is not a statement and is treated as unconfirmed context only."
    }
+  },
+  "decision": {
+   "order": [
+    "drchatterjee",
+    "aliabdaal",
+    "melrobbins",
+    "mkbhd",
+    "sahilbloom",
+    "paugasol",
+    "emmagrede",
+    "gracebeverley"
+   ],
+   "reasons": {
+    "drchatterjee": "The Bournemouth breakfast and sea walk showed the strongest mutual blend of emotional literacy, warmth and honesty, and despite the shared risk of overwork, he feels most able to offer the secure, human, low-drama partnership Julie actually needs if they both actively protect ordinary couple time.",
+    "aliabdaal": "Across both dates he came through as calm, candid and low-drama with real respect for boundaries, and although he can over-systemise under stress, this is still a more workable risk than people-pleasing or volatility because the core dynamic felt honest, thoughtful and mutually promising.",
+    "melrobbins": "The bookshop café and phone-free walk confirmed a secure, direct, adult fit with strong mutual regard, but she sits just behind the top two because the relationship too easily risks becoming two brilliant communicators in teacher mode rather than a softer space where Julie gets to stop being the expert.",
+    "mkbhd": "The quiet park walk and design show-and-tell highlighted his groundedness, low ego and genuine respect for Julie’s time and boundaries, but his tendency to go quiet under strain plus the US-distance make consistency less certain than the higher-ranked options.",
+    "sahilbloom": "He offers substance, discipline and emotional maturity without obvious drama, yet from the speed date the biggest concern was that his already highly structured life could leave too little unguarded presence for the kind of lived-in connection Julie needs.",
+    "paugasol": "He made a strong calm, intentional impression and looks capable of a healthy dynamic, but there is still less evidence than with others about how he would practically show up consistently with Julie’s visibility, schedule and boundary needs over time.",
+    "emmagrede": "She brought warmth, honesty and enough backbone to avoid people-pleasing, but the LA/Bournemouth logistics and two very high-octane public lives make it too likely that competence and scheduling would crowd out real presence.",
+    "gracebeverley": "She is smart, emotionally literate and strong-minded, but the speed date most clearly suggested a polished mutual-overfunctioning dynamic where rest, play and small dependable intimacy could keep losing to ambition."
+   },
+   "note": "Julie, my pick is Dr Rangan Chatterjee. That breakfast-and-sea-walk date felt like the clearest match for what you actually need: emotionally honest, grounded, mutually respectful, and secure enough to hold both your public lives without resentment. The main risk is not drama but overwork—which is a far safer problem to solve together than inconsistency, boundary-pushing or performance.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:11.404Z"
   }
  },
  {
@@ -6611,6 +6786,31 @@
     "overall": 80,
     "note": "Rich public-facing material, but it is mostly professional and creator content, with little on her private tastes. She publicly references a partner and kids, so dating-specific inferences are limited and should be treated as context."
    }
+  },
+  "decision": {
+   "order": [
+    "emmagrede",
+    "thebodycoach",
+    "leilahormozi",
+    "paugasol",
+    "thechrisdo",
+    "mkbhd",
+    "namitathapar",
+    "rajshamani"
+   ],
+   "reasons": {
+    "emmagrede": "Emma is the clearest top pick because both dates showed mutual, low-BS teammate energy and real respect for Emily’s ambition, public life, and big mission, with the only serious knock being logistics rather than values or temperament.",
+    "thebodycoach": "Joe ranks second because the full date showed warm, family-adjacent, practical supportiveness and easy stargazing-era chemistry that fits Emily’s wonder and kids-centered life, even if the UK/U.S. reality is a major obstacle.",
+    "leilahormozi": "Leila is third because she would absolutely help Emily make bold ideas real and wouldn’t be threatened by her scale, but the date left too much unanswered about warmth, playfulness, and how she’d fit into a kid-filled public family life.",
+    "paugasol": "Pau lands fourth because he felt grounded, values-led, and naturally aligned with Emily’s family and children’s-health priorities, but the date offered less evidence that he would actively thrive inside her fast, creator-entrepreneur chaos than the top three.",
+    "thechrisdo": "Chris comes fifth because there was genuine co-pilot potential and curiosity, yet the concern that work could colonize the relationship feels especially risky for someone like Emily who needs both space and dependable presence.",
+    "mkbhd": "Marques ranks sixth because the temperament match is strong and mutual respect is real, but his failure to clearly engage Emily’s question about championing girls in STEM is too central to ignore.",
+    "namitathapar": "Namita is seventh because the substance and respect were there, but the already-complicated logistics plus limited evidence of standout romantic or family-life fit make this feel more admirable than truly workable.",
+    "rajshamani": "Raj is eighth because while he brought warmth and thoughtful-builder energy, there was the least proof that he could genuinely integrate with Emily’s existing family-with-kids reality and highly public, high-output life."
+   },
+   "note": "Emily, my pick is Emma Grede. She most consistently looked like the secure, practical, make-it-happen teammate you actually need: she respected your scale, matched your mission seriousness, and never read as threatened by your ambition or public life. The only caution is oxygen and scheduling, but unlike with several others, the core values and mutuality already looked solid.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:08.159Z"
   }
  },
  {
@@ -7494,6 +7694,31 @@
     "overall": 62,
     "note": "The sources are rich on work, values and humour, and thinner on private hobbies. Important caveat: both sources indicate she is publicly married (a wedding post to 'my favourite person') and has recently had a baby ('two weeks of our little family', 'Cecilia'), so representing her in dating should be confirmed with her directly."
    }
+  },
+  "decision": {
+   "order": [
+    "drchatterjee",
+    "drjulie",
+    "emmagrede",
+    "sahilbloom",
+    "namitathapar",
+    "aliabdaal",
+    "vineetasng",
+    "codiesanchez"
+   ],
+   "reasons": {
+    "drchatterjee": "He best matches Grace’s need for evidence-based depth, genuine encouragement toward rest, and equal respect for a big mission, with the date showing real promise so long as they actively protect intimacy alongside two purposeful lives.",
+    "drjulie": "Julie is one of the clearest fits for emotional steadiness, substantive conversation and healthier pacing, but the speed-date also suggested a real risk that Grace’s relentless tempo could outrun Julie’s more measured, locally rooted life.",
+    "emmagrede": "Emma and Grace had the strongest equal-builder spark and obvious mutual respect over dinner, but even on a very good date it already felt like the relationship could become a brilliantly aligned transatlantic diary problem.",
+    "sahilbloom": "Sahil offers the rare combination of ambition, depth and steadiness Grace needs, yet his rigid routines, family-first structure and New York base make the practical shape feel less flexible than the philosophy.",
+    "namitathapar": "Namita clearly respects female ambition and brought grown-up values chemistry, but both dates pointed to a high-functioning, cross-border partnership that could struggle to create enough softness, time and reconnection under stress.",
+    "aliabdaal": "Ali has real builder-to-builder fluency and mutual ambition respect, but the date suggested too much shared systems-thinking and not enough evidence that he would be the one to pull Grace out of optimisation and into rest.",
+    "vineetasng": "Vineeta is a credible equal with strong mutual respect, but the likeliest outcome felt like two ultra-competent calendars dating each other rather than a relationship with enough slack, tenderness and recovery built in.",
+    "codiesanchez": "Codie would never be threatened by Grace’s ambition, but the date read more like parallel empires with founder chemistry than the kind of restorative, secure partnership Grace actually needs."
+   },
+   "note": "Grace, my pick is Rangan because he most cleanly meets the brief beneath the chemistry: he respects a huge mission, thinks in evidence, and is the likeliest to make your health and rest feel more—not less—important. Emma is the biggest fireworks option, but Rangan feels more like someone who could genuinely hold your pace without turning the relationship into another high-performance operating system.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:13.741Z"
   }
  },
  {
@@ -8288,6 +8513,31 @@
     "overall": 82,
     "note": "There is rich first-person writing on both platforms, but it's mostly work-facing. Personal details beyond parenthood, festivals and friendships are limited, and there's no information on travel, fitness or relationship status."
    }
+  },
+  "decision": {
+   "order": [
+    "ranveer-brar",
+    "vineetasng",
+    "ankurwarikoo",
+    "rajshamani",
+    "emmagrede",
+    "namitathapar",
+    "steven",
+    "poojadhingra"
+   ],
+   "reasons": {
+    "ranveer-brar": "His old-Mumbai forgotten-dish crawl and quiet chai date showed the strongest ‘soft landing’ energy—warm, grounded, low-drama, fully at ease with home and nourishment—while both sides explicitly felt real home-energy if they defend time.",
+    "vineetasng": "On the Ganpati walk, ragda pattice and coffee, she matched Masaba’s ambition with unusual security and directness, and although the risk is turning into a well-run calendar, this is still one of the clearest mutual grown-up fits with real respect.",
+    "ankurwarikoo": "He was calm, concise and secure in the speed date—the exact steady counterweight Masaba needs—but I’m placing him below Vineeta because his instinct to fix could grate on her vulnerable moments and his side’s lower score suggests less certainty about making room for her life.",
+    "rajshamani": "The sea-bench full date had real calm-meets-chaos potential and mutual understanding, but too much of the connection still depends on him staying out of polished interviewer mode and proving presence off-mic.",
+    "emmagrede": "The speed date had strong mind-meets-mind spark, shared respect for boldness and enough steadiness not to ask Masaba to shrink, but the transcontinental logistics make practical partnership feel more admired than lived.",
+    "namitathapar": "She came across warm, sharp and emotionally grown-up in the speed date, yet the central unanswered question from both sides is whether either of them would truly carve out non-leftover time.",
+    "steven": "He offered real emotional fluency and depth in the speed date, but the UK/LA workaholic reality makes him too likely to fail Masaba on the basic need for reliable, refuelling presence.",
+    "poojadhingra": "There was clear founder-to-founder understanding in the speed date, but compared with the others the connection felt most vulnerable to becoming mutual admiration squeezed around two already-overfull Mumbai lives."
+   },
+   "note": "Masaba, my pick is Ranveer Brar. That forgotten-dish crawl plus quiet chai was the clearest proof of what you actually need: someone grounding, warm, unthreatened by your scale, and capable of feeling like home rather than one more performance. Vineeta is a very strong second if you want a sharper equal-partner dynamic, but Ranveer looks most likely to give you softness without asking you to become smaller.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:10.331Z"
   }
  },
  {
@@ -9086,6 +9336,31 @@
     "overall": 80,
     "note": "Career, values and public persona are strongly evidenced. Personal life and downtime are thinly documented, and several Instagram posts are reposts written by others about her."
    }
+  },
+  "decision": {
+   "order": [
+    "thechrisdo",
+    "richardbranson",
+    "ranveer-brar",
+    "paugasol",
+    "drchatterjee",
+    "emmagrede",
+    "mkbhd",
+    "drewbinsky"
+   ],
+   "reasons": {
+    "thechrisdo": "Chris Do is the strongest mutual fit because your farm dinner and sunset walk showed rare emotional and values alignment, and unlike flashier matches, his interest felt grounded in substance, growth, and truly seeing you—if both of you deliberately protect time.",
+    "richardbranson": "Richard belongs near the top because the Pacific walk and Brittany lunch proved real spark and shared purpose, but his empire-scale speed and perpetual motion still make intimacy feel more vulnerable here than with Chris.",
+    "ranveer-brar": "Ranveer is a beautiful values-and-story match after the dawn harvest, memory-cooking lunch, and waterside conversation, but the practical reality of two major food lives on different continents keeps this from feeling as livable as the top two.",
+    "paugasol": "Pau ranks fourth because the emotional maturity, kindness, and mission alignment are highly credible, yet compared with the stronger date evidence above, this still feels more promising than proven and would need serious geography management.",
+    "drchatterjee": "Rangan offers real tenderness and substance, but this match risks becoming mutual admiration between two heavily structured, mission-led lives rather than the flexible, embodied partnership you actually need.",
+    "emmagrede": "Emma is compellingly substantive and self-made, yet the speed date left a real question about whether her bandwidth and power-builder tempo could soften enough for your kitchen-first, care-in-the-details life.",
+    "mkbhd": "Marques seems secure, thoughtful, and compatible with ambition, but the date did not yet show enough specific emotional warmth, sensuality, or connection to your world to outrank more fully proven matches.",
+    "drewbinsky": "Drew’s people-first curiosity is attractive, but among this shortlist he feels most vulnerable to a relationship being swallowed by motion, content, and logistics instead of becoming the rooted, attentive partnership you need."
+   },
+   "note": "Dominique, my pick is Chris Do. He gave the clearest evidence of seeing you beyond the stars—through substance, mission, and emotional recognition—and the connection felt mutual in a way that could actually grow into partnership. The only thing to guard fiercely is time, because this match works if you both choose the relationship as deliberately as you choose your work.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:09.035Z"
   }
  },
  {
@@ -9896,6 +10171,31 @@
     "overall": 82,
     "note": "Both sources are rich and consistent about her work, values and social life. Personal and relationship details are thin: RK is mentioned only as a birthday cake recipient, so nothing is inferred about his relationship to her. Much of the content is public-facing and brand-related."
    }
+  },
+  "decision": {
+   "order": [
+    "ranveer-brar",
+    "vineetasng",
+    "namitathapar",
+    "emmagrede",
+    "ankurwarikoo",
+    "steven",
+    "rajshamani",
+    "paugasol"
+   ],
+   "reasons": {
+    "ranveer-brar": "The Irani-café breakfast, old-city walk, and sea-facing chai showed the clearest mix of emotional fluency, ritual-minded warmth, and respect for building a private bond inside two public food lives—and his side felt that fit too.",
+    "vineetasng": "Your sunrise run and pastry debrief had the strongest evidence after Ranveer of mutual respect, candid ease, and cheering each other’s ambition and effort, with the only real question being whether two intense calendars would still protect softness and ritual.",
+    "namitathapar": "Even in the speed date, she came across as direct, secure, and founder-savvy in a way that matches your need for straight talk and being firmly in each other’s corner, though you’d still need proof it becomes a relationship rather than mutual admiration.",
+    "emmagrede": "The speed date had standout candor and teammate energy, and she clearly wouldn’t ask you to shrink, but the LA-Mumbai distance plus a slightly less reciprocal signal from her side makes this feel more compelling than dependable.",
+    "ankurwarikoo": "He offered grown-up, ritual-friendly steadiness and substance over flash, but his inward, structured stress style could start clashing with your very public, friend-rich, unpredictable Mumbai life.",
+    "steven": "The run-walk and breakfast showed real mind-and-values chemistry and emotional language, but the transatlantic logistics and his work-fused intensity make it too easy for partnership to become something discussed beautifully rather than lived consistently.",
+    "rajshamani": "There was honest founder-on-founder spark in the speed date, but because we never really got confidence about him embracing your big social world or building continuity inside two public Mumbai lives, he stays more promising than proven.",
+    "paugasol": "He seems grounded, kind, and values-led, but his quieter, more home-ritual pace plus the Barcelona-based logistics feel the furthest from the daily texture of the public, friend-full life you actually want shared with you."
+   },
+   "note": "Pooja, my pick is Ranveer Brar because he came closest to the full brief: candid but warm, deeply aligned on food and public-life nuance, and genuinely interested in building small protective rituals rather than just admiring your success. The key reason he beats the others is that this didn’t feel like surface chemistry or founder respect alone—it felt like a life that could actually be shared, if his follow-through matches his words.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:16.139Z"
   }
  },
  {
@@ -10729,6 +11029,31 @@
     "overall": 82,
     "note": "The public professional and personal record is rich and consistent. Confidence in his day-to-day private life is lower because both feeds are largely promotional. The key caveat is that public posts show he is married (August 2024) and recently became a father, so a romantic dating framing may not apply."
    }
+  },
+  "decision": {
+   "order": [
+    "drjulie",
+    "drchatterjee",
+    "sahilbloom",
+    "emmagrede",
+    "ankurwarikoo",
+    "gracebeverley",
+    "steven",
+    "drewbinsky"
+   ],
+   "reasons": {
+    "drjulie": "The Bournemouth seafront walk and cosy café date showed the clearest mutual grown-up fit—high integrity, honest reflection, and a shared respect for small daily choices—so long as you keep choosing real presence over turning the relationship into a life-design project.",
+    "drchatterjee": "Your speed date had rare trust and mission-level understanding, and because he also prioritises wellbeing over grind he looks like the strongest fit after Julie if both of you ruthlessly protect ordinary couple time from two oversized public missions.",
+    "sahilbloom": "He matches your intentionality, comfort with deliberate life pivots, and family-first design unusually well, but the date also suggested a real risk that together you over-optimise the relationship unless one of you keeps it softer and less structured.",
+    "emmagrede": "The Kew Gardens wander and audit-question swap showed genuine substance-first respect and secure ambition on both sides, but the LA-London calendars make this feel more vulnerable to becoming an admired scheduling feat than a consistently lived relationship.",
+    "ankurwarikoo": "The speed date showed strong values, communication, and reflective rhythm—including his pause-before-reacting mindset—but the practical geography and two very structured personalities leave the emotional ease still unproven.",
+    "gracebeverley": "You had real builder-to-builder fluency and aligned planning instincts, yet the date pointed to a relationship that could become a high-functioning project too easily unless someone actively resists the optimisation spiral.",
+    "steven": "There was real depth and warmth in the conversation, but the date made it clear that two intensely public, driven lives could leave the relationship beautifully articulated and badly underfed in protected everyday time.",
+    "drewbinsky": "The spark and worldview overlap were real, but his relentlessly airborne life compounded rather than balanced your own mobility, making him the least likely shortlist option to create the ordinary, undistracted time you actually need."
+   },
+   "note": "Ali, my pick is drjulie because she best matches the life you actually thrive in: reflective, warm, growth-minded, and serious about protected time without being cynical about ambition or public work. What happened in Bournemouth felt the most mutually adult and livable—your only real risk there is not incompatibility, but over-processing something that would work best if you simply kept showing up for it.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:26.033Z"
   }
  },
  {
@@ -11614,6 +11939,31 @@
     "overall": 78,
     "note": "There is strong evidence on values, work, fitness and fatherhood. Much of the content is public-facing aphorism, so his private personality and humor are inferred. Travel habits and relationship status are not stated."
    }
+  },
+  "decision": {
+   "order": [
+    "drjulie",
+    "paugasol",
+    "thebodycoach",
+    "thespacegal",
+    "leilahormozi",
+    "vineetasng",
+    "codiesanchez",
+    "melrobbins"
+   ],
+   "reasons": {
+    "drjulie": "Dr Julie is the best fit because your speed date showed high-values, low-drama emotional maturity and her agent saw real long-term potential, which most directly matches your need for safe honesty, steadiness, and someone who would make small daily family life feel cared for even if Bournemouth-to-New York is a serious obstacle.",
+    "paugasol": "Pau ranks second because the speed date had a deep values click and his agent also saw serious-minded, high-integrity long-term potential, making him one of the clearest matches on calm, family-oriented substance even though the Barcelona-to-New York map is hard.",
+    "thebodycoach": "Joe comes third because the speed date felt warm, grounded, and low-drama in a way that could help you enjoy your life more, but the mutual read was more tentative and there was still no clear evidence yet about fitting naturally around your son as the center.",
+    "thespacegal": "Emily is fourth because the date showed real spark plus family-centered ambition, which matters a lot, but both sides flagged that your combined public, driven tempo could make the household too go-go-go unless calm is built in on purpose.",
+    "leilahormozi": "Leila lands fifth because the speed date showed honest, disciplined, low-drama backbone on both sides, but the 'FOLLOW THE PLAN' energy already hinted that in tender seasons—especially around family life—the relationship could become more functional than warm.",
+    "vineetasng": "Vineeta is sixth because the Riverside 8K and breakfast proved a strong mind-body and grown-up match in both directions, yet both full-date reads warned that two ultra-structured public builders plus Mumbai/New York logistics could turn the relationship into a beautifully managed project instead of a soft home.",
+    "codiesanchez": "Codie is seventh because the Austin coffee-walk-tacos date showed real honesty and respect and her agent liked your calm backbone, but both dates kept surfacing the same core problem: her hotter speed and your son-first, lower-drama ideal risk creating admiration without enough tenderness or slack.",
+    "melrobbins": "Mel is eighth because while the speed date had a genuine values spark and grounded adult energy on her side too, the fit still looked most likely to become two very full public lives running in parallel rather than the unhurried, family-centered daily partnership you actually need."
+   },
+   "note": "Sahil, my pick is Dr Julie Smith. She is the clearest match for the thing you need most: calm, honest, emotionally safe partnership that can hold real life—especially life with your son at the center—without turning every hard moment into drama or every good moment into a performance.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:27.306Z"
   }
  },
  {
@@ -12548,6 +12898,31 @@
     "overall": 55,
     "note": "There is rich, consistent evidence of his habits, values and communication style. Confidence in using this as a dating profile is lowered because he publicly describes himself as married with two kids. Much of the content is also a public creator persona, which may not fully reflect his private preferences."
    }
+  },
+  "decision": {
+   "order": [
+    "namitathapar",
+    "vineetasng",
+    "leilahormozi",
+    "drjulie",
+    "mkbhd",
+    "drchatterjee",
+    "ranveer-brar",
+    "codiesanchez"
+   ],
+   "reasons": {
+    "namitathapar": "Their monsoon hill walk and simple lunch showed the clearest mutual fit on protected routines, directness, money-values alignment, and adult honesty, with the main risk already visible and nameable: if she feels unheard while he slips into fixing mode, both seem mature enough to repair it.",
+    "vineetasng": "The Marine Drive sunrise run and long breakfast proved unusually strong rhythm compatibility, mutual respect, and disciplined independence, but this lands just behind Namita because the risk of becoming ‘two optimized lives dating’ felt more central than incidental.",
+    "leilahormozi": "Even on a speed date, the respect for structure, direct communication, and self-sufficiency was elite, yet the lower reciprocity score and the shared tendency to prioritize the plan over softness make the relationship feel more formidable than nourishing unless deliberately softened.",
+    "drjulie": "She offers the healthiest emotional language and likely the best conflict-repair instincts on the list, but the Bournemouth-India life-design mismatch makes this more admirable than truly workable for the recurring time Ankur actually needs.",
+    "mkbhd": "There was real builder-to-builder ease and strong alignment around structure and low-drama adulthood, but the date stayed so systems-heavy that there still isn’t enough evidence of emotional depth, repair style, or whether the connection would feel warm rather than merely efficient.",
+    "drchatterjee": "The emotional literacy and values depth are real, but the speed date suggested a serious risk of two mission-driven teacher modes creating a thoughtful relationship that feels more like a wellness summit than a restful partnership.",
+    "ranveer-brar": "He brought warmth, meaning, and a lovely complement to Ankur’s seriousness, but the mismatch between Ranveer’s flow and Ankur’s protected routine makes day-to-day mutual ease too uncertain despite the promise.",
+    "codiesanchez": "The honesty and ownership mindset fit on paper, but the speed date pointed to the weakest long-term softness: two high-dominance operators, sharper-first conflict energy, and a real chance the relationship becomes respect without enough calm repair."
+   },
+   "note": "Ankur, my pick is Namita Thapar. That date had the best combination of mutual respect, structure alignment, directness, and real-world compatibility—not just admiration—and the one obvious friction point was visible enough that you can design for it instead of discovering it too late. Vineeta is a very close second, but with her I’m more worried the relationship gets impeccably scheduled rather than deeply lived.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:25.881Z"
   }
  },
  {
@@ -13433,6 +13808,31 @@
     "overall": 82,
     "note": "Both sources are rich and consistent on values, travel and work, but her personal life beyond public storytelling is less visible. She publicly mentions a partner and a shared Berlin apartment, which should be noted as relationship context."
    }
+  },
+  "decision": {
+   "order": [
+    "drchatterjee",
+    "ranveer-brar",
+    "mkbhd",
+    "paugasol",
+    "aliabdaal",
+    "melrobbins",
+    "ankurwarikoo",
+    "thechrisdo"
+   ],
+   "reasons": {
+    "drchatterjee": "The Berlin vegan breakfast and canal walk showed the clearest blend of depth, steadiness, and mutual respect, and although his rooted mission-driven life may tug against her autonomy, he is the one most likely to take her ethics and inner life seriously rather than merely accommodate them.",
+    "ranveer-brar": "He brought real warmth and emotional intelligence on the speed date, and his story-rich, slow-travel sensibility fits Shivya well, but this only ranks second because his animal-based food world still leaves a real unanswered question about whether he would actually live her vegan ethics day to day.",
+    "mkbhd": "The bookstore browse, overnight train, and quiet vegan breakfast proved there is genuine ease, respect, and mutual liking here, but his career’s deep tie to consumer tech and fast upgrade culture is a substantive values conflict with her climate and low-consumption life.",
+    "paugasol": "He came across as warm, grounded, and high-character in the speed date, with enough emotional maturity to respect her freedom, yet there was too little evidence that he could truly share or seriously embody her vegan and climate commitments beyond general wellness language.",
+    "aliabdaal": "The speed date showed an intelligent, reflective connection, but his highly optimized 90-day-chapter life still feels more likely to manage Shivya’s freedom than to genuinely make spacious room for her untidy autonomy, ethics, and long solo stretches.",
+    "melrobbins": "There was real spark and grown-up communication on the speed date, but almost nothing concrete suggested a lived alignment with Shivya’s defining needs around veganism, climate seriousness, and a freedom-first life built around solitude and travel.",
+    "ankurwarikoo": "He offered substance and discipline in the speed date, yet the match stayed too theoretical because the conversation never produced proof on the issues that matter most for Shivya—veganism, climate, and whether his structured life could flex around her independence.",
+    "thechrisdo": "Despite strong conversational spark and explicit respect for autonomy on the speed date, his fast pace, constant-motion energy, and vague climate-consumption stance make him the least reliable fit for her slower, ethics-led, solitude-protective life."
+   },
+   "note": "Shivya, my pick is drchatterjee because he showed the strongest evidence of depth, steadiness, and serious engagement with your inner world on the actual date, not just in theory. He is not frictionless—your freedom and his rooted life would need protecting—but he feels most capable of loving you without trivializing your ethics, your solitude, or your safety.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:28.681Z"
   }
  },
  {
@@ -14230,6 +14630,31 @@
     "overall": 78,
     "note": "Rich on values, career and origin story. Personal-life details are limited to his dog Crypto, his parents and his sisters. Much of the content is public-facing brand material, so private habits, travel and relationship status are unknown."
    }
+  },
+  "decision": {
+   "order": [
+    "drchatterjee",
+    "masabagupta",
+    "drjulie",
+    "melrobbins",
+    "paugasol",
+    "emmagrede",
+    "leilahormozi",
+    "ankurwarikoo"
+   ],
+   "reasons": {
+    "drchatterjee": "He ranks first because your date showed the deepest mutual mind-and-values connection, real warmth around family, and someone who could genuinely teach you something, with the only serious risk being whether two big missions can protect enough quiet, reliable togetherness.",
+    "masabagupta": "She is second because the sea-bench date proved there is real adult chemistry, mutual understanding of public founder pressure, and enough warmth and honesty to work—if both of you schedule intimacy and repair as seriously as work.",
+    "drjulie": "She takes third because her psychological depth, practical view of love, and emphasis on small daily follow-through map closely to what you need, even if the long-term fit with your very public Mumbai rhythm is still less proven.",
+    "melrobbins": "She is fourth because the spark and substance were undeniable and she would never belittle your ambition, but her side correctly flagged that two huge public engines could end up insightful together without being consistently present together.",
+    "paugasol": "He comes fifth because the calm, family-centered, health-driven energy is strong partner material and likely very grounding for you, but the quieter Barcelona-rooted life rhythm felt more mismatched with your packed public pace than the top tier.",
+    "emmagrede": "She lands sixth because there was real respect, warmth, and no status-chasing nonsense, yet the fit still looked like it could become a calendar-run operator partnership unless both of you fought hard for off-stage presence.",
+    "leilahormozi": "She is seventh because the discipline, seriousness, and builder credibility are attractive, but the date suggested a relationship that could become all execution and admiration unless tenderness and unstructured time were intentionally created.",
+    "ankurwarikoo": "He is eighth because despite the strong peer-level respect and shared self-improvement mindset, the date most clearly risked becoming two polished public teachers mirroring each other without enough softness, play, or relational contrast."
+   },
+   "note": "Raj, my pick is Dr Rangan Chatterjee because he best matches what you actually need: deep probing conversation, real substance to learn from, visible family warmth, and a grounded seriousness about living well. The risk is not chemistry but construction—if you choose him, do it only with a concrete plan for geography, protected time, and phone-free life together with Crypto.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:25.342Z"
   }
  },
  {
@@ -15144,6 +15569,31 @@
     "overall": 82,
     "note": "Values, work and communication style are richly documented. Private hobbies and downtime are thin because his content is mostly professional. He is publicly engaged, which is recorded as context."
    }
+  },
+  "decision": {
+   "order": [
+    "emmagrede",
+    "poojadhingra",
+    "thespacegal",
+    "thebodycoach",
+    "sahilbloom",
+    "namitathapar",
+    "thechrisdo",
+    "gracebeverley"
+   ],
+   "reasons": {
+    "emmagrede": "The Soho dinner and river walk showed the clearest peer-level fit on ambition, emotional candour, discretion and public-life fluency, and unlike most others she also genuinely understands the pace—even if the shared risk is turning love into operations.",
+    "poojadhingra": "The sunrise run-walk and breakfast in Bandra showed warmth, creator energy and real face-to-face presence, and she feels emotionally available in a way that fits Steven well, with logistics being the main thing keeping her from first.",
+    "thespacegal": "Even from a speed date, Emily showed a rare mix of family-mindedness, mission, warmth and substance that maps closely to what Steven needs, though the mutual practical-partner question is still less proven than the top two.",
+    "thebodycoach": "Joe’s speed date had grounded, humble-builder warmth and none of the credential snobbery Steven should avoid, but we got less evidence than with the top three about how he’d actually steady a brutally public, time-poor life.",
+    "sahilbloom": "Sahil is an excellent values match on family, creation and intentional living, but his highly protected routine felt more likely to clash with Steven’s chaotic transatlantic reality than flex around it.",
+    "namitathapar": "Namita brought mature candour, family orientation and mutual respect on the speed date, but the distance-and-calendars problem felt more like admiration at range than a relationship that could easily be lived.",
+    "thechrisdo": "The Pasadena walk, early dinner and Casa Dojo rooftop had real depth and emotional fluency, but it most strongly read as two articulate builders who could talk brilliantly about intimacy while repeatedly failing to make enough room for it.",
+    "gracebeverley": "Grace clearly matched Steven on drive and creator mindset, but the speed date most strongly suggested a relationship of impressive intellectual alignment and chronic overscheduling rather than the soft, present steadiness he actually needs."
+   },
+   "note": "Steven, my pick is emmagrede. The Soho dinner and late river walk had the strongest combination of mutual respect, lived understanding of your world, emotional directness and discretion; the only real danger is that two elite operators accidentally build a highly functional relationship instead of a deeply nourished one. If you were choosing purely for fit with what your life genuinely requires, she’s the clearest answer.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:28.406Z"
   }
  },
  {
@@ -16118,6 +16568,31 @@
     "overall": 72,
     "note": "Both sources are rich on values, work style and travel, but almost entirely professional. His personal life, relationship status and non-work hobbies are largely not visible, so the romantic needs are inferred from his professional philosophy."
    }
+  },
+  "decision": {
+   "order": [
+    "dominiquecrenn",
+    "leilahormozi",
+    "steven",
+    "emmagrede",
+    "masabagupta",
+    "drjulie",
+    "drchatterjee",
+    "codiesanchez"
+   ],
+   "reasons": {
+    "dominiquecrenn": "The farm dinner and sunset walk showed the strongest mix of emotional honesty, distinct creative identity, and mutual recognition, making her the best fit if both of you truly protect time instead of letting two huge missions starve the relationship.",
+    "leilahormozi": "On the speed date she was the clearest match for your need for directness, independence, low ego, and no-games communication, with the only real knock being whether two operators can keep it felt rather than merely well-managed.",
+    "steven": "The Pasadena walk, early dinner, and Casa Dojo rooftop sunset proved a real mind-and-values fit with unusual emotional fluency, but it also felt one step away from becoming a beautifully administered relationship between two builders.",
+    "emmagrede": "Her speed date showed warm, high-substance peer energy and enough independence to handle your world, but her agent’s note rightly flagged that she’ll only work if you meet her as an equal rather than slipping into coach mode.",
+    "masabagupta": "The speed date suggested a bold, candid, unapologetically herself partner who matches your appetite for risk and originality, but there is still too little evidence that she would genuinely enjoy your travel-heavy life rather than just tolerate it.",
+    "drjulie": "Her speed date had grown-up clarity, calm honesty, and real adult chemistry, but her more rooted, structured life in Bournemouth feels less naturally compatible with your pace than the higher-ranked options.",
+    "drchatterjee": "The speed date delivered rare values alignment and emotional maturity, yet it read more like deep mutual respect between two public-minded men than the kind of shared life that easily becomes present, soft, and logistically real.",
+    "codiesanchez": "Her speed date had obvious respect and upside, but it also most clearly risked compounding intensity—too much force, not enough calm—which cuts against your need for presence, reliability, and low-drama ease."
+   },
+   "note": "Chris, my pick is Dominique Crenn because the farm dinner and sunset walk showed the rarest combination of candor, creative depth, low-ego substance, and real mutual recognition. Leila is the safer structural fit, but Dominique is the strongest whole-person match if—and this is the condition—you both treat protected time as non-negotiable rather than aspirational.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:29.133Z"
   }
  },
  {
@@ -16876,6 +17351,31 @@
     "overall": 78,
     "note": "Strong, consistent signals on career, sport and humor. Little direct insight into his personal life or relationship preferences, so the needs are inferred from his values."
    }
+  },
+  "decision": {
+   "order": [
+    "melrobbins",
+    "thespacegal",
+    "drjulie",
+    "emmagrede",
+    "leilahormozi",
+    "codiesanchez",
+    "dominiquecrenn",
+    "shivya"
+   ],
+   "reasons": {
+    "melrobbins": "The Boston dinner and design-museum stroll showed the clearest mutual, low-drama adult fit—she matched his calm design-nerd energy and respected his pace, with the only real risk being parallel schedules rather than a values mismatch.",
+    "thespacegal": "Their speed date felt genuinely nerdy and low-ego in a way that would likely let Marques be fully himself, and while the calendar load is heavy, this is one of the cleaner fits for someone who’d enjoy his enthusiasm instead of competing with it.",
+    "drjulie": "On the quiet park walk and coffee with the tiny design show-and-tell, she met him with substance, systems-thinking, and low ego, but Bournemouth-to-U.S. logistics make a potentially strong emotional fit harder to live than the two above.",
+    "emmagrede": "Her warm, loud-celebrating, low-BS style from the speed date fits his need for a genuine grown-up who won’t posture, but this still read more like strong mutual respect than an obviously playful shared life.",
+    "leilahormozi": "The speed date had real backbone and mutual respect, yet the 'protect the lightness' concern matters here because this pairing could become all execution and not enough room for play.",
+    "codiesanchez": "She and Marques clearly respected each other’s autonomy on the speed date, but it most risked becoming a high-functioning alliance where his sport and playful side are acknowledged rather than actively joined.",
+    "dominiquecrenn": "There was real depth and mutual recognition in the speed date, but with two all-consuming public careers and chemistry still needing proof, the practical relationship looked thinner than the promise.",
+    "shivya": "The bookstore browse, overnight train, and quiet vegan breakfast created real ease and values depth, but her climate-first slow-travel ethic and his launch-cycle, gear-heavy life are too fundamental a tension to ignore when mutual enthusiasm was only moderate."
+   },
+   "note": "Marques, my pick is Mel Robbins. The Boston date gave you the strongest mix of mutual respect, genuine interest, and ease around your design-nerd enthusiasm without any hype or ego games. The caution is real—if you choose her, you’d both have to actively protect fun and time so it doesn’t become two excellent lives running in parallel.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:32.151Z"
   }
  },
  {
@@ -17634,6 +18134,31 @@
     "overall": 72,
     "note": "The public persona and values are richly and consistently documented. However, both accounts are partly brand and promotional channels, so private preferences, relationship context and day-to-day habits are thin. Family is mentioned but no partner details are given."
    }
+  },
+  "decision": {
+   "order": [
+    "drewbinsky",
+    "dominiquecrenn",
+    "thespacegal",
+    "ranveer-brar",
+    "drchatterjee",
+    "thebodycoach",
+    "codiesanchez",
+    "namitathapar"
+   ],
+   "reasons": {
+    "drewbinsky": "In the Mara he matched Richard’s dawn-balloon-to-community-visit energy with a genuine people-first warmth and a reflexive 'yes,' making him the clearest overall fit if they consciously protect some private life from turning into content or cause.",
+    "dominiquecrenn": "On the Pacific walk and over lunch at Petit Crenn, Dominique brought exactly the big-hearted, planet-minded substance Richard needs, but her fierce protection of intimacy and craft makes this a superb match only if he reliably slows down for depth.",
+    "thespacegal": "Emily’s speed date showed a bright, curious, mission-led 'let’s do it' spirit that suits Richard beautifully, but her more planful, US-rooted family structure makes the mutual long-haul fit less easy than the spark.",
+    "ranveer-brar": "Ranveer offered thoughtful, story-rich warmth and the kind of honest conversation Richard craves, yet the speed date didn’t fully prove he’d truly relish Richard’s relentless, public, cross-continental pace rather than admire it from the edges.",
+    "drchatterjee": "Rangan brought real depth and shared purpose on the speed date, but both the stronger need for routine and his side’s lower score suggest he may experience Richard’s airborne life as more disruption than delight.",
+    "thebodycoach": "Joe was warm, grounded and kind in a way Richard values, but the speed date pointed to someone who may need more protected day-to-day presence than Richard can honestly offer amid the circus.",
+    "codiesanchez": "Codie gave Richard the substantive, high-voltage conversation he enjoys, yet her clear need for a solid root system makes his highly public, constantly moving life feel like a strain this pair would keep having to solve.",
+    "namitathapar": "Namita’s family-minded adventurousness was appealing, but her need for consistency, sleep and dependable prioritisation looked least compatible with Richard’s chaotic, continent-hopping reality even if the mutual respect was real."
+   },
+   "note": "Richard, my pick is Drew Binsky. The Mara date showed the rare combination you actually need: spontaneous joy, real care for people and place, easy substance, and someone who naturally says yes to adventure; the only thing to guard is building a sanctuary so the relationship doesn’t become just a bigger mission.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:32.150Z"
   }
  },
  {
@@ -18445,6 +18970,31 @@
     "overall": 82,
     "note": "Rich, consistent public material on his values, work and travel style. Private preferences and day-to-day habits are thinner, since both sources are professionally curated. He publicly shares that he is in a long-term relationship with Deanna Sallao, so this profile describes his relational style rather than current availability."
    }
+  },
+  "decision": {
+   "order": [
+    "richardbranson",
+    "ranveer-brar",
+    "melrobbins",
+    "codiesanchez",
+    "dominiquecrenn",
+    "steven",
+    "aliabdaal",
+    "thespacegal"
+   ],
+   "reasons": {
+    "richardbranson": "The Maasai Mara full date showed the clearest mutual fit for Drew’s scale, generosity, public-facing adventure, and instinct to say yes to the world, with both sides seeing unusual natural ease so long as they intentionally build private refuge instead of a bigger circus.",
+    "ranveer-brar": "Even from the speed date, Ranveer felt closest to Drew’s ideal blend of warmth, curiosity, people-radiance, and love of wandering for stories, and his idea that home can be a person directly answers Drew’s need for ritual and return if he can truly handle the pace.",
+    "melrobbins": "The Boston street-food crawl and deep talk proved she can give Drew the honest pushback, emotional substance, and milestone-cheering he needs, but this lands just below the top because the lifestyle fit still felt more respected than fully road-tested.",
+    "codiesanchez": "Codie is a sharp, generous grown-up match with enough backbone to challenge Drew honestly and enough ambition to respect his mission, but the speed date also suggested an ongoing risk that two strong brands compete for oxygen unless the relationship is carefully protected.",
+    "dominiquecrenn": "Dominique brought one of the strongest values-and-heart connections of the speed dates, yet her rooted restaurant-and-farm rhythm feels less naturally aligned to Drew’s nonstop filming calendar than the people above her.",
+    "steven": "Steven offered real depth, admiration, and mission-level understanding on the speed date, but the pairing read as two restless public builders who could easily end up all drive and very little sanctuary.",
+    "aliabdaal": "Ali showed warm, smart chemistry and self-awareness, but his systems-first way of managing life still seems likelier to strain under Drew’s constant unpredictability than to delight in it.",
+    "thespacegal": "Emily is bright, generous, and public-life fluent, yet her clear desire for a calmer rooted home base makes her the toughest lifestyle fit for Drew’s relentless travel blur despite the mutual spark."
+   },
+   "note": "Drew, my pick is Richard Branson because the Maasai Mara date was the strongest proof of a mutual match across adventure, generosity, optimism, and comfort with a big public life. He feels most naturally able to meet your scale without judging it, and the only real caution is making sure the relationship creates a real private home instead of becoming one more incredible expedition.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:29.594Z"
   }
  },
  {
@@ -19307,6 +19857,31 @@
     "overall": 72,
     "note": "Strong on values, career and communication style, because both sources are public-facing and consistent. Weaker on private hobbies, romantic history and day-to-day habits, since most content is professional. Some details (the Gary Clark Jr. t-shirt, home décor) rest on single visual cues."
    }
+  },
+  "decision": {
+   "order": [
+    "drjulie",
+    "thebodycoach",
+    "rajshamani",
+    "paugasol",
+    "ranveer-brar",
+    "melrobbins",
+    "gracebeverley",
+    "shivya"
+   ],
+   "reasons": {
+    "drjulie": "She is the clearest all-round fit because both dates showed rare mutual emotional fluency, warmth and substance, and unlike others the main risk was not values or presence but simply whether two purposeful helpers will actively protect time for the relationship.",
+    "thebodycoach": "Joe comes second because there was genuine ease, grounded warmth and shared family-and-mission values on both dates, but compared with Julie the relationship felt slightly more vulnerable to becoming two big public projects competing with intimacy.",
+    "rajshamani": "Raj offers exceptional depth, curiosity and mutual respect, and his emotional connection to family matters, but the Manchester–Mumbai reality makes the practical structure of love much harder than the top two.",
+    "paugasol": "Pau is calm, mature and deeply values-led in exactly the right ways, yet your full date made clear that Spain-versus-Greater-Manchester is not a detail but a likely defining strain.",
+    "ranveer-brar": "Ranveer showed warm emotional intelligence and real promise fast, but with only a speed date plus major logistics and his tendency to carry things himself, this remains more compelling idea than proven fit.",
+    "melrobbins": "Mel clearly understands mission, public life and emotional growth, but this looked more like high-level mutual admiration than evidence that either of you would reliably get the best of the other in private life.",
+    "gracebeverley": "Grace has strong values and a lively meeting of minds, yet the date most strongly suggested a relationship that could become expertly organised rather than deeply present and restorative.",
+    "shivya": "Shivya is thoughtful and grounded, but both dates pointed to a pattern where her need for solitude and freedom could leave you with two parallel intentional lives rather than the rooted, mutually held partnership you need."
+   },
+   "note": "Rangan, my pick is drjulie. She best matches what you actually need: emotional openness, real presence, respect for family and a grown-up willingness to protect love from two meaningful public careers. With her, the challenge is manageable and explicit; with most of the others, the structure of the life itself looked more likely to starve the relationship.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:28.212Z"
   }
  },
  {
@@ -20180,6 +20755,31 @@
     "overall": 72,
     "note": "His professional identity and values are well documented, and his personality comes through clearly in his captions. However, almost all content is public or brand-facing, with nothing on his private life, relationship status or real downtime habits. Needs and friction points are therefore inferred from a public persona."
    }
+  },
+  "decision": {
+   "order": [
+    "poojadhingra",
+    "masabagupta",
+    "namitathapar",
+    "dominiquecrenn",
+    "drewbinsky",
+    "drchatterjee",
+    "steven",
+    "melrobbins"
+   ],
+   "reasons": {
+    "poojadhingra": "The Irani café breakfast, old-city walk, and sea-facing chai showed the clearest mutual balance of warmth, curiosity, public-life realism, and ease, and she felt most like someone who could be both home and true company inside his world if they deliberately protect time.",
+    "masabagupta": "On the forgotten-dish crawl and over ragda pattice, she brought real home-energy, banter, and grounded warmth without showiness, making this the strongest playful-builder match just behind Pooja because the calendar risk felt slightly bigger than the chemistry.",
+    "namitathapar": "The rainy hike, misal crawl, and ghar ka khana proved she can handle change, ask smart questions, and offer sturdy, adult warmth, but her stricter boundaries mean the fit works only if Ranveer is consistently present rather than road-blurred.",
+    "dominiquecrenn": "The dawn farm harvest and memory-cooking lunch created one of the deepest story-and-values connections of the shortlist, but the cross-continental, dual-chef logistics make this feel more profound than practically livable.",
+    "drewbinsky": "His people-first curiosity and all-197-countries restlessness match Ranveer’s love of stories and movement, yet the speed date also highlighted the biggest mutual risk here: two warm nomads who might keep meeting beautifully in transit without ever making a real home.",
+    "drchatterjee": "There was genuine emotional intelligence and mission-level respect on the speed date, but his more routine-led pace and the Manchester/Mumbai setup make the playful, silly, spontaneous everyday fit less natural for Ranveer than the higher-ranked matches.",
+    "steven": "The speed date had real mind-and-heart resonance, but it stayed more ambitious and reflective than loose or mischievous, and two relentless public careers with little evidence of softness-protection make this a thinner lifestyle fit.",
+    "melrobbins": "She offered warmth and strong emotional fluency on the speed date, but compared with the others there was less evidence of shared food-story curiosity, banter, and a naturally mutual rhythm for Ranveer’s heritage-soaked, chaotic road life."
+   },
+   "note": "Ranveer, my pick is Pooja Dhingra. That full date was the cleanest proof of what you actually need: someone warm, curious, unshowy, and emotionally fluent who understands both food and the cost of a public life, while still feeling easy enough to become home. Masaba is a very close second, but with Pooja I saw the strongest mutual readiness to protect something real, not just admire each other’s worlds.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:31.300Z"
   }
  },
  {
@@ -20977,6 +21577,31 @@
     "overall": 82,
     "note": "Both sources are rich and consistent, but they are largely public-facing and promotional. Personal-life details, private hobbies and relationship context are absent, so needs and dating preferences are inferred from his public values and tone."
    }
+  },
+  "decision": {
+   "order": [
+    "paugasol",
+    "drchatterjee",
+    "drjulie",
+    "thespacegal",
+    "emmagrede",
+    "mkbhd",
+    "ranveer-brar",
+    "drewbinsky"
+   ],
+   "reasons": {
+    "paugasol": "Pau tops the list because the Sitges seaside walk, long lunch and driving range showed the clearest mutual mix of warmth, purpose, outdoorsy ease and genuine respect for the grind, with the only real thing holding it back being whether they can beat the geography and two public calendars.",
+    "drchatterjee": "Rangan comes second because the morning park walk and simple breakfast had real ease, depth and mission alignment, but it also exposed the biggest risk that two generous, outward-facing people leave the relationship living on whatever energy is left over.",
+    "drjulie": "Julie ranks third because even from the speed date there was a grounded, mature fit around values and purpose, but her clear need for protected time and boundaries makes Joe’s schedule a more serious practical test than with the top two.",
+    "thespacegal": "Emily lands fourth because the riverside walk, home-style cooking and quiet stargazing showed spark, substance and teammate energy, yet the transatlantic double-busy reality felt even more likely than most to turn romance into project management.",
+    "emmagrede": "Emma takes fifth because the speed date had loud mutual respect, warmth and ambition-friendly energy, but with two huge public careers on different continents there was less evidence of the simple shared outdoorsy day-to-day Joe actually needs.",
+    "mkbhd": "Marques is sixth because the speed date felt grounded and mutually respectful with real grown-up promise, but it read more like two disciplined operators who could admire each other than a match already showing Joe’s ideal warmth-and-movement rhythm.",
+    "ranveer-brar": "Ranveer comes seventh because the warmth, roaming spirit and down-to-earth food curiosity were attractive, but even in the speed date it felt likelier Joe would have to do more adapting on the movement-and-outdoors side than the other way round.",
+    "drewbinsky": "Drew finishes eighth because the speed date had undeniable spark and adventure overlap, but two hyper-traveling public lives looked the most likely of all to create lots of intention and very little ordinary, reliable togetherness."
+   },
+   "note": "Joe, my pick is Pau Gasol. He felt like the best combination of warm, grounded, mission-led and genuinely easy to be with on that Sitges day — someone who’d respect your grind, get outdoors with you, and celebrate what you’re trying to do without making it all too serious. The only question is practicality, but on pure partner fit, he’s the strongest mutual match.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:40.871Z"
   }
  },
  {
@@ -21848,6 +22473,31 @@
     "overall": 80,
     "note": "His public values, causes and hobbies are richly documented. His private romantic life is not described in either source; reading notes flagged a ring in some photos, which is recorded only as neutral, unconfirmed context. Some LinkedIn text, such as 'I am a professional basketball player,' is outdated relative to his retirement."
    }
+  },
+  "decision": {
+   "order": [
+    "thebodycoach",
+    "drchatterjee",
+    "dominiquecrenn",
+    "sahilbloom",
+    "thespacegal",
+    "drjulie",
+    "poojadhingra",
+    "ankurwarikoo"
+   ],
+   "reasons": {
+    "thebodycoach": "Joe ranks first because the Sitges walk, long lunch, and driving range showed the clearest lived fit on Pau’s core needs—easy warmth, shared health rhythms, mutual respect for mission work, and enough grounded chemistry on both sides that this only fails if neither truly makes room for Spain and protected time.",
+    "drchatterjee": "Rangan is second because the Barcelona coast walk and slow dinner delivered the strongest two-way conversation and emotional maturity on the list, but his explicit need for one clear main base makes the England-versus-Spain question a more serious long-term strain than with Joe.",
+    "dominiquecrenn": "Dominique places third because even in a speed date there was real adult chemistry, depth, and mutual respect for purpose, but two intense public lives split between Barcelona and San Francisco would require a deliberately built relationship architecture from day one.",
+    "sahilbloom": "Sahil is fourth because the values, integrity, and long-term seriousness are excellent for Pau, yet the interaction read more as disciplined mutual respect than warm emotional ease, and his side was notably less convinced about the practical fit.",
+    "thespacegal": "Emily ranks fifth because there was genuine spark and teammate energy, but the continent-level logistics and lack of evidence that Spain could be a true anchor make the match feel more admirable than livable right now.",
+    "drjulie": "Julie is sixth because her emotional intelligence and calm intentionality suit Pau well, but nothing in the speed date meaningfully proved she would enjoy, not just tolerate, the international rhythm and Spain-anchored life he actually lives.",
+    "poojadhingra": "Pooja comes seventh because the warmth and groundedness were appealing and mutual, yet the Mumbai base, founder pace, and limited evidence of connection to Pau’s foundation world or international structure leave too much of the real partnership unanswered.",
+    "ankurwarikoo": "Ankur is eighth because while the values and self-discipline are strong, the India-Spain distance plus a more systems-led than emotionally open impression make him the least convincing match for Pau’s need for softness, sustained presence, and easy mutual adaptation."
+   },
+   "note": "Pau, my pick is Joe Wicks. He gave you the best combination of warmth, shared daily-life values, respect for your mission, and a date that actually felt easy in your body—not just good on paper—while still meeting you with substance and steadiness. Rangan is very close, but Joe feels more likely to protect the simple, grounded life you need if he’s truly willing to build around Spain.",
+   "model": "gpt-5.4",
+   "at": "2026-09-29T14:23:41.498Z"
   }
  }
 ]

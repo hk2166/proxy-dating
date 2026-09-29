@@ -130,6 +130,15 @@ export interface Analysis {
   confidence: { overall: number; note: string };
 }
 
+/** Round 3: the agent's final call after all its dates. */
+export interface Decision {
+  order: string[]; // shortlisted person ids, best first
+  reasons: Record<string, string>;
+  note: string; // addressed to the person, names the pick
+  model?: string;
+  at: string;
+}
+
 export interface Person {
   id: string;
   name: string;
@@ -141,6 +150,7 @@ export interface Person {
   sources?: Sources;
   reading?: ReadingNote[];
   analysis?: Analysis;
+  decision?: Decision;
   status: "scraping" | "reading" | "ready" | "failed";
   error?: string;
 }
@@ -191,6 +201,7 @@ export interface RankEntry {
   reason: string;
   highlight: string;
   dateIds: string[];
+  agentRank?: number; // position the agent chose in Round 3 (1 = its pick)
 }
 
 // Card = what an agent can see of someone before the date (like a dating-app profile)

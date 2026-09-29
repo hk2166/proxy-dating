@@ -4,6 +4,7 @@ import { DateReplay } from "@/components/DateView";
 import { Avatar, Tag } from "@/components/ui";
 import { pairId } from "@/lib/dating";
 import { loadWorld } from "@/lib/world";
+import { firstName } from "@/lib/names";
 
 export const dynamic = "force-dynamic";
 
@@ -49,10 +50,10 @@ export default async function DatePage({ params }: { params: Promise<{ id: strin
         <div className="mb-4 rounded-2xl border border-line bg-card p-4 text-sm">
           <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted">How the agents planned this date</div>
           <p>
-            <span className="font-semibold">{a.name.split(" ")[0]}&apos;s agent:</span> {date.plan.a}
+            <span className="font-semibold">{firstName(a.name)}&apos;s agent:</span> {date.plan.a}
           </p>
           <p className="mt-1">
-            <span className="font-semibold">{b.name.split(" ")[0]}&apos;s agent:</span> {date.plan.b}
+            <span className="font-semibold">{firstName(b.name)}&apos;s agent:</span> {date.plan.b}
           </p>
         </div>
       )}
