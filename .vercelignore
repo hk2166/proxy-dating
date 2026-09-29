@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+data/.cache
+data/live
+.next
+node_modules
