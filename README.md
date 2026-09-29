@@ -4,8 +4,9 @@
 
 | | |
 |---|---|
-| **Live site** | _add after deploy_ |
-| **Demo (finished 26-person run)** | _same site: every profile, date and ranking is already there_ |
+| **Live site** | https://proxy-dating.vercel.app (paste a LinkedIn + public Instagram at [/join](https://proxy-dating.vercel.app/join)) |
+| **Demo (finished 26-person run)** | https://proxy-dating.vercel.app: every profile, date and ranking is already there |
+| **Code** | https://github.com/hk2166/proxy-dating |
 | **Video** | _add YouTube link_ |
 
 Every person is represented by an agent. Each agent gets exactly two sources, the person's **LinkedIn** and their **public Instagram**, and nothing else. It reads both, writes a profile (needs, hobbies, interests, values and more), then dates every other agent on that person's behalf. After each date it reports back privately, and those reports become a ranking of who fits that person best.
