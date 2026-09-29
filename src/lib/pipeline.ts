@@ -102,7 +102,7 @@ export async function createLivePerson(linkedinUrl: string, instagramUrl: string
   return person;
 }
 
-const MAX_POOL = Number(process.env.MAX_SPEED_DATES || 30);
+const MAX_POOL = Number(process.env.MAX_SPEED_DATES || 60);
 
 export async function runSpeedRound(personId: string, emit: Emit) {
   const people = (await listPeople()).filter((p) => p.status === "ready" && p.analysis);
