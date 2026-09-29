@@ -5,3 +5,6 @@ data/.cache
 data/live
 .next
 node_modules
+.agents
+.claude
+skills-lock.json

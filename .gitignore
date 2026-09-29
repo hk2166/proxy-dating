@@ -44,3 +44,8 @@ next-env.d.ts
 # local live data
 /data/live
 /data/.cache
+
+# agent skills installed by vercel integrations (local tooling)
+/.agents
+/.claude
+skills-lock.json
