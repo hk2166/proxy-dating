@@ -44,11 +44,10 @@ Every actor output is normalized into one schema (`src/lib/types.ts`: `LinkedInP
 ## The rest of the stack
 
 - **Next.js 16 (App Router) + TypeScript + Tailwind**, deployable on Vercel
-- **LLM agents, provider-agnostic** (`src/lib/llm.ts`): one `chat()` for free-text date lines and one `structured()` for notes, profiles and scorecards (zod schemas, validated). Three backends:
-  - **Anthropic Claude**: structured outputs, vision, server-side refusal fallback
-  - **OpenAI**: strict JSON-schema outputs, vision
+- **LLM agents, provider-agnostic** (`src/lib/llm.ts`): one `chat()` for free-text date lines and one `structured()` for notes, profiles and scorecards (zod schemas, validated). Backends:
+  - **OpenAI** (default, `gpt-5.4`): strict JSON-schema outputs, vision (the agent looks at Instagram photos)
   - **DeepSeek**: JSON mode, text only
-- **In the committed 26-person example**, profiles were written by **Claude Opus 5.5** (which also looked at each person's Instagram photos). All 325 speed dates, the full dates, the Date Host and every scorecard ran on **OpenAI gpt-5.4**, so every score in the rankings comes from one model. The live site runs on gpt-5.4.
+- **In the committed 26-person example**, all 325 speed dates, the full dates, the Date Host and every scorecard ran on **gpt-5.4**, so every score in the rankings comes from one model. The live site runs every step on gpt-5.4.
 - **Server-Sent Events** stream every scraping step, reading note and date line to the browser as it happens
 - **Storage:** the finished example ships as JSON in `data/seed/`. People added live go to Upstash Redis (or `data/live/` locally). A daily cap (`LIVE_DAILY_LIMIT`) guards cost.
 
@@ -103,7 +102,7 @@ Measured in the committed run: agents said "yes" to a second date after 99% of s
 
 ```bash
 npm install
-cp .env.example .env        # APIFY_TOKEN + one of OPENAI_API_KEY / ANTHROPIC_API_KEY / DEEPSEEK_API_KEY
+cp .env.example .env        # APIFY_TOKEN + OPENAI_API_KEY (or DEEPSEEK_API_KEY)
 npm run dev                 # the committed 26-person example loads immediately
 
 # rebuild the example from scratch (resumable; checkpoints to data/seed/)

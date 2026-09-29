@@ -1,10 +1,7 @@
-.env
-.env.*
+# hidden files/folders (env files, local tooling) never upload
+.*
 !.env.example
 data/.cache
 data/live
-.next
 node_modules
-.agents
-.claude
 skills-lock.json

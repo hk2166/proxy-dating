@@ -1,6 +1,5 @@
 import { z } from "zod";
-import type Anthropic from "@anthropic-ai/sdk";
-import { structured, MODELS, SUPPORTS_VISION } from "./llm";
+import { structured, MODELS, SUPPORTS_VISION, type ContentBlock } from "./llm";
 import type { Analysis, InstagramProfile, LinkedInProfile, PublicCard, Person, ReadingNote, Sources } from "./types";
 
 // ---------------------------------------------------------------------------
@@ -128,7 +127,7 @@ export function renderInstagram(ig: InstagramProfile): string {
   return lines.filter(Boolean).join("\n\n");
 }
 
-async function fetchImage(url: string): Promise<Anthropic.Beta.BetaImageBlockParam | null> {
+async function fetchImage(url: string): Promise<ContentBlock | null> {
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(8000) });
     if (!res.ok) return null;
@@ -136,10 +135,7 @@ async function fetchImage(url: string): Promise<Anthropic.Beta.BetaImageBlockPar
     if (!["image/jpeg", "image/png", "image/webp", "image/gif"].includes(type)) return null;
     const buf = Buffer.from(await res.arrayBuffer());
     if (buf.length > 3_500_000) return null;
-    return {
-      type: "image",
-      source: { type: "base64", media_type: type as "image/jpeg", data: buf.toString("base64") },
-    };
+    return { type: "image", mediaType: type, data: buf.toString("base64") };
   } catch {
     return null;
   }
@@ -170,9 +166,9 @@ export async function readInstagram(ig: InstagramProfile): Promise<ReadingNote[]
   const images = SUPPORTS_VISION
     ? ((await Promise.all(ig.posts.filter((p) => p.imageUrl).slice(0, 6).map((p) => fetchImage(p.imageUrl!)))).filter(
         Boolean,
-      ) as Anthropic.Beta.BetaImageBlockParam[])
+      ) as ContentBlock[])
     : [];
-  const content: Anthropic.Beta.BetaContentBlockParam[] = [];
+  const content: ContentBlock[] = [];
   if (images.length) {
     content.push({ type: "text", text: `Photos from their ${images.length} most recent posts (in order):` });
     content.push(...images);

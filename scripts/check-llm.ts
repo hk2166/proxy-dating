@@ -1,4 +1,4 @@
-// Quick check that the Claude key and request shape work: npx tsx --env-file=.env scripts/check-llm.ts
+// Quick check that the LLM key and request shape work: npx tsx --env-file=.env scripts/check-llm.ts
 import { z } from "zod";
 import { chat, structured } from "../src/lib/llm";
 

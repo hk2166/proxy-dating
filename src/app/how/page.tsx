@@ -102,9 +102,9 @@ fit       = 0.65 · myView + 0.35 · theirView  (+5 if both want a 2nd date)`}
         <ul className="list-disc space-y-1 pl-5">
           <li>Next.js (App Router) + TypeScript + Tailwind, deployed on Vercel</li>
           <li>
-            LLM agents behind one provider-agnostic layer (Claude, OpenAI or DeepSeek): validated structured outputs (zod) for notes,
-            profiles and scorecards; free text for date lines. In the demo, profiles were written by Claude Opus 5.5 and every date
-            and scorecard ran on OpenAI gpt-5.4, so all scores come from one model.
+            LLM agents behind one provider-agnostic layer (OpenAI gpt-5.4 by default, DeepSeek optional): validated structured outputs
+            (zod) for notes, profiles and scorecards; free text for date lines. Every date and scorecard in the demo ran on the same
+            model, so all scores are comparable.
           </li>
           <li>Apify actors for Instagram + LinkedIn scraping</li>
           <li>Upstash Redis for people added live; the finished 25-person example ships as JSON in the repo</li>
