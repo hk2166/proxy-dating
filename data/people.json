@@ -180,5 +180,149 @@
     "instagram": "https://www.instagram.com/paugasol/",
     "domain": "Basketball legend / investor / health foundation",
     "country": "Spain"
+  },
+  {
+    "name": "Anupam Mittal",
+    "linkedin": "https://www.linkedin.com/in/anupammittal007/",
+    "instagram": "https://www.instagram.com/anupammittal.me/",
+    "gender": "man",
+    "domain": "Matchmaking founder (Shaadi.com) / Shark Tank India",
+    "country": "India"
+  },
+  {
+    "name": "Peyush Bansal",
+    "linkedin": "https://www.linkedin.com/in/peyushbansal/",
+    "instagram": "https://www.instagram.com/peyushbansal/",
+    "gender": "man",
+    "domain": "Eyewear founder (Lenskart) / Shark Tank India",
+    "country": "India"
+  },
+  {
+    "name": "Sharan Hegde",
+    "linkedin": "https://www.linkedin.com/in/sharanhegde95/",
+    "instagram": "https://www.instagram.com/financewithsharan/",
+    "gender": "man",
+    "domain": "Funny personal-finance creator",
+    "country": "India"
+  },
+  {
+    "name": "Ghazal Alagh",
+    "linkedin": "https://www.linkedin.com/in/ghazal-alagh-9755a0128/",
+    "instagram": "https://www.instagram.com/ghazalalagh/",
+    "gender": "woman",
+    "domain": "Beauty / D2C founder (Mamaearth) / artist",
+    "country": "India"
+  },
+  {
+    "name": "Sara Blakely",
+    "linkedin": "https://www.linkedin.com/in/sarablakely27/",
+    "instagram": "https://www.instagram.com/sarablakely/",
+    "gender": "woman",
+    "domain": "Founder (Spanx), famously funny",
+    "country": "USA"
+  },
+  {
+    "name": "Vivian Tu",
+    "linkedin": "https://www.linkedin.com/in/viviantu-yourrichbff/",
+    "instagram": "https://www.instagram.com/your.richbff/",
+    "gender": "woman",
+    "domain": "Funny finance creator (Your Rich BFF)",
+    "country": "USA"
+  },
+  {
+    "name": "Ryan Serhant",
+    "linkedin": "https://www.linkedin.com/in/ryanserhant/",
+    "instagram": "https://www.instagram.com/ryanserhant/",
+    "gender": "man",
+    "domain": "Flamboyant real-estate founder / TV",
+    "country": "USA"
+  },
+  {
+    "name": "iJustine",
+    "linkedin": "https://www.linkedin.com/in/justineezarik/",
+    "instagram": "https://www.instagram.com/ijustine/",
+    "gender": "woman",
+    "domain": "Funny tech creator",
+    "country": "USA"
+  },
+  {
+    "name": "Radhika Gupta",
+    "linkedin": "https://www.linkedin.com/in/radhikagupta2/",
+    "instagram": "https://www.instagram.com/iamradhikagupta/",
+    "gender": "woman",
+    "domain": "Finance / asset management (MD & CEO, Edelweiss Mutual Fund); Shark Tank India investor; author",
+    "country": "India"
+  },
+  {
+    "name": "Srishti Dixit",
+    "linkedin": "https://www.linkedin.com/in/srishti-dixit-74bb1294/",
+    "instagram": "https://www.instagram.com/srishtipatch/",
+    "gender": "woman",
+    "domain": "Comedy creator / actor (ex-BuzzFeed India, co-host Netflix Behensplaining)",
+    "country": "India"
+  },
+  {
+    "name": "Sumukhi Suresh",
+    "linkedin": "https://www.linkedin.com/in/sumukhi/",
+    "instagram": "https://www.instagram.com/sumukhisuresh/",
+    "gender": "woman",
+    "domain": "Stand-up comedian, actor, writer (Pushpavalli; founder Motormouth)",
+    "country": "India"
+  },
+  {
+    "name": "Lilly Singh",
+    "linkedin": "https://www.linkedin.com/in/mslillysingh/",
+    "instagram": "https://www.instagram.com/lilly/",
+    "gender": "woman",
+    "domain": "Comedian, actor, producer (Unicorn Island); co-owner Toronto Tempo & Angel City FC",
+    "country": "Canada"
+  },
+  {
+    "name": "Kanika Tekriwal",
+    "linkedin": "https://www.linkedin.com/in/kanikatekriwal/",
+    "instagram": "https://www.instagram.com/jetslacked/",
+    "gender": "woman",
+    "domain": "Aviation founder (JetSetGo); Shark Tank India investor",
+    "country": "India"
+  },
+  {
+    "name": "Dolly Singh",
+    "linkedin": "https://www.linkedin.com/in/dolly-singh-5a2a2212a/",
+    "instagram": "https://www.instagram.com/dollysingh/",
+    "gender": "woman",
+    "domain": "Comedy creator / actor (South Delhi Girls, Raju Ki Mummy)",
+    "country": "India"
+  },
+  {
+    "name": "Prajakta Koli",
+    "linkedin": "https://www.linkedin.com/in/prajakta-koli-5739a2187/",
+    "instagram": "https://www.instagram.com/mostlysane/",
+    "gender": "woman",
+    "domain": "YouTuber (MostlySane), actor (Mismatched), author",
+    "country": "India"
+  },
+  {
+    "name": "Gary Vaynerchuk",
+    "linkedin": "https://www.linkedin.com/in/garyvaynerchuk/",
+    "instagram": "https://www.instagram.com/garyvee/",
+    "gender": "man",
+    "domain": "Entrepreneur (VaynerX / VaynerMedia, VeeFriends), investor",
+    "country": "United States"
+  },
+  {
+    "name": "Casey Neistat",
+    "linkedin": "https://www.linkedin.com/in/caseyneistat/",
+    "instagram": "https://www.instagram.com/caseyneistat/",
+    "gender": "man",
+    "domain": "Filmmaker / YouTuber",
+    "country": "United States"
+  },
+  {
+    "name": "Mark Cuban",
+    "linkedin": "https://www.linkedin.com/in/mark-cuban-06a0755b/",
+    "instagram": "https://www.instagram.com/mcuban/",
+    "gender": "man",
+    "domain": "Entrepreneur/investor (Cost Plus Drugs, ex-Mavericks owner, Shark Tank)",
+    "country": "United States"
   }
 ]
