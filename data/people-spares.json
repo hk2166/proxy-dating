@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Arianna Huffington",
+    "linkedin": "https://www.linkedin.com/in/ariannahuffington/",
+    "instagram": "https://www.instagram.com/ariannahuff/",
+    "domain": "Wellness media / tech (Thrive Global)",
+    "country": "USA / Greece"
+  },
+  {
+    "name": "Ghazal Alagh",
+    "linkedin": "https://www.linkedin.com/in/ghazal-alagh-9755a0128/",
+    "instagram": "https://www.instagram.com/ghazalalagh/",
+    "domain": "Beauty / D2C founder (Mamaearth) / artist",
+    "country": "India"
+  },
+  {
+    "name": "Debbie Millman",
+    "linkedin": "https://www.linkedin.com/in/deborahmillman/",
+    "instagram": "https://www.instagram.com/debbiemillman/",
+    "domain": "Design / art / podcasting (Design Matters)",
+    "country": "USA"
+  },
+  {
+    "name": "Nikhil Kamath",
+    "linkedin": "https://www.linkedin.com/in/nikhilkamathcio/",
+    "instagram": "https://www.instagram.com/nikhilkamathcio/",
+    "domain": "Investing / fintech (Zerodha, Gruhas) / podcasting",
+    "country": "India"
+  },
+  {
+    "name": "Alexis Ohanian",
+    "linkedin": "https://www.linkedin.com/in/alexisohanian/",
+    "instagram": "https://www.instagram.com/alexisohanian/",
+    "domain": "Tech / venture capital (Reddit, 776) / sports ownership",
+    "country": "USA"
+  },
+  {
+    "name": "Mark Rober",
+    "linkedin": "https://www.linkedin.com/in/mark-rober-a56a6b99/",
+    "instagram": "https://www.instagram.com/markrober/",
+    "domain": "Science / engineering YouTube (ex-NASA JPL, CrunchLabs)",
+    "country": "USA"
+  }
+]
