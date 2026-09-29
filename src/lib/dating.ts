@@ -4,21 +4,10 @@ import { toCard } from "./analyze";
 import type { DateMessage, DateRecord, Person, Scorecard, Speaker } from "./types";
 import { firstName } from "./names";
 
-// ---------------------------------------------------------------------------
-// The dating harness.
-//
-// Every person is represented by an agent that holds a PRIVATE dossier (their
-// analysis). On a date, each agent only sees its own dossier + the other
-// person's public card + the conversation. Turns are separate model calls, so
-// the two agents genuinely talk to each other — neither can see the other's
-// notes, needs or dealbreakers.
-//
-//   Round 1  speed dates   every pair, 6 lines, then two private scorecards
-//   Round 2  full dates    top mutual matches: plan a venue together, a Date
-//                          Host (who sees both dossiers) runs three acts with
-//                          scene beats, question cards and a curveball, then
-//                          each agent writes a private debrief to its person
-// ---------------------------------------------------------------------------
+// Each agent only sees its own person's profile, the other person's public card
+// and the conversation. Every line is its own model call.
+// speed date: 6 lines + two private scorecards. full date: plan it together,
+// the host runs three acts, then each agent reports back to its person.
 
 export type DateEvent =
   | { type: "date:start"; date: Pick<DateRecord, "id" | "kind" | "a" | "b"> }
@@ -87,7 +76,7 @@ function cardText(p: Person) {
   return `${c.name} — ${c.headline}\nVibe: ${c.vibe.join(", ")}\nInto: ${c.interests.join(", ")}\nBased: ${c.base}`;
 }
 
-function transcript(messages: DateMessage[], a: Person, b: Person) {
+export function transcript(messages: DateMessage[], a: Person, b: Person) {
   if (!messages.length) return "(nothing yet — you speak first)";
   return messages
     .map((m) => (m.speaker === "host" ? `[HOST] ${m.text}` : `${first(m.speaker === "a" ? a.name : b.name)}: ${m.text}`))
@@ -101,7 +90,7 @@ function clean(text: string, name: string) {
     .trim();
 }
 
-async function turn(opts: {
+export async function turn(opts: {
   me: Person;
   other: Person;
   a: Person;
@@ -176,9 +165,7 @@ function hash(s: string) {
   return Math.abs(h);
 }
 
-// ---------------------------------------------------------------------------
-// Round 1 — speed date
-// ---------------------------------------------------------------------------
+// speed dates
 const SPEED_LINES = 6;
 
 export async function speedDate(x: Person, y: Person, emit: Emit = () => {}): Promise<DateRecord> {
@@ -211,15 +198,13 @@ export async function speedDate(x: Person, y: Person, emit: Emit = () => {}): Pr
   return rec;
 }
 
-// ---------------------------------------------------------------------------
-// Round 2 — full date, run by a Date Host
-// ---------------------------------------------------------------------------
+// full dates
 const VenueSchema = z.object({
   venue: z.string().describe("Short name of the date, e.g. 'Sunrise hike + chai at Chapora Fort'"),
   scene: z.string().describe("1-2 sentence opening scene, present tense"),
 });
 
-function hostSystem(a: Person, b: Person) {
+export function hostSystem(a: Person, b: Person) {
   return `You are the Date Host — the harness running tonight's date between two AI agents, each dating on behalf of a real person. You can see BOTH private dossiers; the daters can't see each other's.
 Your job is to create moments that reveal real compatibility: open up overlaps worth exploring, and gently test the likely friction points (pace of life, ambition, where they live, how they recharge, values).
 Write present-tense narration, 1-3 sentences. When useful, end with a question card in quotes. Never speak for the daters.
@@ -337,9 +322,7 @@ export async function fullDate(x: Person, y: Person, speed: DateRecord | undefin
   return rec;
 }
 
-// ---------------------------------------------------------------------------
-// Match-making between rounds
-// ---------------------------------------------------------------------------
+// who goes on a full date
 
 /** Mutual score of a speed date: geometric mean + bonus if both want a 2nd date. */
 export function mutualScore(d: DateRecord) {
